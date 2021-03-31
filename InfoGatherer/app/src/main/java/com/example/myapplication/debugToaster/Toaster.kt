@@ -6,6 +6,8 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import com.example.myapplication.data.InfoHolder
+import com.example.myapplication.models.InfoDataHolder
 import java.util.*
 
 /**
@@ -20,18 +22,20 @@ private const val ShortToastDuration = 2000
 
 class Toaster private constructor(activity: Activity) {
 
+    val infoHolder = InfoHolder()
+
     var activity : Activity? = activity
 
     var duration = Toast.LENGTH_LONG
 
     var copyGenericInfoBuilder : CopyToClipboardGenericInfoBuilder? = null
 
-    private var toastQueue : LinkedList<ToastDataHolder> = LinkedList()
+    private var infoQueue : LinkedList<InfoDataHolder> = LinkedList()
     private var isShowing = false
 
     companion object {
 
-        private var instance : Toaster? = null
+        var instance : Toaster? = null
 
         @JvmStatic
         fun show(@NonNull activity : Activity, @Nullable copyGenericInfoBuilder : CopyToClipboardGenericInfoBuilder? = null, duration : Int = 1) : Toaster {
@@ -60,15 +64,15 @@ class Toaster private constructor(activity: Activity) {
 
     //----------------------------- Controls -----------------------------
 
-    fun success(msg : String, @Nullable extraInfo : String? = null) = add(ToastDataHolder(msg, duration.toLong(), ToastType.Success, extraInfo))
+    fun success(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), ToastType.Success, extraInfo))
 
-    fun error(msg : String, @Nullable extraInfo : String? = null) = add(ToastDataHolder(msg, duration.toLong(), ToastType.Error, extraInfo))
+    fun error(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), ToastType.Error, extraInfo))
 
-    fun warning(msg : String, @Nullable extraInfo : String? = null) = add(ToastDataHolder(msg, duration.toLong(), ToastType.Warning, extraInfo))
+    fun warning(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), ToastType.Warning, extraInfo))
 
-    fun debug(msg : String, @Nullable extraInfo : String? = null) = add(ToastDataHolder(msg, duration.toLong(), ToastType.Debug, extraInfo))
+    fun debug(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), ToastType.Debug, extraInfo))
 
-    fun clearQueue() = toastQueue.clear()
+    fun clearQueue() = infoQueue.clear()
 
     //--------------------------- End of Controls ------------------------
 
@@ -77,8 +81,9 @@ class Toaster private constructor(activity: Activity) {
      *
      * @param dataHolder Toast information
      */
-    private fun add(dataHolder: ToastDataHolder) {
-        toastQueue.add(buildExtraInfo(dataHolder))
+    private fun add(dataHolder: InfoDataHolder) {
+        infoHolder.addInfo(dataHolder)
+        infoQueue.add(buildExtraInfo(dataHolder))
         if (!isShowing) {
             showFirst()
         }
@@ -88,10 +93,10 @@ class Toaster private constructor(activity: Activity) {
      * Show toast on TOP of the queue
      */
     private fun showFirst() {
-        if (!toastQueue.isEmpty()) {
+        if (!infoQueue.isEmpty()) {
             isShowing = true
-            val dataHolder = toastQueue.first
-            toastQueue.removeFirst()
+            val dataHolder = infoQueue.first
+            infoQueue.removeFirst()
 
             show(dataHolder)
 
@@ -101,7 +106,7 @@ class Toaster private constructor(activity: Activity) {
         }
     }
 
-    private fun show(dataHolder: ToastDataHolder) {
+    private fun show(dataHolder: InfoDataHolder) {
         activity?.let { DebugToast.show(it, dataHolder) }
     }
 
@@ -111,7 +116,7 @@ class Toaster private constructor(activity: Activity) {
      * @param dataHolder    Data Holder that may contain extra info
      * @return  ToastDataHolder with either no extra info, or with extra info + generic info
      */
-    private fun buildExtraInfo(dataHolder: ToastDataHolder) : ToastDataHolder {
+    private fun buildExtraInfo(dataHolder: InfoDataHolder) : InfoDataHolder {
         dataHolder.extraInfo?.let {
             dataHolder.extraInfo = "General Information: ${copyGenericInfoBuilder?.buildGenericInfo()} Specific Information: $it"
         }

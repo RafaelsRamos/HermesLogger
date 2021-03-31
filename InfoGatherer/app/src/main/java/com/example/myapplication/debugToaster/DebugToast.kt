@@ -14,10 +14,11 @@ import android.view.animation.AlphaAnimation
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import com.example.myapplication.R
+import com.example.myapplication.models.InfoDataHolder
+import com.example.myapplication.utils.copyToClipboard
 
 /**
  * Duration between toasts
@@ -30,18 +31,16 @@ private const val InactiveToastAlpha = 0f
 private const val VerticalMargin = 100
 private const val HorizontalMargin = 15
 
-private const val CopyDefaultLabel = "Clipboard info"
-
 private const val DefaultResource = R.layout.toast_layout
 
-class DebugToast private constructor(private val activity: Activity, private val dataHolder: ToastDataHolder) : FrameLayout(activity), View.OnClickListener {
+class DebugToast private constructor(private val activity: Activity, private val dataHolder: InfoDataHolder) : FrameLayout(activity), View.OnClickListener {
 
     var mGravity = Gravity.BOTTOM
 
     companion object {
 
         @JvmStatic
-        fun show(@NonNull activity: Activity, dataHolder: ToastDataHolder, gravity: Int = Gravity.BOTTOM) : DebugToast {
+        fun show(@NonNull activity: Activity, dataHolder: InfoDataHolder, gravity: Int = Gravity.BOTTOM) : DebugToast {
             val toast = DebugToast(activity, dataHolder)
             toast.mGravity = gravity
             return toast
@@ -106,10 +105,6 @@ class DebugToast private constructor(private val activity: Activity, private val
      * [View.OnClickListener] implementation
      * @param v View that was clicked
      */
-    override fun onClick(v: View?) {
-        val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-        val clip = ClipData.newPlainText(CopyDefaultLabel, dataHolder.extraInfo)
-        clipboard?.setPrimaryClip(clip)
-    }
+    override fun onClick(v: View?) = copyToClipboard(activity, dataHolder)
 
 }
