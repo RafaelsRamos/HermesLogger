@@ -6,6 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.R
 import com.example.myapplication.models.InfoDataHolder
 
@@ -38,3 +39,8 @@ fun getInfoIcon(context: Context, position: Int): Drawable? {
         )
     }
 }
+
+/**
+ * Directly set a default type onto a [MutableLiveData] instance
+ */
+fun <T : Any?> MutableLiveData<T>.default(initialValue: T) = apply { setValue(initialValue) }

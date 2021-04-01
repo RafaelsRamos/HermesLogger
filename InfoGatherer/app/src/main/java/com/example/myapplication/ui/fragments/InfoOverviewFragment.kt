@@ -10,10 +10,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
 import com.example.myapplication.callbacks.SpecificItemCallback
-import com.example.myapplication.data.default
-import com.example.myapplication.debugToaster.ToastType
+import com.example.myapplication.debugToaster.LogType
 import com.example.myapplication.models.InfoDataHolder
 import com.example.myapplication.ui.InfoListTabAdapter
+import com.example.myapplication.utils.default
 import com.example.myapplication.utils.getInfoIcon
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -30,6 +30,7 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
     private lateinit var viewPager: ViewPager2
 
     private lateinit var searchEditText: EditText
+    private lateinit var clearView: View
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         arguments?.takeIf { it.containsKey(LIST_ARG) }?.apply {
@@ -45,14 +46,18 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            //tab.text = "OBJECT ${(position + 1)}"
-            tab.text = ToastType.values()[position].name
-            tab.icon = getInfoIcon(context!!, position)
+            if (position == 0) {
+                tab.text = "all"
+            } else {
+                tab.text = LogType.values()[position - 1].name
+                tab.icon = getInfoIcon(context!!, position - 1)
+            }
         }.attach()
     }
 
     private fun initViews(view: View) {
         searchEditText = view.findViewById(R.id.search_edit_text)
+        clearView = view.findViewById(R.id.clear_image_view)
         viewPager = view.findViewById(R.id.pager)
     }
 
@@ -60,20 +65,20 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 searchContentLiveData.postValue(s.toString())
+                clearView.visibility = if (s.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
         })
+
+        clearView.setOnClickListener { searchEditText.setText("") }
     }
 
     //-------------------- SpecificItemCallback Implementation --------------------
 
-    override fun onSpecificItemPressed(item: InfoDataHolder) {
+    override fun onSpecificItemClicked(item: InfoDataHolder) {
         val fragment = InfoDetailedViewFragment(item)
         activity?.supportFragmentManager?.beginTransaction()?.apply {
             replace(R.id.contentContainer, fragment)

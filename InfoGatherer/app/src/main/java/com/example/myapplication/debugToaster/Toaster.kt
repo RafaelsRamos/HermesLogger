@@ -64,13 +64,13 @@ class Toaster private constructor(activity: Activity) {
 
     //----------------------------- Controls -----------------------------
 
-    fun success(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), ToastType.Success, extraInfo))
+    fun success(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), LogType.Success, extraInfo))
 
-    fun error(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), ToastType.Error, extraInfo))
+    fun error(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), LogType.Error, extraInfo))
 
-    fun warning(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), ToastType.Warning, extraInfo))
+    fun warning(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), LogType.Warning, extraInfo))
 
-    fun debug(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), ToastType.Debug, extraInfo))
+    fun debug(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), LogType.Debug, extraInfo))
 
     fun clearQueue() = infoQueue.clear()
 

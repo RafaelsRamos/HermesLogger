@@ -15,8 +15,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuilder {
 
-    var counter = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.test_activity)
@@ -27,7 +25,7 @@ class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuil
         Toaster.show(duration = Toast.LENGTH_SHORT)?.debug("Service successful")
 
         Handler(Looper.getMainLooper()).postDelayed({
-            generateSet()
+            generateExampleSet()
         }, 2000)
 
         addFragment(InfoOverviewFragment())
@@ -46,14 +44,14 @@ class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuil
 
     // -------------------------------------------------------------
 
-    private fun generateSet() {
-        Toaster.show()?.error("bl${counter++} bl1 bl1 bl1 bl1 bl1", "lol, this extra info....")
-        Toaster.show()?.warning("Warning${counter++} test. My example warininningg", "App extra info...")
-        Toaster.show()?.warning("Warning test.${counter++} My example warininningg", "App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...")
+    private fun generateExampleSet() {
+        Toaster.show()?.error("bl bl1 bl1 bl1 bl1 bl1", "lol, this extra info....")
+        Toaster.show()?.warning("Warning test. My example warininningg", "App extra info...")
+        Toaster.show()?.warning("Warning test. My example warininningg", "App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...App extra info...")
         Toaster.show(duration = Toast.LENGTH_SHORT)?.debug("Service successful")
 
         Handler(Looper.getMainLooper()).postDelayed({
-            generateSet()
+            generateExampleSet()
         }, 2000)
     }
 }

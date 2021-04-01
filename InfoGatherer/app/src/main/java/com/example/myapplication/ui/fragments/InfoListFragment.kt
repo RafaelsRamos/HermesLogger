@@ -9,14 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.callbacks.SpecificItemCallback
-import com.example.myapplication.debugToaster.ToastType
+import com.example.myapplication.debugToaster.LogType
 import com.example.myapplication.debugToaster.Toaster
 import com.example.myapplication.models.InfoDataHolder
 import com.example.myapplication.ui.adapters.InfoRecyclerAdapter
 
 
-class InfoListFragment(private val type: ToastType,private val specificItemCallback: SpecificItemCallback): Fragment(R.layout.screen_info_list),
-    SpecificItemCallback {
+class InfoListFragment(private val type: LogType?, private val specificItemCallback: SpecificItemCallback): Fragment(R.layout.screen_info_list) {
 
     private val logList: List<InfoDataHolder>?
         get() = Toaster.instance?.infoHolder?.getInfoByType(type)
@@ -77,9 +76,5 @@ class InfoListFragment(private val type: ToastType,private val specificItemCallb
             dataHolder.creationDate.toString().contains(filterString) || dataHolder.extraInfo?.contains(filterString) ?: false || dataHolder.msg.contains(filterString)
         }
         filteredList.let { validList -> adapter.updateList(validList) }
-    }
-
-    override fun onSpecificItemPressed(item: InfoDataHolder) {
-        TODO("Not yet implemented")
     }
 }

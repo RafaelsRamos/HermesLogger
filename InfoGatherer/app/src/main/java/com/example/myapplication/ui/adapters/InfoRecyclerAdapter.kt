@@ -28,7 +28,7 @@ class InfoRecyclerAdapter(var infoList: List<InfoDataHolder>, private var activi
         holder.title.text = item.msg
         holder.date.text = format.format(item.creationDate.time)
         holder.copy.setOnClickListener { copyToClipboard(activity, item) }
-        holder.entireView.setOnClickListener { callback.onSpecificItemPressed(item) }
+        holder.entireView.setOnClickListener { callback.onSpecificItemClicked(item) }
     }
 
     override fun getItemCount() = infoList.size
