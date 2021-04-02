@@ -6,14 +6,30 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
+        android:id="@+id/log_id_tv"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:text="W-1" />
+
+    <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/info_item_start_margin"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
-        app:layout_constraintStart_toStartOf="parent"
         android:textSize="11sp"
+        app:layout_constraintStart_toEndOf="@id/log_id_tv"
 
         app:layout_constraintTop_toTopOf="parent"
         tools:text="10:15 pm" />
@@ -22,14 +38,14 @@
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/info_item_start_margin"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/copy_image_view"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/log_id_tv"
 
         app:layout_constraintTop_toBottomOf="@+id/date"
         tools:text="My info title" />

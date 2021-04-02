@@ -6,12 +6,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
-import com.example.myapplication.models.InfoDataHolder
+import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.utils.DateFormat
 import com.example.myapplication.utils.getInfoIcon
 import java.text.SimpleDateFormat
 
-class InfoDetailedViewFragment(private val item: InfoDataHolder) : Fragment(R.layout.screen_detailed_view) {
+class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragment(R.layout.screen_detailed_view) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val format = SimpleDateFormat(DateFormat)

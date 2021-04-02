@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.R
-import com.example.myapplication.models.InfoDataHolder
+import com.example.myapplication.models.LogDataHolder
 
 private const val CopyDefaultLabel = "Clipboard info"
 
@@ -17,9 +17,9 @@ const val DateFormat = "dd/MM 'at' HH:mm:ss.SSS"
 /**
  * Copy info from [dataHolder] to the clipboard
  * @param activity      Activity reference
- * @param dataHolder    Instance of [InfoDataHolder]
+ * @param dataHolder    Instance of [LogDataHolder]
  */
-fun copyToClipboard(activity: Activity, dataHolder: InfoDataHolder) {
+fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
     val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
     val clip = ClipData.newPlainText(CopyDefaultLabel, dataHolder.extraInfo)
     clipboard?.setPrimaryClip(clip)

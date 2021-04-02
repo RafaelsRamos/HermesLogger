@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import com.example.myapplication.data.InfoHolder
-import com.example.myapplication.models.InfoDataHolder
+import com.example.myapplication.models.LogDataHolder
 import java.util.*
 
 /**
@@ -30,7 +30,7 @@ class Toaster private constructor(activity: Activity) {
 
     var copyGenericInfoBuilder : CopyToClipboardGenericInfoBuilder? = null
 
-    private var infoQueue : LinkedList<InfoDataHolder> = LinkedList()
+    private var logQueue : LinkedList<LogDataHolder> = LinkedList()
     private var isShowing = false
 
     companion object {
@@ -64,15 +64,15 @@ class Toaster private constructor(activity: Activity) {
 
     //----------------------------- Controls -----------------------------
 
-    fun success(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), LogType.Success, extraInfo))
+    fun success(msg : String, @Nullable extraInfo : String? = null) = add(LogDataHolder(msg, duration.toLong(), LogType.Success, extraInfo))
 
-    fun error(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), LogType.Error, extraInfo))
+    fun error(msg : String, @Nullable extraInfo : String? = null) = add(LogDataHolder(msg, duration.toLong(), LogType.Error, extraInfo))
 
-    fun warning(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), LogType.Warning, extraInfo))
+    fun warning(msg : String, @Nullable extraInfo : String? = null) = add(LogDataHolder(msg, duration.toLong(), LogType.Warning, extraInfo))
 
-    fun debug(msg : String, @Nullable extraInfo : String? = null) = add(InfoDataHolder(msg, duration.toLong(), LogType.Debug, extraInfo))
+    fun debug(msg : String, @Nullable extraInfo : String? = null) = add(LogDataHolder(msg, duration.toLong(), LogType.Debug, extraInfo))
 
-    fun clearQueue() = infoQueue.clear()
+    fun clearQueue() = logQueue.clear()
 
     //--------------------------- End of Controls ------------------------
 
@@ -81,9 +81,9 @@ class Toaster private constructor(activity: Activity) {
      *
      * @param dataHolder Toast information
      */
-    private fun add(dataHolder: InfoDataHolder) {
+    private fun add(dataHolder: LogDataHolder) {
         infoHolder.addInfo(dataHolder)
-        infoQueue.add(buildExtraInfo(dataHolder))
+        logQueue.add(buildExtraInfo(dataHolder))
         if (!isShowing) {
             showFirst()
         }
@@ -93,10 +93,10 @@ class Toaster private constructor(activity: Activity) {
      * Show toast on TOP of the queue
      */
     private fun showFirst() {
-        if (!infoQueue.isEmpty()) {
+        if (!logQueue.isEmpty()) {
             isShowing = true
-            val dataHolder = infoQueue.first
-            infoQueue.removeFirst()
+            val dataHolder = logQueue.first
+            logQueue.removeFirst()
 
             show(dataHolder)
 
@@ -106,7 +106,7 @@ class Toaster private constructor(activity: Activity) {
         }
     }
 
-    private fun show(dataHolder: InfoDataHolder) {
+    private fun show(dataHolder: LogDataHolder) {
         activity?.let { DebugToast.show(it, dataHolder) }
     }
 
@@ -116,7 +116,7 @@ class Toaster private constructor(activity: Activity) {
      * @param dataHolder    Data Holder that may contain extra info
      * @return  ToastDataHolder with either no extra info, or with extra info + generic info
      */
-    private fun buildExtraInfo(dataHolder: InfoDataHolder) : InfoDataHolder {
+    private fun buildExtraInfo(dataHolder: LogDataHolder) : LogDataHolder {
         dataHolder.extraInfo?.let {
             dataHolder.extraInfo = "General Information: ${copyGenericInfoBuilder?.buildGenericInfo()} Specific Information: $it"
         }

@@ -1,9 +1,6 @@
 package com.example.myapplication.debugToaster
 
 import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
@@ -17,7 +14,7 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import com.example.myapplication.R
-import com.example.myapplication.models.InfoDataHolder
+import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.utils.copyToClipboard
 
 /**
@@ -33,14 +30,14 @@ private const val HorizontalMargin = 15
 
 private const val DefaultResource = R.layout.toast_layout
 
-class DebugToast private constructor(private val activity: Activity, private val dataHolder: InfoDataHolder) : FrameLayout(activity), View.OnClickListener {
+class DebugToast private constructor(private val activity: Activity, private val dataHolder: LogDataHolder) : FrameLayout(activity), View.OnClickListener {
 
     var mGravity = Gravity.BOTTOM
 
     companion object {
 
         @JvmStatic
-        fun show(@NonNull activity: Activity, dataHolder: InfoDataHolder, gravity: Int = Gravity.BOTTOM) : DebugToast {
+        fun show(@NonNull activity: Activity, dataHolder: LogDataHolder, gravity: Int = Gravity.BOTTOM) : DebugToast {
             val toast = DebugToast(activity, dataHolder)
             toast.mGravity = gravity
             return toast

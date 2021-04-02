@@ -2,7 +2,7 @@ package com.example.myapplication.data
 
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.debugToaster.LogType
-import com.example.myapplication.models.InfoDataHolder
+import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.utils.default
 
 /**
@@ -13,23 +13,50 @@ class InfoHolder {
     /**
      * LiveData instance that contains all the logs added during a session
      */
-    val infoLiveData = MutableLiveData<MutableList<InfoDataHolder>>().default(mutableListOf())
-
-    val infoList : MutableList<InfoDataHolder> = mutableListOf()
+    val infoLiveData = MutableLiveData<MutableList<LogDataHolder>>().default(mutableListOf())
 
     /**
-     * Get the list of logs (List<[InfoDataHolder]>) for a specific [LogType]
+     * List of all logs
+     */
+    val logList : MutableList<LogDataHolder> = mutableListOf()
+
+    private var nrOfDebugs = 0
+    private var nrOfSuccesses = 0
+    private var nrOfWarnings = 0
+    private var nrOfErrors = 0
+
+    //------------------------ Controls ------------------------
+
+    /**
+     * Get the list of logs (List<[LogDataHolder]>) for a specific [LogType]
      * @param type  Log type
      */
-    fun getInfoByType(type: LogType) = infoList.filter { it.type == type }
+    fun getInfoByType(type: LogType) = logList.filter { it.type == type }
+
+    fun getNrOfLogsByType(type: LogType)= when(type) {
+            LogType.Debug -> nrOfDebugs
+            LogType.Success -> nrOfSuccesses
+            LogType.Warning -> nrOfWarnings
+            LogType.Error -> nrOfErrors
+        }
 
     /**
      * Add log into the list
-     * @param infoHolder log
+     * @param log log
      */
-    fun addInfo(infoHolder: InfoDataHolder) {
-        infoList.add(infoHolder)
-        infoLiveData.postValue(infoList)
+    fun addInfo(log: LogDataHolder) {
+        log.id = getValidID(log.type)
+        logList.add(log)
+        infoLiveData.postValue(logList)
+    }
+
+    //------------------------ Helper methods ------------------------
+
+    private fun getValidID(type: LogType) = when (type) {
+        LogType.Debug -> "D-${++nrOfDebugs}"
+        LogType.Success -> "S-${++nrOfSuccesses}"
+        LogType.Warning -> "W-${++nrOfWarnings}"
+        LogType.Error -> "E-${++nrOfErrors}"
     }
 
 }

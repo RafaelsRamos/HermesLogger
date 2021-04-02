@@ -11,7 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
 import com.example.myapplication.callbacks.SpecificItemCallback
 import com.example.myapplication.debugToaster.LogType
-import com.example.myapplication.models.InfoDataHolder
+import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.ui.InfoListTabAdapter
 import com.example.myapplication.utils.default
 import com.google.android.material.tabs.TabLayout
@@ -72,7 +72,7 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
 
     //-------------------- SpecificItemCallback Implementation --------------------
 
-    override fun onSpecificItemClicked(item: InfoDataHolder) {
+    override fun onSpecificItemClicked(item: LogDataHolder) {
         val fragment = InfoDetailedViewFragment(item)
         activity?.supportFragmentManager?.beginTransaction()?.apply {
             replace(R.id.contentContainer, fragment)

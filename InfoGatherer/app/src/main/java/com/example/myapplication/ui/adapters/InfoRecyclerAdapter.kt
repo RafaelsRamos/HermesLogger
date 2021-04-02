@@ -8,12 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.callbacks.SpecificItemCallback
-import com.example.myapplication.models.InfoDataHolder
+import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.utils.DateFormat
 import com.example.myapplication.utils.copyToClipboard
 import java.text.SimpleDateFormat
 
-class InfoRecyclerAdapter(var infoList: List<InfoDataHolder>, private var activity: Activity, private val callback: SpecificItemCallback): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
+class InfoRecyclerAdapter(var logList: List<LogDataHolder>, private var activity: Activity, private val callback: SpecificItemCallback): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
         val layoutInflater = LayoutInflater.from(activity.applicationContext)
@@ -22,31 +22,33 @@ class InfoRecyclerAdapter(var infoList: List<InfoDataHolder>, private var activi
     }
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
-        val item = infoList[position]
+        val item = logList[position]
         val format = SimpleDateFormat(DateFormat)
 
         holder.title.text = item.msg
         holder.date.text = format.format(item.creationDate.time)
+        holder.id.text = item.id
         holder.copy.setOnClickListener { copyToClipboard(activity, item) }
         holder.entireView.setOnClickListener { callback.onSpecificItemClicked(item) }
     }
 
-    override fun getItemCount() = infoList.size
+    override fun getItemCount() = logList.size
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val entireView = itemView
         val title: TextView = itemView.findViewById(R.id.title)
         val date: TextView = itemView.findViewById(R.id.date)
         val copy: View = itemView.findViewById(R.id.copy_image_view)
+        val id: TextView = itemView.findViewById(R.id.log_id_tv)
     }
 
-    fun updateList(infoList: List<InfoDataHolder>) {
-        this.infoList = infoList
+    fun updateList(logList: List<LogDataHolder>) {
+        this.logList = logList
         notifyDataSetChanged()
     }
 
-    fun updateListOnTop(infoList: List<InfoDataHolder>, nrOfItemsAdded: Int) {
-        this.infoList = infoList
+    fun updateListOnTop(logList: List<LogDataHolder>, nrOfItemsAdded: Int) {
+        this.logList = logList
         notifyItemRangeInserted(0, nrOfItemsAdded)
     }
 }

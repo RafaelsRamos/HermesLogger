@@ -11,19 +11,16 @@ import com.example.myapplication.R
 import com.example.myapplication.callbacks.SpecificItemCallback
 import com.example.myapplication.debugToaster.LogType
 import com.example.myapplication.debugToaster.Toaster
-import com.example.myapplication.models.InfoDataHolder
+import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.ui.adapters.InfoRecyclerAdapter
 
 
-class InfoListFragment(
-    private val type: LogType?,
-    private val specificItemCallback: SpecificItemCallback
-): Fragment(R.layout.screen_info_list) {
+class InfoListFragment(private val type: LogType?, private val specificItemCallback: SpecificItemCallback): Fragment(R.layout.screen_info_list) {
 
-    private val logList: List<InfoDataHolder>?
-        get() = type?.let { getInfoHolder()?.getInfoByType(type)?.reversed() } ?: getInfoHolder()?.infoList?.reversed()
+    private val logList: List<LogDataHolder>?
+        get() = type?.let { getInfoHolder()?.getInfoByType(type)?.reversed() } ?: getInfoHolder()?.logList?.reversed()
 
-    var storedLogList: List<InfoDataHolder> = mutableListOf()
+    var storedLogList: List<LogDataHolder> = mutableListOf()
 
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var recyclerView: RecyclerView
@@ -80,11 +77,12 @@ class InfoListFragment(
 
     }
 
-    private fun getFilteredLogs(infoList: List<InfoDataHolder>): List<InfoDataHolder> {
-        return infoList.filter { dataHolder ->
+    private fun getFilteredLogs(logList: List<LogDataHolder>): List<LogDataHolder> {
+        return logList.filter { dataHolder ->
             dataHolder.creationDate.toString().contains(filterString) ||
             dataHolder.extraInfo?.contains(filterString) ?: false ||
-            dataHolder.msg.contains(filterString)
+            dataHolder.msg.contains(filterString) ||
+            dataHolder.id.contains(filterString)
         }
     }
 
