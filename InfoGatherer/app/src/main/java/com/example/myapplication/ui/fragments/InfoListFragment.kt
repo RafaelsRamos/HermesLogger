@@ -15,10 +15,13 @@ import com.example.myapplication.models.InfoDataHolder
 import com.example.myapplication.ui.adapters.InfoRecyclerAdapter
 
 
-class InfoListFragment(private val type: LogType?, private val specificItemCallback: SpecificItemCallback): Fragment(R.layout.screen_info_list) {
+class InfoListFragment(
+    private val type: LogType?,
+    private val specificItemCallback: SpecificItemCallback
+): Fragment(R.layout.screen_info_list) {
 
     private val logList: List<InfoDataHolder>?
-        get() = Toaster.instance?.infoHolder?.getInfoByType(type)
+        get() = type?.let { getInfoHolder()?.getInfoByType(type)?.reversed() } ?: getInfoHolder()?.infoList?.reversed()
 
     var storedLogList: List<InfoDataHolder> = mutableListOf()
 
@@ -51,9 +54,18 @@ class InfoListFragment(private val type: LogType?, private val specificItemCallb
     private fun setObservers() {
 
         Toaster.instance?.infoHolder?.infoLiveData?.observe(this, Observer {
-            if (nrOfLogs != logList?.size) {
-                //adapter.updateList(logList!!)
-                getFilteredLogs(logList!!)
+            logList?.let {
+                if (nrOfLogs != it.size) {
+                    storedLogList = getFilteredLogs(it)
+
+                    if (!recyclerView.canScrollVertically(-1)) {
+                        adapter.updateList(storedLogList)
+                    } else {
+                        adapter.updateListOnTop(storedLogList, it.size - nrOfLogs)
+                    }
+
+                    nrOfLogs = it.size
+                }
             }
         })
 
@@ -61,20 +73,23 @@ class InfoListFragment(private val type: LogType?, private val specificItemCallb
             val canUsePreviousFilter = filterString.contains(it)
             filterString = it
 
-            getFilteredLogs(if (canUsePreviousFilter) storedLogList else logList!!)
+            storedLogList = getFilteredLogs(if (canUsePreviousFilter) storedLogList else logList!!)
 
-            val filteredList = logList?.filter { dataHolder ->
-                dataHolder.creationDate.toString().contains(it) || dataHolder.extraInfo?.contains(it) ?: false || dataHolder.msg.contains(it)
-            }
-            filteredList?.let { validList -> adapter.updateList(validList) }
+            storedLogList.let { validList -> adapter.updateList(validList) }
         })
 
     }
 
-    private fun getFilteredLogs(infoList: List<InfoDataHolder>) {
-        val filteredList = infoList.filter { dataHolder ->
-            dataHolder.creationDate.toString().contains(filterString) || dataHolder.extraInfo?.contains(filterString) ?: false || dataHolder.msg.contains(filterString)
+    private fun getFilteredLogs(infoList: List<InfoDataHolder>): List<InfoDataHolder> {
+        return infoList.filter { dataHolder ->
+            dataHolder.creationDate.toString().contains(filterString) ||
+            dataHolder.extraInfo?.contains(filterString) ?: false ||
+            dataHolder.msg.contains(filterString)
         }
-        filteredList.let { validList -> adapter.updateList(validList) }
     }
+
+    // ------------------ Helper methods ------------------
+
+    @JvmName("getLogHolder")
+    fun getInfoHolder() = Toaster.instance?.infoHolder
 }

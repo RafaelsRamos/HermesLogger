@@ -15,13 +15,13 @@ class InfoHolder {
      */
     val infoLiveData = MutableLiveData<MutableList<InfoDataHolder>>().default(mutableListOf())
 
-    private val infoList : MutableList<InfoDataHolder> = mutableListOf()
+    val infoList : MutableList<InfoDataHolder> = mutableListOf()
 
     /**
      * Get the list of logs (List<[InfoDataHolder]>) for a specific [LogType]
      * @param type  Log type
      */
-    fun getInfoByType(type: LogType?) = type?.let { t -> infoList.filter { t == type } } ?: infoList
+    fun getInfoByType(type: LogType) = infoList.filter { it.type == type }
 
     /**
      * Add log into the list

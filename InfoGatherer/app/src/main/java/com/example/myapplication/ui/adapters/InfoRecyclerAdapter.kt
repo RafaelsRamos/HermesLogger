@@ -44,4 +44,9 @@ class InfoRecyclerAdapter(var infoList: List<InfoDataHolder>, private var activi
         this.infoList = infoList
         notifyDataSetChanged()
     }
+
+    fun updateListOnTop(infoList: List<InfoDataHolder>, nrOfItemsAdded: Int) {
+        this.infoList = infoList
+        notifyItemRangeInserted(0, nrOfItemsAdded)
+    }
 }

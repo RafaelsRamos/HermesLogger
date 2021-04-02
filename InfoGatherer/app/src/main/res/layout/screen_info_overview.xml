@@ -4,16 +4,28 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <include
+        android:id="@+id/tab_section_top"
+        layout="@layout/section_tab_top"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/info_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/tab_section_top"
+        android:layout_marginTop="45dp">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             app:tabIndicatorColor="@color/tabsIndicatorColor"
             app:tabIndicatorHeight="4dp"
             app:tabIndicatorFullWidth="false"
@@ -31,11 +43,12 @@
             <EditText
                 android:id="@+id/search_edit_text"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:background="@null"
                 android:maxLines="1"
+                android:inputType="text"
                 android:ellipsize="end"
                 android:textCursorDrawable="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"

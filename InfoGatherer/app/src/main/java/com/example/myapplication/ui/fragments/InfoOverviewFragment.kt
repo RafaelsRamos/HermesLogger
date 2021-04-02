@@ -14,7 +14,6 @@ import com.example.myapplication.debugToaster.LogType
 import com.example.myapplication.models.InfoDataHolder
 import com.example.myapplication.ui.InfoListTabAdapter
 import com.example.myapplication.utils.default
-import com.example.myapplication.utils.getInfoIcon
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -46,12 +45,7 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            if (position == 0) {
-                tab.text = "all"
-            } else {
-                tab.text = LogType.values()[position - 1].name
-                tab.icon = getInfoIcon(context!!, position - 1)
-            }
+            tab.text = if (position > 0) LogType.values()[position - 1].name else ""
         }.attach()
     }
 
