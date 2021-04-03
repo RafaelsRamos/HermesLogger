@@ -51,7 +51,7 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
             }
         })
 
-        tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
+        tabLayout = view.findViewById(R.id.tab_layout)
         
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.setCustomView(R.layout.tab_custom_view)

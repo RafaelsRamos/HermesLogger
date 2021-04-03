@@ -3,12 +3,11 @@ package com.example.myapplication
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.debugToaster.Toaster
-import com.example.myapplication.ui.InfoListTabAdapter
 import com.example.myapplication.ui.fragments.InfoOverviewFragment
 import java.util.*
 

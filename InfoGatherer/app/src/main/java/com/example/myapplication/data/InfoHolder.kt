@@ -52,6 +52,11 @@ class InfoHolder {
 
     //------------------------ Helper methods ------------------------
 
+    /**
+     * Get a valid ID and increase the counter of the number of logs of type [LogType]
+     * @param type Log type
+     * @return Valid ID
+     */
     private fun getValidID(type: LogType) = when (type) {
         LogType.Debug -> "D-${++nrOfDebugs}"
         LogType.Success -> "S-${++nrOfSuccesses}"
