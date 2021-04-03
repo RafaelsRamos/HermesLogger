@@ -17,7 +17,7 @@
         android:backgroundTint="@color/black"/>
 
     <ImageView
-        android:id="@+id/type_icon"
+        android:id="@+id/typeIcon"
         android:layout_width="@dimen/info_detailed_item_dimens"
         android:layout_height="@dimen/info_detailed_item_dimens"
         android:layout_marginTop="8dp"
@@ -28,7 +28,7 @@
         tools:src="@drawable/ic_success" />
 
     <TextView
-        android:id="@+id/type_name"
+        android:id="@+id/typeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -38,7 +38,7 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/type_icon"
+        app:layout_constraintTop_toBottomOf="@id/typeIcon"
         tools:text="Success" />
 
     <TextView
@@ -48,7 +48,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/type_name"
+        app:layout_constraintTop_toBottomOf="@+id/typeName"
         android:textSize="13sp"
 
         tools:text="25/10/2000" />

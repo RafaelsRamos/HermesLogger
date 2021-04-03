@@ -19,8 +19,8 @@ class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragment(R.lay
         view.findViewById<TextView>(R.id.date).text = format.format(item.creationDate.time)
         view.findViewById<TextView>(R.id.message).text = item.msg
         view.findViewById<TextView>(R.id.extraInfo).text = item.extraInfo
-        view.findViewById<ImageView>(R.id.type_icon).setImageDrawable(getInfoIcon(context!!, item.type.ordinal))
-        view.findViewById<TextView>(R.id.type_name).text = item.type.name
+        view.findViewById<ImageView>(R.id.typeIcon).setImageDrawable(getInfoIcon(context!!, item.type.ordinal))
+        view.findViewById<TextView>(R.id.typeName).text = "${item.type.name} - ${item.id.replace("[^0-9]".toRegex(),"")}"
         view.findViewById<View>(R.id.back).setOnClickListener { activity?.onBackPressed() }
     }
 }

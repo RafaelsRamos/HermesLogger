@@ -8,9 +8,9 @@
     <TextView
         style="@style/OverviewItemFont"
         android:id="@+id/log_id_tv"
-        android:layout_width="30dp"
+        android:layout_width="45dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="2dp"
         android:gravity="center"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
