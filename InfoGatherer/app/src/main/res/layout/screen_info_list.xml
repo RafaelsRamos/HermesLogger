@@ -10,6 +10,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="3dp"
-        android:scrollbars="none"/>
+        android:scrollbars="none"
+        android:overScrollMode="never"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,38 +13,43 @@
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/black"/>
 
     <ImageView
         android:id="@+id/type_icon"
         android:layout_width="@dimen/info_detailed_item_dimens"
         android:layout_height="@dimen/info_detailed_item_dimens"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        tools:src="@drawable/ic_success"/>
+        tools:src="@drawable/ic_success" />
 
     <TextView
         android:id="@+id/type_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/type_icon"
-
-        tools:text="Success"/>
+        tools:text="Success" />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/type_name"
+        android:textSize="13sp"
 
         tools:text="25/10/2000" />
 
@@ -52,6 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +69,7 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/DetailsMessageFont"
                 android:id="@+id/message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,25 +78,24 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/date"
-                android:textSize="15sp"
 
                 tools:text="message" />
 
             <TextView
+                style="@style/DetailsExtraFont"
                 android:id="@+id/extraInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/date"
-                android:textSize="13sp"
 
-                tools:text="message" />
+                tools:text="extra info" />
 
         </LinearLayout>
-
 
     </androidx.core.widget.NestedScrollView>
 

@@ -18,7 +18,8 @@ import com.example.myapplication.ui.adapters.InfoRecyclerAdapter
 class InfoListFragment(private val type: LogType?, private val specificItemCallback: SpecificItemCallback): Fragment(R.layout.screen_info_list) {
 
     private val logList: List<LogDataHolder>?
-        get() = type?.let { getInfoHolder()?.getInfoByType(type)?.reversed() } ?: getInfoHolder()?.logList?.reversed()
+        get() = type?.let { Toaster.instance?.infoHolder?.getLogListByType(type)?.reversed() } ?:
+                            Toaster.instance?.infoHolder?.logList?.reversed()
 
     var storedLogList: List<LogDataHolder> = mutableListOf()
 
@@ -85,9 +86,4 @@ class InfoListFragment(private val type: LogType?, private val specificItemCallb
             dataHolder.id.contains(filterString)
         }
     }
-
-    // ------------------ Helper methods ------------------
-
-    @JvmName("getLogHolder")
-    fun getInfoHolder() = Toaster.instance?.infoHolder
 }

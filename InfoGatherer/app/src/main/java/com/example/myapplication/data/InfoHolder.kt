@@ -31,7 +31,7 @@ class InfoHolder {
      * Get the list of logs (List<[LogDataHolder]>) for a specific [LogType]
      * @param type  Log type
      */
-    fun getInfoByType(type: LogType) = logList.filter { it.type == type }
+    fun getLogListByType(type: LogType) = logList.filter { it.type == type }
 
     fun getNrOfLogsByType(type: LogType)= when(type) {
             LogType.Debug -> nrOfDebugs

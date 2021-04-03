@@ -5,19 +5,21 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
 import com.example.myapplication.callbacks.SpecificItemCallback
 import com.example.myapplication.debugToaster.LogType
+import com.example.myapplication.debugToaster.Toaster
+import com.example.myapplication.managers.TabNotificationsHandler
 import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.ui.InfoListTabAdapter
 import com.example.myapplication.utils.default
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-
-private const val LIST_ARG = "info list"
 
 class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificItemCallback {
 
@@ -27,26 +29,40 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
 
     private lateinit var adapter: InfoListTabAdapter
     private lateinit var viewPager: ViewPager2
+    private lateinit var tabLayout: TabLayout
 
     private lateinit var searchEditText: EditText
     private lateinit var clearView: View
 
+    private var tabNotificationsHandler: TabNotificationsHandler? = null
+
+    private var selectedTabPosition = 0
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        arguments?.takeIf { it.containsKey(LIST_ARG) }?.apply {
-            //val textView: TextView = view.findViewById(android.R.id.text1)
-            //textView.text = getInt(ARG_OBJECT).toString()
-        }
 
         initViews(view)
         setSearchLogic()
 
         adapter = InfoListTabAdapter(this, this)
         viewPager.adapter = adapter
+        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                selectedTabPosition = position
+            }
+        })
 
-        val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
+        tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
+        
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = if (position > 0) LogType.values()[position - 1].name else ""
+            tab.setCustomView(R.layout.tab_custom_view)
+            tab.customView?.let {
+                val tabName = it.findViewById(R.id.name) as TextView
+                tabName.text = if (position > 0) LogType.values()[position - 1].name else "ALL"
+            }
         }.attach()
+
+        tabNotificationsHandler = TabNotificationsHandler(tabLayout)
+        setObservers()
     }
 
     private fun initViews(view: View) {
@@ -79,5 +95,13 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
             addToBackStack(null)
             commit()
         }
+    }
+
+    //----------------------------- Observers -------------------------
+
+    private fun setObservers() {
+        Toaster.instance?.infoHolder?.infoLiveData?.observe(this, Observer {
+            tabNotificationsHandler?.updateBadges()
+        })
     }
 }

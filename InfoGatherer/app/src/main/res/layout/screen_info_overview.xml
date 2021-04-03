@@ -4,71 +4,29 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include
-        android:id="@+id/tab_section_top"
-        layout="@layout/section_tab_top"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:id="@+id/info_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/tab_section_top"
-        android:layout_marginTop="45dp">
+        android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/tab_height"
             app:tabIndicatorColor="@color/tabsIndicatorColor"
             app:tabIndicatorHeight="4dp"
             app:tabIndicatorFullWidth="false"
             app:tabTextAppearance="@style/MineCustomTabText"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <include
+            layout="@layout/search_bar"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/search_background">
-
-            <EditText
-                android:id="@+id/search_edit_text"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:background="@null"
-                android:maxLines="1"
-                android:inputType="text"
-                android:ellipsize="end"
-                android:textCursorDrawable="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/clear_image_view"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/clear_image_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_clear"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:alpha="0.8"
-                android:visibility="invisible"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginBottom="5dp"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager"

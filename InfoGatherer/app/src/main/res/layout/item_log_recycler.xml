@@ -6,18 +6,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
+        style="@style/OverviewItemFont"
         android:id="@+id/log_id_tv"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:gravity="center"
         android:maxLines="1"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textStyle="bold"
 
         tools:text="W-1" />
 
@@ -28,6 +27,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
+        android:fontFamily="@font/roboto_regular"
         android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@id/log_id_tv"
 
@@ -35,6 +35,7 @@
         tools:text="10:15 pm" />
 
     <TextView
+        style="@style/OverviewItemFont"
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -42,7 +43,6 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
-        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/copy_image_view"
         app:layout_constraintStart_toEndOf="@id/log_id_tv"
