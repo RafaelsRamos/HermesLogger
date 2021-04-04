@@ -15,4 +15,6 @@
 
     <dimen name="close_overview_icon_size">25dp</dimen>
 
+    <dimen name="open_icon_size">25dp</dimen>
+
 </resources>

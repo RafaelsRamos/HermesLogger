@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/insideLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="25dp"
@@ -51,6 +52,44 @@
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/infoOverviewTab"
+        android:layout_width="@dimen/open_icon_size"
+        android:layout_height="@dimen/open_icon_size"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/half_circle_unpressed">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginVertical="5dp"
+            android:layout_marginEnd="3dp"
+            android:src="@drawable/ic_open_in_new" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/infoSettingsTab"
+        android:layout_width="@dimen/open_icon_size"
+        android:layout_height="@dimen/open_icon_size"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/infoOverviewTab"
+        android:background="@drawable/half_circle_unpressed">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginVertical="5dp"
+            android:layout_marginEnd="3dp"
+            android:src="@drawable/ic_settings" />
+
+    </RelativeLayout>
 
 
 
