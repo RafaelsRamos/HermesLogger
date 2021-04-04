@@ -3,12 +3,10 @@ package com.example.myapplication
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.myapplication.debugToaster.Toaster
-import com.example.myapplication.ui.fragments.InfoOverviewFragment
 import java.util.*
 
 
@@ -26,15 +24,6 @@ class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuil
         Handler(Looper.getMainLooper()).postDelayed({
             generateExampleSet()
         }, 2000)
-
-        addFragment(InfoOverviewFragment())
-    }
-
-    private fun addFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.contentContainer, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 
     override fun buildGenericInfo(): String {
