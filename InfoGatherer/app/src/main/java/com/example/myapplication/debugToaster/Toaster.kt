@@ -3,78 +3,62 @@ package com.example.myapplication.debugToaster
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import com.example.myapplication.data.InfoHolder
 import com.example.myapplication.models.LogDataHolder
+import java.lang.ref.WeakReference
 import java.util.*
+
+private const val TAG = "Toaster"
 
 /**
  * Default Long toast duration
  */
-private const val LongToastDuration = 3500
-
+const val LongToastDuration = 3500
 /**
  * Default Short toast duration
  */
-private const val ShortToastDuration = 2000
+const val ShortToastDuration = 2000
 
-class Toaster private constructor(activity: Activity) {
+class Toaster {
+
+    constructor(activity: Activity) {
+        actReference = WeakReference(activity)
+    }
+
+    constructor()
 
     val infoHolder = InfoHolder()
 
-    var activity : Activity? = activity
-
-    var duration = Toast.LENGTH_LONG
+    lateinit var actReference: WeakReference<Activity>
 
     var copyGenericInfoBuilder : CopyToClipboardGenericInfoBuilder? = null
 
+    // List of logs that will be displayed as toasts
     private var logQueue : LinkedList<LogDataHolder> = LinkedList()
     private var isShowing = false
+
+    private val activity get() = if (this::actReference.isInitialized) actReference.get() else null
+
+    //----------------------------- Controls -----------------------------
 
     companion object {
 
         var instance : Toaster? = null
 
-        @JvmStatic
-        fun show(@NonNull activity : Activity, @Nullable copyGenericInfoBuilder : CopyToClipboardGenericInfoBuilder? = null, duration : Int = 1) : Toaster {
-            if (instance != null) {
-                instance?.activity = activity
-            } else {
-                instance = Toaster(activity)
-            }
-            return show(copyGenericInfoBuilder, duration)!!
-        }
+        fun success() = Builder().apply { type = LogType.Success }
 
-        @JvmStatic
-        fun show(@Nullable copyGenericInfoBuilder : CopyToClipboardGenericInfoBuilder? = null, duration : Int = 1) : Toaster? {
-            instance?.duration = when (duration) {
-                Toast.LENGTH_LONG -> LongToastDuration
-                Toast.LENGTH_SHORT -> ShortToastDuration
-                else -> duration
-            }
+        fun error() = Builder().apply { type = LogType.Error }
 
-            copyGenericInfoBuilder?.let {
-                instance?.copyGenericInfoBuilder = it
-            }
-            return instance
-        }
+        fun warning() = Builder().apply { type = LogType.Warning }
+
+        fun debug() = Builder().apply { type = LogType.Debug }
     }
-
-    //----------------------------- Controls -----------------------------
-
-    fun success(msg : String, @Nullable extraInfo : String? = null) = add(LogDataHolder(msg, duration.toLong(), LogType.Success, extraInfo))
-
-    fun error(msg : String, @Nullable extraInfo : String? = null) = add(LogDataHolder(msg, duration.toLong(), LogType.Error, extraInfo))
-
-    fun warning(msg : String, @Nullable extraInfo : String? = null) = add(LogDataHolder(msg, duration.toLong(), LogType.Warning, extraInfo))
-
-    fun debug(msg : String, @Nullable extraInfo : String? = null) = add(LogDataHolder(msg, duration.toLong(), LogType.Debug, extraInfo))
 
     fun clearQueue() = logQueue.clear()
 
-    //--------------------------- End of Controls ------------------------
+    //--------------------------- Helper methods ------------------------
 
     /**
      * Add Toast information to the queue
@@ -82,33 +66,33 @@ class Toaster private constructor(activity: Activity) {
      * @param dataHolder Toast information
      */
     private fun add(dataHolder: LogDataHolder) {
+        // Add log to the list of logs
         infoHolder.addInfo(dataHolder)
-        logQueue.add(buildExtraInfo(dataHolder))
-        if (!isShowing) {
-            showFirst()
-        }
+
+        // If we have a valid instance of the activity, show the toast
+        activity?.run {
+            logQueue.add(buildExtraInfo(dataHolder))
+            if (!isShowing) {
+                showFirst()
+            }
+        } ?: onNoActivityReference()
     }
 
-    /**
-     * Show toast on TOP of the queue
-     */
     private fun showFirst() {
         if (!logQueue.isEmpty()) {
             isShowing = true
             val dataHolder = logQueue.first
             logQueue.removeFirst()
 
-            show(dataHolder)
+            showToast(dataHolder)
 
-            Handler(Looper.getMainLooper()).postDelayed({ showFirst() }, 3000)
+            Handler(Looper.getMainLooper()).postDelayed({ showFirst() }, dataHolder.duration)
         } else {
             isShowing = false
         }
     }
 
-    private fun show(dataHolder: LogDataHolder) {
-        activity?.let { DebugToast.show(it, dataHolder) }
-    }
+    private fun showToast(dataHolder: LogDataHolder) = activity?.run { DebugToast.show(this, dataHolder) }
 
     /**
      * Build extra info. Assess if there is extra info to be copied. If so, append GenericInfo...
@@ -117,10 +101,14 @@ class Toaster private constructor(activity: Activity) {
      * @return  ToastDataHolder with either no extra info, or with extra info + generic info
      */
     private fun buildExtraInfo(dataHolder: LogDataHolder) : LogDataHolder {
-        dataHolder.extraInfo?.let {
-            dataHolder.extraInfo = "General Information: ${copyGenericInfoBuilder?.buildGenericInfo()} Specific Information: $it"
+        return dataHolder.apply {
+            extraInfo?.let { content -> extraInfo = "General Information: ${copyGenericInfoBuilder?.buildGenericInfo()} Specific Information: $content" }
         }
-        return dataHolder
+    }
+
+    private fun onNoActivityReference() {
+        clearQueue()
+        Log.w(TAG, "There is no valid instance of an activity. No toast will be shown.")
     }
 
     /**
@@ -128,5 +116,26 @@ class Toaster private constructor(activity: Activity) {
      * @constructor Create empty Copy to clipboard generic info builder
      */
     interface CopyToClipboardGenericInfoBuilder { fun buildGenericInfo() : String }
+
+    // --------------------- Builder ---------------------
+
+    class Builder internal constructor(
+        internal var type: LogType = LogType.Debug,
+        private var duration: Int = ShortToastDuration,
+        private var message: String = "",
+        private var extraInfo: String? = null) {
+
+        fun setDuration(duration: Int) = apply { this@Builder.duration = duration }
+
+        fun withMessage(message: String) = apply { this@Builder.message = message }
+
+        fun show(activity: Activity? = null, genericInfoBuilder: CopyToClipboardGenericInfoBuilder? = null) {
+            instance = instance ?: activity?.run { Toaster(activity) } ?: Toaster()
+            instance!!.apply {
+                add(LogDataHolder(message, duration.toLong(), type, extraInfo))
+                copyGenericInfoBuilder = genericInfoBuilder
+            }
+        }
+    }
 
 }
