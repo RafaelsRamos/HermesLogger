@@ -17,63 +17,58 @@ import com.example.myapplication.ui.adapters.InfoRecyclerAdapter
 
 class InfoListFragment(private val type: LogType?, private val specificItemCallback: SpecificItemCallback): Fragment(R.layout.screen_info_list) {
 
-    private val logList: List<LogDataHolder>?
-        get() = type?.let { Toaster.instance?.infoHolder?.getLogListByType(type)?.reversed() } ?:
-                            Toaster.instance?.infoHolder?.logList?.reversed()
+    private val infoHolder get() = Toaster.instance.infoHolder
+
+    private val logList: List<LogDataHolder>
+        get() = type?.let { infoHolder.getLogListByType(type).reversed() } ?: infoHolder.logList.reversed()
 
     var storedLogList: List<LogDataHolder> = mutableListOf()
 
-    private lateinit var layoutManager: RecyclerView.LayoutManager
+    private lateinit var mAdapter: InfoRecyclerAdapter
+    private lateinit var mLayoutManager: RecyclerView.LayoutManager
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: InfoRecyclerAdapter
 
     private var filterString = ""
     private var nrOfLogs = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        if (logList != null && activity != null) {
+        activity?.let {
+            mLayoutManager = LinearLayoutManager(it)
+            mAdapter = InfoRecyclerAdapter(logList, it, specificItemCallback)
+            val dividerDecor = DividerItemDecoration(it.applicationContext, (mLayoutManager as LinearLayoutManager).orientation)
+
             recyclerView = view.findViewById(R.id.recycler)
-            layoutManager = LinearLayoutManager(activity)
-            recyclerView.layoutManager = layoutManager
-            val mDividerItemDecoration = DividerItemDecoration(
-                recyclerView.context,
-                (layoutManager as LinearLayoutManager).orientation
-            )
-            recyclerView.addItemDecoration(mDividerItemDecoration)
-
-            adapter = InfoRecyclerAdapter(logList!!, activity!!, specificItemCallback)
-            recyclerView.adapter= adapter
+            with (recyclerView) {
+                layoutManager = mLayoutManager
+                adapter = mAdapter
+                addItemDecoration(dividerDecor)
+            }
         }
-
         setObservers()
     }
 
     private fun setObservers() {
 
-        Toaster.instance?.infoHolder?.infoLiveData?.observe(this, Observer {
-            logList?.let {
-                if (nrOfLogs != it.size) {
-                    storedLogList = getFilteredLogs(it)
+        infoHolder.infoLiveData.observe(this, Observer {
+            if (nrOfLogs != logList.size) {
+                storedLogList = getFilteredLogs(logList)
 
-                    if (!recyclerView.canScrollVertically(-1)) {
-                        adapter.updateList(storedLogList)
-                    } else {
-                        adapter.updateListOnTop(storedLogList, it.size - nrOfLogs)
-                    }
-
-                    nrOfLogs = it.size
+                if (!recyclerView.canScrollVertically(-1)) {
+                    mAdapter.updateList(storedLogList)
+                } else {
+                    mAdapter.updateListOnTop(storedLogList, logList.size - nrOfLogs)
                 }
+
+                nrOfLogs = logList.size
             }
         })
 
         InfoOverviewFragment.searchContentLiveData.observe(this, Observer {
             val canUsePreviousFilter = filterString.contains(it)
             filterString = it
-
-            storedLogList = getFilteredLogs(if (canUsePreviousFilter) storedLogList else logList!!)
-
-            storedLogList.let { validList -> adapter.updateList(validList) }
+            storedLogList = getFilteredLogs(if (canUsePreviousFilter) storedLogList else logList)
+            mAdapter.updateList(storedLogList)
         })
 
     }

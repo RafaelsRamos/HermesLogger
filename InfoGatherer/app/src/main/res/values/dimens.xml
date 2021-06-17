@@ -3,7 +3,7 @@
     <dimen name="recycler_item_height">50dp</dimen>
 
     <dimen name="info_item_start_margin">16dp</dimen>
-    <dimen name="info_item_icon_dimens">15dp</dimen>
+    <dimen name="info_item_icon_dimens">25dp</dimen>
 
     <dimen name="info_detailed_item_dimens">30dp</dimen>
 

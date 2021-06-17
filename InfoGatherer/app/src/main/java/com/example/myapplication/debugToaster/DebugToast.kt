@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.example.myapplication.R
 import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.utils.copyToClipboard
+import java.lang.ref.WeakReference
 
 /**
  * Duration between toasts
@@ -30,9 +31,10 @@ private const val HorizontalMargin = 15
 
 private const val DefaultResource = R.layout.toast_layout
 
-class DebugToast private constructor(private val activity: Activity, private val dataHolder: LogDataHolder) : FrameLayout(activity), View.OnClickListener {
+class DebugToast private constructor(activity: Activity, private val dataHolder: LogDataHolder) : FrameLayout(activity), View.OnClickListener {
 
-    var mGravity = Gravity.BOTTOM
+    private var mGravity = Gravity.BOTTOM
+    private val activityReference = WeakReference(activity)
 
     companion object {
 
@@ -46,6 +48,7 @@ class DebugToast private constructor(private val activity: Activity, private val
     }
 
     init {
+
         val container = activity.findViewById<ViewGroup>(android.R.id.content)
         val layoutParams = buildLayoutParams()
         val view: View = LayoutInflater.from(activity).inflate(DefaultResource, this, true)
@@ -65,6 +68,7 @@ class DebugToast private constructor(private val activity: Activity, private val
         view.setOnClickListener(this)
 
         scheduleDestruction(view, container)
+
     }
 
     /**
@@ -102,6 +106,10 @@ class DebugToast private constructor(private val activity: Activity, private val
      * [View.OnClickListener] implementation
      * @param v View that was clicked
      */
-    override fun onClick(v: View?) = copyToClipboard(activity, dataHolder)
+    override fun onClick(v: View?) {
+        activityReference.get()?.run {
+            copyToClipboard(this, dataHolder)
+        }
+    }
 
 }

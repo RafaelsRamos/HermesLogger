@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import com.example.myapplication.data.InfoHolder
 import com.example.myapplication.models.LogDataHolder
 import java.lang.ref.WeakReference
@@ -23,12 +22,6 @@ const val ShortToastDuration = 2000
 
 class Toaster {
 
-    constructor(activity: Activity) {
-        actReference = WeakReference(activity)
-    }
-
-    constructor()
-
     val infoHolder = InfoHolder()
 
     lateinit var actReference: WeakReference<Activity>
@@ -45,7 +38,7 @@ class Toaster {
 
     companion object {
 
-        var instance : Toaster? = null
+        var instance = Toaster()
 
         fun success() = Builder().apply { type = LogType.Success }
 
@@ -54,6 +47,8 @@ class Toaster {
         fun warning() = Builder().apply { type = LogType.Warning }
 
         fun debug() = Builder().apply { type = LogType.Debug }
+
+        fun other() = Builder().apply { type = LogType.Other }
     }
 
     fun clearQueue() = logQueue.clear()
@@ -71,7 +66,7 @@ class Toaster {
 
         // If we have a valid instance of the activity, show the toast
         activity?.run {
-            logQueue.add(buildExtraInfo(dataHolder))
+            logQueue.add(buildGenericInfo(dataHolder))
             if (!isShowing) {
                 showFirst()
             }
@@ -100,9 +95,9 @@ class Toaster {
      * @param dataHolder    Data Holder that may contain extra info
      * @return  ToastDataHolder with either no extra info, or with extra info + generic info
      */
-    private fun buildExtraInfo(dataHolder: LogDataHolder) : LogDataHolder {
+    private fun buildGenericInfo(dataHolder: LogDataHolder) : LogDataHolder {
         return dataHolder.apply {
-            extraInfo?.let { content -> extraInfo = "General Information: ${copyGenericInfoBuilder?.buildGenericInfo()} Specific Information: $content" }
+            genericInfo = copyGenericInfoBuilder?.buildGenericInfo()
         }
     }
 
@@ -129,12 +124,21 @@ class Toaster {
 
         fun withMessage(message: String) = apply { this@Builder.message = message }
 
+        fun withExtraInfo(extraInfo: String) = apply { this@Builder.extraInfo = extraInfo }
+
+        @JvmOverloads
         fun show(activity: Activity? = null, genericInfoBuilder: CopyToClipboardGenericInfoBuilder? = null) {
-            instance = instance ?: activity?.run { Toaster(activity) } ?: Toaster()
-            instance!!.apply {
-                add(LogDataHolder(message, duration.toLong(), type, extraInfo))
-                copyGenericInfoBuilder = genericInfoBuilder
+
+            activity?.run {
+                // Update activity reference
+                instance.actReference = WeakReference(this)
             }
+
+            genericInfoBuilder?.run {
+                instance.copyGenericInfoBuilder = this
+            }
+
+            instance.add(LogDataHolder(message, duration.toLong(), type, extraInfo))
         }
     }
 

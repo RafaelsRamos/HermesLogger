@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.adapters
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,17 @@ import com.example.myapplication.callbacks.SpecificItemCallback
 import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.utils.DateFormat
 import com.example.myapplication.utils.copyToClipboard
+import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 
-class InfoRecyclerAdapter(var logList: List<LogDataHolder>, private var activity: Activity, private val callback: SpecificItemCallback): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
+private const val TAG = "InfoRecyclerAdapter"
+
+class InfoRecyclerAdapter(private var logList: List<LogDataHolder>, activity: Activity, private val callback: SpecificItemCallback): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
+
+    private val actReference = WeakReference(activity)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
-        val layoutInflater = LayoutInflater.from(activity.applicationContext)
+        val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.item_log_recycler, parent, false)
         return InfoViewHolder(view)
     }
@@ -28,7 +34,11 @@ class InfoRecyclerAdapter(var logList: List<LogDataHolder>, private var activity
         holder.title.text = item.msg
         holder.date.text = format.format(item.creationDate.time)
         holder.id.text = item.id
-        holder.copy.setOnClickListener { copyToClipboard(activity, item) }
+        holder.copy.setOnClickListener {
+            actReference.get()?.run {
+                copyToClipboard(this, item)
+            } ?: Log.e(TAG, "There is no valid instance of an activity. data could not be copied successfully")
+        }
         holder.entireView.setOnClickListener { callback.onSpecificItemClicked(item) }
     }
 

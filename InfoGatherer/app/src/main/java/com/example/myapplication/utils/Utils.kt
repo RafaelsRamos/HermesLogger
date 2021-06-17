@@ -21,24 +21,16 @@ const val DateFormat = "dd/MM 'at' HH:mm:ss.SSS"
  */
 fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
     val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-    val clip = ClipData.newPlainText(CopyDefaultLabel, dataHolder.extraInfo)
+    val info = buildInfo(dataHolder)
+    val clip = ClipData.newPlainText(CopyDefaultLabel, info)
     clipboard?.setPrimaryClip(clip)
 }
 
-fun getInfoIcon(context: Context, position: Int): Drawable? {
-    return context.let {
-        ContextCompat.getDrawable(
-            it,
-            when (position) {
-                0 -> R.drawable.ic_error
-                1 -> R.drawable.ic_warning
-                2 -> R.drawable.ic_debug
-                3 -> R.drawable.ic_success
-                else -> R.drawable.ic_unknown
-            }
-        )
+fun buildInfo(dataHolder: LogDataHolder) = buildString {
+        append("${dataHolder.creationDate} - ${dataHolder.type} Message: ${dataHolder.msg} ")
+        dataHolder.genericInfo?.let { append("Generic information: $it ") }
+        dataHolder.extraInfo?.let { append("Extra information: $it.") }
     }
-}
 
 /**
  * Directly set a default type onto a [MutableLiveData] instance
