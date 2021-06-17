@@ -1,26 +1,59 @@
 package com.example.myapplication
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import android.os.Handler
+import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.debugToaster.LongToastDuration
 import com.example.myapplication.debugToaster.Toaster
 import java.util.*
 
+
 class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuilder {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.test_activity)
 
-        Toaster.show(this, this).success("bla bla bla", "My extra inffoooooooo")
-        Toaster.show()?.error("bl1 bl1 bl1 bl1 bl1 bl1","lol, this extra info....")
-        Toaster.show()?.warning("Warning test. My example warininningg", "App extra info...")
-        Toaster.show(duration = Toast.LENGTH_SHORT)?.debug("Service successful")
-        //Toaster.show()?.errorLong("bl2 bl2 bl2 bl2 bl2 bl2")
-        //Toaster.show()?.warningLong("bl3 bl3 bl3 bl3 bl3 bl3")
-        //Toaster.show()?.debugLong("bl4 bl4 bl4 bl4 bl4 bl4")
+        Toaster.success()
+            .withMessage("0")
+            .withExtraInfo("The service was successfully called :+1:")
+            .show()
+
+        Toaster.other().withMessage("other1").show()
+        Toaster.other().withMessage("other2").show()
+        Toaster.other().withMessage("other3").show()
+        Toaster.other().withMessage("other4").show()
+        Toaster.other().withMessage("other5").show()
+
+        Toaster
+            .success()
+            .withMessage("Buenos dias")
+            .show(this, this)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            generateExampleSet()
+        }, 10000)
     }
 
     override fun buildGenericInfo(): String {
-        return "${Calendar.getInstance().time}"
+        return "My Generic message!!!!"
+    }
+
+    // -------------------------------------------------------------
+
+    private fun generateExampleSet() {
+
+        Toaster.success()
+            .withMessage("Buenos dias 1")
+            .withExtraInfo("The service was successfully called :+1:")
+            .show()
+
+        Toaster.error().withMessage("Buenos dias 2").setDuration(LongToastDuration).show()
+        Toaster.debug().withMessage("Buenos dias 3").setDuration(1000).show()
+        Toaster.warning().withMessage("Buenos dias 5").setDuration(4000).show()
+        Handler(Looper.getMainLooper()).postDelayed({
+            generateExampleSet()
+        }, 2000)
     }
 }
