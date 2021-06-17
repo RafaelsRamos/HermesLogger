@@ -12,6 +12,8 @@ import com.google.android.material.tabs.TabLayout
  */
 class TabNotificationsHandler(private val tabLayout: TabLayout) {
 
+    private val infoHolder get() = Toaster.instance.infoHolder
+
     fun updateBadges() {
         for (i in 0..4) {
             tabLayout.getTabAt(i)?.customView?.let {
@@ -21,11 +23,11 @@ class TabNotificationsHandler(private val tabLayout: TabLayout) {
     }
 
     private fun getNrOfLogs(position: Int) = when (position) {
-            0 -> Toaster.instance?.infoHolder?.logList?.size
-            1 -> Toaster.instance?.infoHolder?.getNrOfLogsByType(LogType.Error)
-            2 -> Toaster.instance?.infoHolder?.getNrOfLogsByType(LogType.Warning)
-            3 -> Toaster.instance?.infoHolder?.getNrOfLogsByType(LogType.Debug)
-            4 -> Toaster.instance?.infoHolder?.getNrOfLogsByType(LogType.Success)
+            0 -> infoHolder.logList.size
+            1 -> infoHolder.getNrOfLogsByType(LogType.Error)
+            2 -> infoHolder.getNrOfLogsByType(LogType.Warning)
+            3 -> infoHolder.getNrOfLogsByType(LogType.Debug)
+            4 -> infoHolder.getNrOfLogsByType(LogType.Success)
             else -> 0
         }
 }

@@ -9,7 +9,8 @@ public enum LogType {
     Error(R.layout.toast_layout, R.drawable.ic_error),
     Warning(R.layout.toast_layout, R.drawable.ic_warning),
     Debug(R.layout.toast_layout, R.drawable.ic_debug),
-    Success(R.layout.toast_layout, R.drawable.ic_success);
+    Success(R.layout.toast_layout, R.drawable.ic_success),
+    Other(R.layout.toast_layout, R.drawable.ic_unknown);
 
     public int layoutResource;
     public int drawableResource;

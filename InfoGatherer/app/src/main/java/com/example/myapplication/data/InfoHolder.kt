@@ -24,6 +24,7 @@ class InfoHolder {
     private var nrOfSuccesses = 0
     private var nrOfWarnings = 0
     private var nrOfErrors = 0
+    private var nrOfOthers = 0
 
     //------------------------ Controls ------------------------
 
@@ -33,11 +34,12 @@ class InfoHolder {
      */
     fun getLogListByType(type: LogType) = logList.filter { it.type == type }
 
-    fun getNrOfLogsByType(type: LogType)= when(type) {
+    fun getNrOfLogsByType(type: LogType) = when(type) {
             LogType.Debug -> nrOfDebugs
             LogType.Success -> nrOfSuccesses
             LogType.Warning -> nrOfWarnings
             LogType.Error -> nrOfErrors
+            LogType.Other -> nrOfOthers
         }
 
     /**
@@ -62,6 +64,7 @@ class InfoHolder {
         LogType.Success -> "S-${++nrOfSuccesses}"
         LogType.Warning -> "W-${++nrOfWarnings}"
         LogType.Error -> "E-${++nrOfErrors}"
+        LogType.Other -> "E-${++nrOfOthers}"
     }
 
 }
