@@ -16,10 +16,13 @@ import com.example.myapplication.debugToaster.LogType
 import com.example.myapplication.debugToaster.Toaster
 import com.example.myapplication.managers.TabNotificationsHandler
 import com.example.myapplication.models.LogDataHolder
-import com.example.myapplication.ui.InfoListTabAdapter
+import com.example.myapplication.ui.adapters.InfoListTabAdapter
 import com.example.myapplication.utils.default
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+
+private const val EMPTY_STRING = ""
+private const val SEARCH_STRING = "Search"
 
 class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificItemCallback {
 
@@ -27,16 +30,17 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
         val searchContentLiveData = MutableLiveData<String>().default("")
     }
 
+    private lateinit var tabNotificationsHandler: TabNotificationsHandler
     private lateinit var adapter: InfoListTabAdapter
     private lateinit var viewPager: ViewPager2
-    private lateinit var tabLayout: TabLayout
 
     private lateinit var searchEditText: EditText
     private lateinit var clearView: View
 
-    private var tabNotificationsHandler: TabNotificationsHandler? = null
-
     private var selectedTabPosition = 0
+
+    private val searchContent get() = searchEditText.text.toString()
+    private val infoHolder get() = Toaster.instance.infoHolder
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -51,17 +55,20 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
             }
         })
 
-        tabLayout = view.findViewById(R.id.tab_layout)
-        
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.setCustomView(R.layout.tab_custom_view)
-            tab.customView?.let {
-                val tabName = it.findViewById(R.id.name) as TextView
-                tabName.text = if (position > 0) LogType.values()[position - 1].name else "ALL"
-            }
-        }.attach()
+        with (view.findViewById<TabLayout>(R.id.tab_layout)) {
 
-        tabNotificationsHandler = TabNotificationsHandler(tabLayout)
+            TabLayoutMediator(this, viewPager) { tab, position ->
+                tab.setCustomView(R.layout.tab_custom_view)
+                tab.customView?.let {
+                    val tabName = it.findViewById(R.id.name) as TextView
+                    tabName.text = if (position > 0) LogType.values()[position - 1].name else "ALL"
+                }
+            }.attach()
+
+            tabNotificationsHandler = TabNotificationsHandler(this)
+
+        }
+
         setObservers()
     }
 
@@ -74,23 +81,32 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
     private fun setSearchLogic() {
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                searchContentLiveData.postValue(s.toString())
+                searchContentLiveData.postValue(s?.toString())
                 clearView.visibility = if (s.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchContentLiveData.postValue(s?.toString())
+            }
         })
 
-        clearView.setOnClickListener { searchEditText.setText("") }
+        searchEditText.setOnFocusChangeListener { _, hasFocus ->
+            searchEditText.hint = if (searchContent.isEmpty() || hasFocus) SEARCH_STRING else EMPTY_STRING
+        }
+
+        clearView.setOnClickListener {
+            searchContentLiveData.postValue(EMPTY_STRING)
+            searchEditText.setText(EMPTY_STRING)
+        }
     }
 
     //-------------------- SpecificItemCallback Implementation --------------------
 
     override fun onSpecificItemClicked(item: LogDataHolder) {
         val fragment = InfoDetailedViewFragment(item)
-        activity?.supportFragmentManager?.beginTransaction()?.apply {
+        requireActivity().supportFragmentManager.beginTransaction().apply {
             replace(R.id.runtimeInfoContentContainer, fragment)
             addToBackStack(null)
             commit()
@@ -100,8 +116,8 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
     //----------------------------- Observers -------------------------
 
     private fun setObservers() {
-        Toaster.instance?.infoHolder?.infoLiveData?.observe(this, Observer {
-            tabNotificationsHandler?.updateBadges()
+        infoHolder.infoLiveData.observe(this, Observer {
+            tabNotificationsHandler.updateBadges()
         })
     }
 }

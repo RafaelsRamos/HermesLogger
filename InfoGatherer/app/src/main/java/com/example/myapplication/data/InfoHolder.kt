@@ -39,7 +39,7 @@ class InfoHolder {
             LogType.Success -> nrOfSuccesses
             LogType.Warning -> nrOfWarnings
             LogType.Error -> nrOfErrors
-            LogType.Other -> nrOfOthers
+            LogType.Info -> nrOfOthers
         }
 
     /**
@@ -64,7 +64,7 @@ class InfoHolder {
         LogType.Success -> "S-${++nrOfSuccesses}"
         LogType.Warning -> "W-${++nrOfWarnings}"
         LogType.Error -> "E-${++nrOfErrors}"
-        LogType.Other -> "E-${++nrOfOthers}"
+        LogType.Info -> "I-${++nrOfOthers}"
     }
 
 }

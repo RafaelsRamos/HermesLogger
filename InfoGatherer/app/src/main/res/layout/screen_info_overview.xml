@@ -17,7 +17,10 @@
             app:tabIndicatorColor="@color/tabsIndicatorColor"
             app:tabIndicatorHeight="4dp"
             app:tabIndicatorFullWidth="false"
-            app:tabTextAppearance="@style/MineCustomTabText"/>
+            app:tabTextAppearance="@style/MineCustomTabText"
+            app:tabRippleColor="@null"
+            app:tabPaddingStart="5dp"
+            app:tabPaddingEnd="5dp"/>
 
         <include
             layout="@layout/search_bar"

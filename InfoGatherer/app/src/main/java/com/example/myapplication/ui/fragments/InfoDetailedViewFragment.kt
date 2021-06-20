@@ -17,10 +17,11 @@ class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragment(R.lay
         val format = SimpleDateFormat(DateFormat)
 
         view.findViewById<TextView>(R.id.date).text = format.format(item.creationDate.time)
-        view.findViewById<TextView>(R.id.message).text = item.msg
+        view.findViewById<TextView>(R.id.message).text = item.message
         view.findViewById<TextView>(R.id.extraInfo).text = item.extraInfo
         view.findViewById<ImageView>(R.id.typeIcon).setImageDrawable(ContextCompat.getDrawable(view.context, item.type.drawableResource))
         view.findViewById<TextView>(R.id.typeName).text = "${item.type.name} - ${item.id.replace("[^0-9]".toRegex(),"")}"
+        view.findViewById<TextView>(R.id.generic_info).text = item.genericInfo
         view.findViewById<View>(R.id.back).setOnClickListener { activity?.onBackPressed() }
     }
 }

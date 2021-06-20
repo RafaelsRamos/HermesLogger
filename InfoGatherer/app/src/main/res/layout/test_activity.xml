@@ -1,12 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.example.myapplication.ui.OverviewLayout
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Pass activity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/pass_activity_cb"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/button_generic_information"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:text="Initialize generic information"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:stateListAnimator="@null"
+        app:layout_constraintStart_toEndOf="@+id/pass_activity_cb"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_text_message"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_generic_information" />
+
+    <EditText
+        android:id="@+id/edit_text_extra_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Extra information"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_message" />
+
+
+    <RadioGroup
+        android:id="@+id/duration_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_extra_message">
+
+        <RadioButton
+            android:id="@+id/longRB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:checked="true"
+            android:text="Long"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/shortRB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:checked="false"
+            android:text="Short"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/customRB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:checked="false"
+            android:text="Custom"
+            android:textSize="12sp" />
+    </RadioGroup>
+
+    <EditText
+        android:visibility="visible"
+        android:id="@+id/durationEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/duration_radio_group"
+        app:layout_constraintEnd_toEndOf="@+id/edit_text_extra_message"
+        app:layout_constraintStart_toEndOf="@id/duration_radio_group"
+        app:layout_constraintTop_toTopOf="@id/duration_radio_group"
+        android:hint="Duration(ms)"
+        android:textSize="12sp"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/generate_logs_button"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:stateListAnimator="@null"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/duration_radio_group"
+        android:text="Generate automatic logs"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button_success"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
+            android:text="Success"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_error"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
+            android:text="Error"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_debug"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
+            android:text="Debug"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_warning"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
+            android:text="Warning"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_info"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
+            android:text="Info"
+            android:textSize="10sp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

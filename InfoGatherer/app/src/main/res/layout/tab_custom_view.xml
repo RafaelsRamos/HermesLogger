@@ -8,25 +8,25 @@
     <TextView
         android:id="@+id/name"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="7dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/roboto_bold"
         android:gravity="bottom"
         android:maxLines="1"
         android:textAlignment="center"
-        android:textSize="9sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="ALL" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="@dimen/tab_notifications_badge_size"
         android:layout_height="@dimen/tab_notifications_badge_size"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:alpha="0.6"
+        app:layout_constraintBottom_toTopOf="@+id/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

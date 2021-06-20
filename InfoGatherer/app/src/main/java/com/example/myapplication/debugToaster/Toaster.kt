@@ -48,7 +48,7 @@ class Toaster {
 
         fun debug() = Builder().apply { type = LogType.Debug }
 
-        fun other() = Builder().apply { type = LogType.Other }
+        fun info() = Builder().apply { type = LogType.Info }
     }
 
     fun clearQueue() = logQueue.clear()

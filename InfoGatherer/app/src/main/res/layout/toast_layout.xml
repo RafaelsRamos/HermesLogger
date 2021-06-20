@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/custom_toast_container"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/toast_background"
-    android:padding="10dp"
-    android:alpha="0.85"
-    tools:alpha="1"
-    android:layout_gravity="center_horizontal">
+<layout>
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@drawable/ic_unknown"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.example.myapplication.debugToaster.LogType"/>
+        <import type="com.example.myapplication.R"/>
+        <import type="com.example.myapplication.utils.UtilsKt"/>
+        <variable
+            name="logDataHolder"
+            type="com.example.myapplication.models.LogDataHolder" />
+    </data>
 
-    <TextView
-        android:id="@+id/text"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/custom_toast_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:ellipsize="end"
-        android:maxEms="18"
-        android:maxLines="1"
-        android:textColor="#FFF"
-        app:layout_constraintBottom_toBottomOf="@+id/icon"
-        app:layout_constraintStart_toEndOf="@id/icon"
-        app:layout_constraintTop_toTopOf="@+id/icon"
-        tools:text="My example test My etestMy example testMy example testestMy example test" />
+        android:background="@drawable/toast_background"
+        android:padding="10dp"
+        android:alpha="0.85"
+        android:layout_gravity="center_horizontal">
 
-    <ImageView
-        android:id="@+id/copy"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginStart="10dp"
-        android:src="@drawable/ic_copy"
-        app:layout_constraintBottom_toBottomOf="@+id/icon"
-        app:layout_constraintStart_toEndOf="@+id/text"
-        app:layout_constraintTop_toTopOf="@+id/icon" />
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_unknown"
+            app:logIcon="@{ logDataHolder.type }"
+            app:applyTint="@{logDataHolder.type == LogType.Debug ? R.color.white : UtilsKt.NO_RES }"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:maxEms="18"
+            android:maxLines="1"
+            android:textColor="#FFF"
+            app:layout_constraintBottom_toBottomOf="@+id/icon"
+            app:layout_constraintStart_toEndOf="@id/icon"
+            app:layout_constraintTop_toTopOf="@+id/icon"
+            android:text="@{ logDataHolder.message }"
+            android:visibility="@{ logDataHolder.message.isEmpty() ? View.GONE : View.VISIBLE }"
+            tools:text="My example test My etestMy example testMy example testestMy example test" />
+
+        <ImageView
+            android:id="@+id/copy"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_copy"
+            app:layout_constraintBottom_toBottomOf="@+id/icon"
+            app:layout_constraintStart_toEndOf="@+id/text"
+            app:layout_constraintTop_toTopOf="@+id/icon"
+            android:visibility="@{ logDataHolder.extraInfo == null ? View.GONE : View.VISIBLE }"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

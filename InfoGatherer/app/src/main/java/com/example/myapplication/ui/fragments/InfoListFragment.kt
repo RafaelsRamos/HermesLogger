@@ -65,7 +65,7 @@ class InfoListFragment(private val type: LogType?, private val specificItemCallb
         })
 
         InfoOverviewFragment.searchContentLiveData.observe(this, Observer {
-            val canUsePreviousFilter = filterString.contains(it)
+            val canUsePreviousFilter = it.isNotEmpty() && filterString.contains(it)
             filterString = it
             storedLogList = getFilteredLogs(if (canUsePreviousFilter) storedLogList else logList)
             mAdapter.updateList(storedLogList)
@@ -77,7 +77,7 @@ class InfoListFragment(private val type: LogType?, private val specificItemCallb
         return logList.filter { dataHolder ->
             dataHolder.creationDate.toString().contains(filterString) ||
             dataHolder.extraInfo?.contains(filterString) ?: false ||
-            dataHolder.msg.contains(filterString) ||
+            dataHolder.message.contains(filterString) ||
             dataHolder.id.contains(filterString)
         }
     }

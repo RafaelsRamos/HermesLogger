@@ -15,19 +15,23 @@ class TabNotificationsHandler(private val tabLayout: TabLayout) {
     private val infoHolder get() = Toaster.instance.infoHolder
 
     fun updateBadges() {
-        for (i in 0..4) {
-            tabLayout.getTabAt(i)?.customView?.let {
-                it.findViewById<TextView>(R.id.notifications_text).text = getNrOfLogs(i).toString()
-            }
+        for (i in 0..5) {
+            getBadgeTextView(i)?.run { text = getNrOfLogs(i).toString() }
         }
+    }
+
+    private fun getBadgeTextView(tabIndex: Int): TextView? {
+        val tab = tabLayout.getTabAt(tabIndex)
+        return tab?.customView?.findViewById(R.id.notifications_text)
     }
 
     private fun getNrOfLogs(position: Int) = when (position) {
             0 -> infoHolder.logList.size
-            1 -> infoHolder.getNrOfLogsByType(LogType.Error)
-            2 -> infoHolder.getNrOfLogsByType(LogType.Warning)
+            1 -> infoHolder.getNrOfLogsByType(LogType.Info)
+            2 -> infoHolder.getNrOfLogsByType(LogType.Success)
             3 -> infoHolder.getNrOfLogsByType(LogType.Debug)
-            4 -> infoHolder.getNrOfLogsByType(LogType.Success)
+            4 -> infoHolder.getNrOfLogsByType(LogType.Warning)
+            5 -> infoHolder.getNrOfLogsByType(LogType.Error)
             else -> 0
         }
 }
