@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
+import com.example.myapplication.callbacks.FragmentCommunicator
 import com.example.myapplication.callbacks.SpecificItemCallback
 import com.example.myapplication.debugToaster.LogType
 import com.example.myapplication.debugToaster.Toaster
@@ -26,11 +27,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 private const val EMPTY_STRING = ""
 private const val SEARCH_STRING = "Search"
 
-class InfoOverviewFragment(private val stateHolder: OverviewStateHolderUpdater) : Fragment(R.layout.screen_info_overview), SpecificItemCallback {
+class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), SpecificItemCallback {
 
     companion object {
         val searchContentLiveData = MutableLiveData<String>().default("")
     }
+
+    lateinit var stateHolder: OverviewStateHolderUpdater
+    lateinit var communicator: FragmentCommunicator
 
     private lateinit var tabNotificationsHandler: TabNotificationsHandler
     private lateinit var adapter: InfoListTabAdapter
@@ -43,6 +47,11 @@ class InfoOverviewFragment(private val stateHolder: OverviewStateHolderUpdater) 
 
     private val searchContent get() = searchEditText.text.toString()
     private val infoHolder get() = Toaster.instance.infoHolder
+
+    override fun onDetach() {
+        communicator.onFragmentDetached()
+        super.onDetach()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 

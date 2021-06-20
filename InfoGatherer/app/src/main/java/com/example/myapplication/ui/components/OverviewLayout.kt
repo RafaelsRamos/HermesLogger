@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.myapplication.R
+import com.example.myapplication.callbacks.FragmentCommunicator
 import com.example.myapplication.managers.OverviewStateHolderUpdater
 import com.example.myapplication.ui.fragments.InfoOverviewFragment
 import kotlinx.android.synthetic.main.screen_overview_background.view.*
@@ -19,7 +20,7 @@ class OverviewLayout private constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+) : ConstraintLayout(context, attrs, defStyleAttr), FragmentCommunicator {
 
     private var childView: View? = null
 
@@ -27,7 +28,7 @@ class OverviewLayout private constructor(
 
     private val fragmentActivity get() = context as? FragmentActivity
 
-    private val stateManager = OverviewStateHolderUpdater()
+    private val stateHolderInstance = OverviewStateHolderUpdater()
 
     //-------------------------- Factory --------------------------
 
@@ -60,7 +61,12 @@ class OverviewLayout private constructor(
     }
 
     private fun loadOverview() {
-        loadFragment(InfoOverviewFragment(stateManager))
+        val overviewFragment = InfoOverviewFragment().apply {
+            stateHolder = stateHolderInstance
+            communicator = this@OverviewLayout as FragmentCommunicator
+        }
+
+        loadFragment(overviewFragment)
         insideLayout.visibility = View.VISIBLE
         infoOverviewTab.background = ContextCompat.getDrawable(context, R.drawable.half_circle_pressed)
     }
@@ -71,10 +77,6 @@ class OverviewLayout private constructor(
         this.removeView(childView)
         insideLayout.visibility = View.GONE
         setTabsState(show = false)
-
-        fragmentActivity?.run {
-            supportFragmentManager.popBackStackImmediate()
-        }
     }
 
     private fun openOverview() {
@@ -104,5 +106,14 @@ class OverviewLayout private constructor(
 
     private fun getTabDrawable(state: Boolean): Drawable? {
         return ContextCompat.getDrawable(context, if (state) R.drawable.half_circle_pressed else R.drawable.half_circle_unpressed)
+    }
+
+    //----------- FragmentCommunicator implementation -----------
+
+    /**
+     * Method triggered on InfoOverviewFragment detached
+     */
+    override fun onFragmentDetached() {
+        close()
     }
 }
