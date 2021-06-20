@@ -1,105 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout>
 
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="30dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="@color/black"/>
+    <data>
 
-    <ImageView
-        android:id="@+id/typeIcon"
-        android:layout_width="@dimen/info_detailed_item_dimens"
-        android:layout_height="@dimen/info_detailed_item_dimens"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        <import type="android.view.View"/>
+        <import type="com.example.myapplication.debugToaster.LogType"/>
+        <import type="com.example.myapplication.R"/>
+        <import type="com.example.myapplication.utils.UtilsKt"/>
+        <import type="java.text.SimpleDateFormat"/>
+        <variable
+            name="logDataHolder"
+            type="com.example.myapplication.models.LogDataHolder" />
 
-        tools:src="@drawable/ic_success" />
+    </data>
 
-    <TextView
-        android:id="@+id/typeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:fontFamily="@font/roboto_bold"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/typeIcon"
-        tools:text="Success" />
-
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/typeName"
-        android:textSize="13sp"
-
-        tools:text="25/10/2000" />
-
-    <androidx.core.widget.NestedScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:overScrollMode="never"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date">
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:focusable="true"
+        android:clickable="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/black"/>
+
+        <ImageView
+            android:id="@+id/typeIcon"
+            android:layout_width="@dimen/info_detailed_item_dimens"
+            android:layout_height="@dimen/info_detailed_item_dimens"
+            android:layout_marginTop="8dp"
+            app:logIcon="@{ logDataHolder.type }"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            tools:src="@drawable/ic_success" />
+
+        <TextView
+            android:id="@+id/typeName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/typeIcon"
+            android:text="@{ logDataHolder.type.name }"
+            tools:text="Success" />
 
-            <TextView
-                style="@style/DetailsMessageFont"
-                android:id="@+id/message"
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/typeName"
+            android:textSize="13sp"
+            app:textCreationDate="@{ logDataHolder.creationDate }"
+            tools:text="25/10/2000" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
-                tools:text="message" />
+                android:orientation="vertical">
 
-            <TextView
-                style="@style/DetailsExtraFont"
-                android:id="@+id/extraInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                tools:text="extra info" />
+                <TextView
+                    style="@style/DetailsMessageFont"
+                    android:id="@+id/message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@{ logDataHolder.message }"
+                    tools:text="message" />
 
-            <TextView
-                android:id="@+id/generic_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
-                tools:text="generic info"/>
+                <TextView
+                    style="@style/DetailsExtraFont"
+                    android:id="@+id/extraInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@{ logDataHolder.extraInfo }"
+                    tools:text="extra info" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/generic_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@{ logDataHolder.genericInfo }"
+                    tools:text="generic info"/>
 
-    </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

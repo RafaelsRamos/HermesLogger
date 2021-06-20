@@ -1,13 +1,14 @@
 package com.example.myapplication.ui
 
 import android.widget.ImageView
-import androidx.annotation.ColorRes
+import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.BindingAdapter
-import com.example.myapplication.R
 import com.example.myapplication.debugToaster.LogType
+import com.example.myapplication.utils.DateFormat
 import com.example.myapplication.utils.NO_RES
+import java.text.SimpleDateFormat
+import java.util.*
 
 @BindingAdapter(value = ["logIcon", "applyTint"], requireAll = false)
 fun setLogIcon(imageView: ImageView, logType: LogType, tintColorRes: Int = NO_RES) {
@@ -19,4 +20,10 @@ fun setLogIcon(imageView: ImageView, logType: LogType, tintColorRes: Int = NO_RE
 
         setColorFilter(ContextCompat.getColor(context, tintColorRes))
     }
+}
+
+@BindingAdapter(value = ["textCreationDate"], requireAll = false)
+fun setCreationDate(textView: TextView, date: Date) {
+    val dateFormat = SimpleDateFormat(DateFormat)
+    textView.text = dateFormat.format(date.time)
 }
