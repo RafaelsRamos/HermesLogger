@@ -14,6 +14,7 @@ import com.example.myapplication.R
 import com.example.myapplication.callbacks.SpecificItemCallback
 import com.example.myapplication.debugToaster.LogType
 import com.example.myapplication.debugToaster.Toaster
+import com.example.myapplication.managers.OverviewStateHolderUpdater
 import com.example.myapplication.managers.TabNotificationsHandler
 import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.ui.adapters.InfoListTabAdapter
@@ -21,10 +22,11 @@ import com.example.myapplication.utils.default
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
+
 private const val EMPTY_STRING = ""
 private const val SEARCH_STRING = "Search"
 
-class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificItemCallback {
+class InfoOverviewFragment(private val stateHolder: OverviewStateHolderUpdater) : Fragment(R.layout.screen_info_overview), SpecificItemCallback {
 
     companion object {
         val searchContentLiveData = MutableLiveData<String>().default("")
@@ -49,13 +51,13 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
 
         adapter = InfoListTabAdapter(this, this)
         viewPager.adapter = adapter
-        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 selectedTabPosition = position
             }
         })
 
-        with (view.findViewById<TabLayout>(R.id.tab_layout)) {
+        with(view.findViewById<TabLayout>(R.id.tab_layout)) {
 
             TabLayoutMediator(this, viewPager) { tab, position ->
                 tab.setCustomView(R.layout.tab_custom_view)
@@ -69,6 +71,8 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
 
         }
 
+        searchEditText.setText(stateHolder.currentContent)
+
         setObservers()
     }
 
@@ -81,14 +85,14 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
     private fun setSearchLogic() {
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                searchContentLiveData.postValue(s?.toString())
+                updateFilters(s?.toString())
                 clearView.visibility = if (s.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchContentLiveData.postValue(s?.toString())
+                updateFilters(s?.toString())
             }
         })
 
@@ -97,7 +101,7 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
         }
 
         clearView.setOnClickListener {
-            searchContentLiveData.postValue(EMPTY_STRING)
+            updateFilters(EMPTY_STRING)
             searchEditText.setText(EMPTY_STRING)
         }
     }
@@ -119,5 +123,12 @@ class InfoOverviewFragment: Fragment(R.layout.screen_info_overview), SpecificIte
         infoHolder.infoLiveData.observe(this, Observer {
             tabNotificationsHandler.updateBadges()
         })
+    }
+
+    //------------------------- Helper methods -------------------------
+
+    private fun updateFilters(content: String?) {
+        stateHolder.onResultsFiltered(content ?: EMPTY_STRING)
+        searchContentLiveData.postValue(content)
     }
 }

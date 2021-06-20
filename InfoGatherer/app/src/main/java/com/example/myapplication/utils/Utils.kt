@@ -9,8 +9,8 @@ import com.example.myapplication.models.LogDataHolder
 
 private const val CopyDefaultLabel = "Clipboard info"
 
+const val EMPTY_STRING = ""
 const val NO_RES = -1
-
 const val DateFormat = "dd/MM 'at' HH:mm:ss.SSS"
 
 /**

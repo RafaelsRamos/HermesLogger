@@ -11,10 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.myapplication.R
+import com.example.myapplication.managers.OverviewStateHolderUpdater
 import com.example.myapplication.ui.fragments.InfoOverviewFragment
 import kotlinx.android.synthetic.main.screen_overview_background.view.*
 
-class OverviewLayout @JvmOverloads private constructor(
+class OverviewLayout private constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -25,6 +26,8 @@ class OverviewLayout @JvmOverloads private constructor(
     private var isOverviewVisible = false
 
     private val fragmentActivity get() = context as? FragmentActivity
+
+    private val stateManager = OverviewStateHolderUpdater()
 
     //-------------------------- Factory --------------------------
 
@@ -57,7 +60,7 @@ class OverviewLayout @JvmOverloads private constructor(
     }
 
     private fun loadOverview() {
-        loadFragment(InfoOverviewFragment())
+        loadFragment(InfoOverviewFragment(stateManager))
         insideLayout.visibility = View.VISIBLE
         infoOverviewTab.background = ContextCompat.getDrawable(context, R.drawable.half_circle_pressed)
     }
@@ -68,6 +71,10 @@ class OverviewLayout @JvmOverloads private constructor(
         this.removeView(childView)
         insideLayout.visibility = View.GONE
         setTabsState(show = false)
+
+        fragmentActivity?.run {
+            supportFragmentManager.popBackStackImmediate()
+        }
     }
 
     private fun openOverview() {
