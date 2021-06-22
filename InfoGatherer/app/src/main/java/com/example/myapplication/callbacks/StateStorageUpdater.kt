@@ -1,5 +1,7 @@
 package com.example.myapplication.callbacks
 
+import com.example.myapplication.ui.search.CustomSearch
+
 /**
  * Interface used to update state holders.
  */
@@ -10,6 +12,6 @@ interface StateStorageUpdater {
      * state holders
      * @param content new content
      */
-    fun onResultsFiltered(content: String)
+    fun onCustomSearchChanged(customSearch: CustomSearch)
 
 }
