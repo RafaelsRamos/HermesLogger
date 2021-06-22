@@ -12,33 +12,39 @@ import com.example.myapplication.callbacks.SpecificItemCallback
 import com.example.myapplication.debugToaster.LogType
 import com.example.myapplication.debugToaster.Toaster
 import com.example.myapplication.models.LogDataHolder
+import com.example.myapplication.models.filterLogs
 import com.example.myapplication.ui.adapters.InfoRecyclerAdapter
+import com.example.myapplication.ui.search.CustomSearch
 
+private const val LOG_TYPE_ARG = "LogTypeArg"
 
-class InfoListFragment(private val type: LogType?, private val specificItemCallback: SpecificItemCallback): Fragment(R.layout.screen_info_list) {
+class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
-    private val infoHolder get() = Toaster.instance.infoHolder
-
-    private val logList: List<LogDataHolder>
-        get() = type?.let { infoHolder.getLogListByType(type).reversed() } ?: infoHolder.logList.reversed()
+    private lateinit var specificItemCallback: SpecificItemCallback
+    private var type: LogType? = null
+    private var filterString = EMPTY_STRING
 
     var storedLogList: List<LogDataHolder> = mutableListOf()
 
-    private lateinit var mAdapter: InfoRecyclerAdapter
-    private lateinit var mLayoutManager: RecyclerView.LayoutManager
-    private lateinit var recyclerView: RecyclerView
-
-    private var filterString = ""
+    private var customSearch = CustomSearch()
     private var nrOfLogs = 0
+
+    private val infoHolder get() = Toaster.instance.infoHolder
+    private val logList: List<LogDataHolder>
+        get() = type?.let { infoHolder.getLogListByType(it).reversed() } ?: infoHolder.logList.reversed()
+
+    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(logList, activity!!, specificItemCallback) }
+    private val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(activity!!) }
+    private val recyclerView: RecyclerView by lazy { requireView().findViewById<RecyclerView>(R.id.recycler) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        // Get type from bundle
+        type = arguments?.getSerializable(LOG_TYPE_ARG) as? LogType
+
         activity?.let {
-            mLayoutManager = LinearLayoutManager(it)
-            mAdapter = InfoRecyclerAdapter(logList, it, specificItemCallback)
             val dividerDecor = DividerItemDecoration(it.applicationContext, (mLayoutManager as LinearLayoutManager).orientation)
 
-            recyclerView = view.findViewById(R.id.recycler)
             with (recyclerView) {
                 layoutManager = mLayoutManager
                 adapter = mAdapter
@@ -52,7 +58,7 @@ class InfoListFragment(private val type: LogType?, private val specificItemCallb
 
         infoHolder.infoLiveData.observe(this, Observer {
             if (nrOfLogs != logList.size) {
-                storedLogList = getFilteredLogs(logList)
+                storedLogList = logList.filterLogs(customSearch)
 
                 if (!recyclerView.canScrollVertically(-1)) {
                     mAdapter.updateList(storedLogList)
@@ -64,21 +70,25 @@ class InfoListFragment(private val type: LogType?, private val specificItemCallb
             }
         })
 
-        InfoOverviewFragment.searchContentLiveData.observe(this, Observer {
-            val canUsePreviousFilter = it.isNotEmpty() && filterString.contains(it)
-            filterString = it
-            storedLogList = getFilteredLogs(if (canUsePreviousFilter) storedLogList else logList)
+        InfoOverviewFragment.customSearchLiveData.observe(this, Observer {
+            customSearch = it
+            val canUsePreviousFilter = customSearch.filterContent.isNotEmpty() && customSearch.filterContent.contains(filterString)
+            filterString = customSearch.filterContent
+            storedLogList = (if (canUsePreviousFilter) storedLogList else logList).filterLogs(customSearch)
             mAdapter.updateList(storedLogList)
         })
 
     }
 
-    private fun getFilteredLogs(logList: List<LogDataHolder>): List<LogDataHolder> {
-        return logList.filter { dataHolder ->
-            dataHolder.creationDate.toString().contains(filterString) ||
-            dataHolder.extraInfo?.contains(filterString) ?: false ||
-            dataHolder.message.contains(filterString) ||
-            dataHolder.id.contains(filterString)
+    //------------------------------ Factory ------------------------------
+
+    companion object {
+        fun newInstance(type: LogType?, itemCallback: SpecificItemCallback): InfoListFragment {
+            val args = Bundle().apply { putSerializable(LOG_TYPE_ARG, type) }
+            return InfoListFragment().apply {
+                arguments = args
+                specificItemCallback = itemCallback
+            }
         }
     }
 }

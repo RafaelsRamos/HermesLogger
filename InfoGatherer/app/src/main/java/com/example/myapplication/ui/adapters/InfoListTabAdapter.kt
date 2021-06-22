@@ -10,5 +10,7 @@ class InfoListTabAdapter(fragment: Fragment, private val specificItemCallback: S
 
     override fun getItemCount() = 6
 
-    override fun createFragment(position: Int) = InfoListFragment(if (position == 0) null else LogType.values()[position - 1], specificItemCallback)
+    override fun createFragment(position: Int): Fragment {
+        return InfoListFragment.newInstance(if (position == 0) null else LogType.values()[position - 1], specificItemCallback)
+    }
 }
