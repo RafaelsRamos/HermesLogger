@@ -29,7 +29,7 @@
         android:layout_height="@dimen/search_icons_size"
         android:layout_marginEnd="14dp"
         android:alpha="0.8"
-        android:src="@drawable/ic_caps_search_disabled"
+        android:src="@drawable/ic_match_case_disabled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

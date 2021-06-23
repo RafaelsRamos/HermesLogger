@@ -160,7 +160,7 @@ class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), SpecificIt
     }
 
     private fun updateUI() {
-        val capsDrawableRes = if (customSearch.ignoreCase) R.drawable.ic_caps_search_enabled else R.drawable.ic_caps_search_disabled
+        val capsDrawableRes = if (customSearch.ignoreCase) R.drawable.ic_match_case_enabled else R.drawable.ic_match_case_disabled
         capsSearchImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), capsDrawableRes))
     }
 }
