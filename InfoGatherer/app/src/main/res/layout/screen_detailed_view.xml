@@ -22,6 +22,16 @@
         android:focusable="true"
         android:clickable="true">
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="6dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/typeName" />
+
         <ImageView
             android:id="@+id/back"
             android:layout_width="30dp"
@@ -60,38 +70,25 @@
             android:id="@+id/typeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto_bold"
+            android:text="@{ logDataHolder.type.name }"
+            android:textColor="@color/black"
             android:textSize="17sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/typeIcon"
-            android:text="@{ logDataHolder.type.name }"
             tools:text="Success" />
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/typeName"
-            android:textSize="13sp"
-            app:textCreationDate="@{ logDataHolder.creationDate }"
-            tools:text="25/10/2000" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date">
+            app:layout_constraintTop_toBottomOf="@id/divider">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,12 +96,23 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/typeName"
+                    android:textSize="13sp"
+                    app:textCreationDate="@{ logDataHolder.creationDate }"
+                    tools:text="25/10/2000" />
+
+                <TextView
                     style="@style/DetailsMessageFont"
                     android:id="@+id/message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
                     android:text="@{ logDataHolder.message }"
                     tools:text="message" />
@@ -114,8 +122,7 @@
                     android:id="@+id/extraInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@{ logDataHolder.extraInfo }"
                     tools:text="extra info" />
@@ -124,8 +131,7 @@
                     android:id="@+id/generic_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="10dp"
                     android:text="@{ logDataHolder.genericInfo }"

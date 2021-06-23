@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuil
     private val durationText get() = durationEditText.text.toString().toIntOrNull() ?: LongToastDuration
     private val messageText get() = messageEditText.text.toString()
     private val extraMessageText get() = extraInfoEditText.text.toString()
-
     private val canPassActivity get() = passActivityCheckBox.isChecked
 
     private val duration get() = when (radioGroup.checkedRadioButtonId) {
@@ -104,44 +103,23 @@ class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuil
 
     // -------------------------- Random samples --------------------------
 
-    private val successLogSample by lazy {
-        Runnable {
-            Toaster.success().withMessage("Success sample message").withExtraInfo("Success extra info").show(this, this)
-        }
-    }
+    private val successLogSample by lazy { Runnable { randomizeToaster(Toaster.success()) } }
 
-    private val errorLogSample by lazy {
-        Runnable {
-            Toaster.error().withMessage("Error sample message").withExtraInfo("Error extra info").show(this, this)
-        }
-    }
+    private val errorLogSample by lazy { Runnable { randomizeToaster(Toaster.error()) } }
 
-    private val warningLogSample by lazy {
-        Runnable {
-            Toaster.warning().withMessage("Warning sample message").withExtraInfo("Warning extra info").show(this, this)
-        }
-    }
+    private val warningLogSample by lazy { Runnable { randomizeToaster(Toaster.warning()) } }
 
-    private val infoLogSample by lazy {
-        Runnable {
-            Toaster.info().withMessage("Info sample message").withExtraInfo("Info extra info").show(this, this)
-        }
-    }
+    private val infoLogSample by lazy { Runnable { randomizeToaster(Toaster.info()) } }
 
-    private val debugLogSample by lazy {
-        Runnable {
-            Toaster.debug().withMessage("Debug sample message").withExtraInfo("Debug extra info").show(this, this)
-        }
-    }
+    private val debugLogSample by lazy { Runnable { randomizeToaster(Toaster.debug()) } }
 
-    private val scheduleFireLogs by lazy {
-        Runnable {
-            scheduleAutomaticLogs()
-        }
-    }
-
+    private val scheduleFireLogs by lazy { Runnable { scheduleAutomaticLogs() } }
 
     // -------------------------- Helper methods --------------------------
+
+    private fun randomizeToaster(toastBuilder: Toaster.Builder) {
+        toastBuilder.withMessage(RandomMessages.getSample).withExtraInfo(RandomExtraInfo.getSample).show(this, this)
+    }
 
     private fun scheduleAutomaticLogs() {
         Math.random()

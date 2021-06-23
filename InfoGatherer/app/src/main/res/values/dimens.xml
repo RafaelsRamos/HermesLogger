@@ -17,6 +17,6 @@
 
     <dimen name="search_icons_size">20dp</dimen>
 
-    <dimen name="background_alpha">0.2</dimen>
+    <dimen name="background_alpha">0.3</dimen>
 
 </resources>
