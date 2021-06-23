@@ -1,5 +1,8 @@
 package com.example.myapplication.ui.components
 
+import android.animation.Animator
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -8,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -15,6 +19,7 @@ import com.example.myapplication.R
 import com.example.myapplication.callbacks.FragmentCommunicator
 import com.example.myapplication.managers.OverviewStateHolderUpdater
 import com.example.myapplication.ui.fragments.InfoOverviewFragment
+
 
 class OverviewLayout private constructor(
     context: Context,
@@ -74,7 +79,10 @@ class OverviewLayout private constructor(
         loadFragment(overviewFragment)
         insideLayout.visibility = View.VISIBLE
         background.visibility = View.VISIBLE
-        infoOverviewTab.background = ContextCompat.getDrawable(context, R.drawable.half_circle_pressed)
+        infoOverviewTab.background = ContextCompat.getDrawable(
+            context,
+            R.drawable.half_circle_pressed
+        )
     }
 
     //--------------------------- Commands ---------------------------
@@ -112,7 +120,10 @@ class OverviewLayout private constructor(
     }
 
     private fun getTabDrawable(state: Boolean): Drawable? {
-        return ContextCompat.getDrawable(context, if (state) R.drawable.half_circle_pressed else R.drawable.half_circle_unpressed)
+        return ContextCompat.getDrawable(
+            context,
+            if (state) R.drawable.half_circle_pressed else R.drawable.half_circle_unpressed
+        )
     }
 
     //----------- FragmentCommunicator implementation -----------

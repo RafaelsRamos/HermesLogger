@@ -13,6 +13,7 @@ import com.example.myapplication.R
 import com.example.myapplication.callbacks.SpecificItemCallback
 import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.utils.DateFormat
+import com.example.myapplication.utils.animateCopyToClipboardColor
 import com.example.myapplication.utils.copyToClipboard
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
@@ -40,6 +41,7 @@ class InfoRecyclerAdapter(private var logList: List<LogDataHolder>, activity: Ac
         holder.copy.setOnClickListener {
             actReference.get()?.run {
                 copyToClipboard(this, item)
+                animateCopyToClipboardColor(it)
             } ?: Log.e(TAG, "There is no valid instance of an activity. data could not be copied successfully")
         }
         holder.entireView.setOnClickListener { callback.onSpecificItemClicked(item) }
