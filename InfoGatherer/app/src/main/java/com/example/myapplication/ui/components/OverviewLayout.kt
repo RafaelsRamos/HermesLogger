@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -14,7 +15,6 @@ import com.example.myapplication.R
 import com.example.myapplication.callbacks.FragmentCommunicator
 import com.example.myapplication.managers.OverviewStateHolderUpdater
 import com.example.myapplication.ui.fragments.InfoOverviewFragment
-import kotlinx.android.synthetic.main.screen_overview_background.view.*
 
 class OverviewLayout private constructor(
     context: Context,
@@ -22,13 +22,18 @@ class OverviewLayout private constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), FragmentCommunicator {
 
-    private var childView: View? = null
+    private var childView: View = inflate(context, R.layout.screen_overview_background, this)
 
     private var isOverviewVisible = false
 
-    private val fragmentActivity get() = context as? FragmentActivity
-
     private val stateHolderInstance = OverviewStateHolderUpdater()
+
+    private val insideLayout by lazy { childView.findViewById<ConstraintLayout>(R.id.insideLayout) }
+    private val infoOverviewTab by lazy { childView.findViewById<RelativeLayout>(R.id.infoOverviewTab) }
+    private val close by lazy { childView.findViewById<RelativeLayout>(R.id.close) }
+    private val background by lazy { childView.findViewById<View>(R.id.background) }
+
+    private val fragmentActivity get() = context as? FragmentActivity
 
     //-------------------------- Factory --------------------------
 
@@ -50,13 +55,13 @@ class OverviewLayout private constructor(
     //------------------- Initialization -------------------
 
     init {
-        childView = inflate(context, R.layout.screen_overview_background, this)
         loadOverview()
         setListeners()
     }
 
     private fun setListeners() {
         close.setOnClickListener { close() }
+        background.setOnClickListener { close() }
         infoOverviewTab.setOnClickListener { openOverview() }
     }
 
@@ -68,6 +73,7 @@ class OverviewLayout private constructor(
 
         loadFragment(overviewFragment)
         insideLayout.visibility = View.VISIBLE
+        background.visibility = View.VISIBLE
         infoOverviewTab.background = ContextCompat.getDrawable(context, R.drawable.half_circle_pressed)
     }
 
@@ -75,6 +81,7 @@ class OverviewLayout private constructor(
 
     private fun close() {
         this.removeView(childView)
+        background.visibility = View.GONE
         insideLayout.visibility = View.GONE
         setTabsState(show = false)
     }
