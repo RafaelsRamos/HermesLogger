@@ -65,8 +65,12 @@ class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuil
             }
         }
 
-        // Add OverviewLayout
-        OverviewLayout.create(this)
+        // If we are in a debug environment, inform the toaster we are in one and initialize the OverviewLayout
+        val isDebugEnvironment = true
+        if (isDebugEnvironment) {
+            Toaster.initialize(true)
+            OverviewLayout.create(this)
+        }
     }
 
     override fun buildGenericInfo(): String {

@@ -20,9 +20,9 @@ const val LongToastDuration = 3500
  */
 const val ShortToastDuration = 2000
 
-class Toaster {
+class Toaster(internal val isDebugEnvironment: Boolean = false) {
 
-    val infoHolder = InfoHolder()
+    internal val infoHolder = InfoHolder()
 
     lateinit var actReference: WeakReference<Activity>
 
@@ -34,11 +34,23 @@ class Toaster {
 
     private val activity get() = if (this::actReference.isInitialized) actReference.get() else null
 
+    init {
+        if (isDebugEnvironment) {
+            Log.i("Toaster", "Current environment is a debug environment. Ready to start sharing info.")
+        } else {
+            Log.i("Toaster", "Current environment is not a debug environment. Nothing will be shared or stored.")
+        }
+    }
+
     //----------------------------- Controls -----------------------------
 
     companion object {
 
-        var instance = Toaster()
+        fun initialize(isDebugEnvironment: Boolean) {
+            instance = Toaster(isDebugEnvironment)
+        }
+
+        internal var instance = Toaster()
 
         fun success() = Builder().apply { type = LogType.Success }
 
@@ -128,6 +140,10 @@ class Toaster {
 
         @JvmOverloads
         fun show(activity: Activity? = null, genericInfoBuilder: CopyToClipboardGenericInfoBuilder? = null) {
+
+            if (!instance.isDebugEnvironment) {
+                return
+            }
 
             activity?.run {
                 // Update activity reference

@@ -8,7 +8,7 @@ import com.example.myapplication.utils.default
 /**
  * Class responsible for storing the logs adding during the session
  */
-class InfoHolder {
+internal class InfoHolder {
 
     /**
      * LiveData instance that contains all the logs added during a session
