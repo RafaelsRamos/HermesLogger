@@ -19,4 +19,8 @@
 
     <dimen name="background_alpha">0.3</dimen>
 
+    <dimen name="toast_bottom_margin">20dp</dimen>
+    <dimen name="toast_horizontal_margins">20dp</dimen>
+    <dimen name="toast_top_margin">20dp</dimen>
+
 </resources>

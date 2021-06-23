@@ -37,6 +37,10 @@ class DebugToast private constructor(activity: Activity, private val dataHolder:
 
     private val activityReference = WeakReference(activity)
 
+    private val horizontalMargins = activity.resources.getDimension(R.dimen.toast_horizontal_margins).toInt()
+    private val downMargin = activity.resources.getDimension(R.dimen.toast_bottom_margin).toInt()
+    private val upMargin = activity.resources.getDimension(R.dimen.toast_top_margin).toInt()
+
     companion object {
         @JvmStatic
         fun show(@NonNull activity: Activity, dataHolder: LogDataHolder, gravity: Int = Gravity.BOTTOM) = DebugToast(activity, dataHolder). apply { mGravity = gravity }
@@ -75,8 +79,8 @@ class DebugToast private constructor(activity: Activity, private val dataHolder:
     private fun buildLayoutParams() = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
         gravity = mGravity or Gravity.CENTER_HORIZONTAL
         when (mGravity) {
-            Gravity.BOTTOM -> setMargins(0, 0, 0, VerticalMargin)
-            Gravity.TOP -> setMargins(0, VerticalMargin, 0, 0)
+            Gravity.BOTTOM -> setMargins(horizontalMargins, 0, horizontalMargins, downMargin)
+            Gravity.TOP -> setMargins(horizontalMargins, upMargin, horizontalMargins, 0)
         }
     }
 

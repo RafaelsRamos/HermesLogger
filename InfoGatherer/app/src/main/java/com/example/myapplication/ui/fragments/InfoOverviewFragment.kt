@@ -134,7 +134,7 @@ class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), SpecificIt
     override fun onSpecificItemClicked(item: LogDataHolder) {
         val fragment = InfoDetailedViewFragment(item)
         requireActivity().supportFragmentManager.beginTransaction().apply {
-            replace(R.id.runtimeInfoContentContainer, fragment)
+            add(R.id.runtimeInfoContentContainer, fragment)
             addToBackStack(null)
             commit()
         }
