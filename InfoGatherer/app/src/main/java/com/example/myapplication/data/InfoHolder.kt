@@ -24,7 +24,7 @@ internal class InfoHolder {
     private var nrOfSuccesses = 0
     private var nrOfWarnings = 0
     private var nrOfErrors = 0
-    private var nrOfOthers = 0
+    private var nrOfInfo = 0
 
     //------------------------ Controls ------------------------
 
@@ -39,7 +39,7 @@ internal class InfoHolder {
             LogType.Success -> nrOfSuccesses
             LogType.Warning -> nrOfWarnings
             LogType.Error -> nrOfErrors
-            LogType.Info -> nrOfOthers
+            LogType.Info -> nrOfInfo
         }
 
     /**
@@ -64,7 +64,38 @@ internal class InfoHolder {
         LogType.Success -> "S-${++nrOfSuccesses}"
         LogType.Warning -> "W-${++nrOfWarnings}"
         LogType.Error -> "E-${++nrOfErrors}"
-        LogType.Info -> "I-${++nrOfOthers}"
+        LogType.Info -> "I-${++nrOfInfo}"
+    }
+
+    private fun decreaseLogCountOfId(type: LogType) = when (type) {
+        LogType.Debug -> --nrOfDebugs
+        LogType.Success -> --nrOfSuccesses
+        LogType.Warning -> --nrOfWarnings
+        LogType.Error -> --nrOfErrors
+        LogType.Info -> --nrOfInfo
+    }
+
+    private fun resetAllLogCounters() {
+        nrOfDebugs = 0
+        nrOfSuccesses = 0
+        nrOfWarnings = 0
+        nrOfErrors = 0
+        nrOfInfo = 0
+    }
+
+    fun removeLogById(id: String) {
+        val indexOfLog = logList.indexOfFirst { id == it.id }
+        if (indexOfLog >= 0) {
+            decreaseLogCountOfId(logList[indexOfLog].type)
+            logList.removeAt(indexOfLog)
+            infoLiveData.postValue(logList)
+        }
+    }
+
+    fun clearAllLogs() {
+        logList.clear()
+        resetAllLogCounters()
+        infoLiveData.postValue(logList)
     }
 
 }

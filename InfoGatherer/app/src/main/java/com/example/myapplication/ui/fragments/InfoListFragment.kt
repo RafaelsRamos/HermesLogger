@@ -33,7 +33,7 @@ class InfoListFragment : Fragment(R.layout.screen_info_list) {
     private val logList: List<LogDataHolder>
         get() = type?.let { infoHolder.getLogListByType(it).reversed() } ?: infoHolder.logList.reversed()
 
-    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(logList, activity!!, specificItemCallback) }
+    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(logList.toMutableList(), activity!!, specificItemCallback, this) }
     private val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(activity!!) }
     private val recyclerView: RecyclerView by lazy { requireView().findViewById<RecyclerView>(R.id.recycler) }
 

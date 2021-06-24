@@ -8,10 +8,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.callbacks.SpecificItemCallback
+import com.example.myapplication.debugToaster.Toaster
 import com.example.myapplication.models.LogDataHolder
+import com.example.myapplication.ui.components.OverviewLayout
 import com.example.myapplication.utils.DateFormat
 import com.example.myapplication.utils.animateCopyToClipboardColor
 import com.example.myapplication.utils.copyToClipboard
@@ -20,9 +24,11 @@ import java.text.SimpleDateFormat
 
 private const val TAG = "InfoRecyclerAdapter"
 
-class InfoRecyclerAdapter(private var logList: List<LogDataHolder>, activity: Activity, private val callback: SpecificItemCallback): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
+class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolder>, activity: Activity, private val callback: SpecificItemCallback, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
 
     private val actReference = WeakReference(activity)
+
+    private val infoHolder get() = Toaster.instance.infoHolder
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -34,17 +40,34 @@ class InfoRecyclerAdapter(private var logList: List<LogDataHolder>, activity: Ac
         val item = logList[position]
         val format = SimpleDateFormat(DateFormat)
 
+        val context = holder.entireView.context
+
         holder.title.text = item.message
         holder.date.text = format.format(item.creationDate.time)
         holder.id.text = item.id
-        holder.icon.setImageDrawable(ContextCompat.getDrawable(holder.entireView.context, item.type.drawableResource))
-        holder.copy.setOnClickListener {
-            actReference.get()?.run {
-                copyToClipboard(this, item)
-                animateCopyToClipboardColor(it)
-            } ?: Log.e(TAG, "There is no valid instance of an activity. data could not be copied successfully")
+        holder.icon.setImageDrawable(ContextCompat.getDrawable(context, item.type.drawableResource))
+        holder.copyOrRemove.setOnClickListener {
+
+            if (OverviewLayout.removeModeLiveData.value == true) {
+                removeItemInPosition(position)
+                infoHolder.removeLogById(item.id)
+            } else {
+
+                actReference.get()?.run {
+                    copyToClipboard(this, item)
+                    animateCopyToClipboardColor(it)
+                } ?: Log.e(TAG, "There is no valid instance of an activity. data could not be copied successfully")
+            }
         }
         holder.entireView.setOnClickListener { callback.onSpecificItemClicked(item) }
+
+        // Observe changes on remove mode state change live data
+        OverviewLayout.removeModeLiveData.observe(lifecycleOwner, Observer { isEnabled ->
+            holder.copyOrRemove.setImageDrawable(
+                ContextCompat.getDrawable(context, getResource(isEnabled))
+            )
+        })
+
     }
 
     override fun getItemCount() = logList.size
@@ -54,17 +77,28 @@ class InfoRecyclerAdapter(private var logList: List<LogDataHolder>, activity: Ac
         val icon: ImageView = itemView.findViewById(R.id.icon)
         val title: TextView = itemView.findViewById(R.id.title)
         val date: TextView = itemView.findViewById(R.id.date)
-        val copy: View = itemView.findViewById(R.id.copy_image_view)
+        val copyOrRemove: ImageView = itemView.findViewById(R.id.copy_image_view)
         val id: TextView = itemView.findViewById(R.id.log_id_tv)
     }
 
     fun updateList(logList: List<LogDataHolder>) {
-        this.logList = logList
+        this.logList = logList.toMutableList()
         notifyDataSetChanged()
     }
 
     fun updateListOnTop(logList: List<LogDataHolder>, nrOfItemsAdded: Int) {
-        this.logList = logList
+        this.logList = logList.toMutableList()
         notifyItemRangeInserted(0, nrOfItemsAdded)
     }
+
+    fun removeItemInPosition(pos: Int) {
+        this.logList.removeAt(pos)
+        notifyDataSetChanged()
+        //notifyItemRemoved(pos)
+    }
+
+    //---------------- Helper methods ----------------
+
+    private fun getResource(isRemoveModeEnabled: Boolean) = if (isRemoveModeEnabled) R.drawable.ic_remove else R.drawable.ic_copy
+
 }

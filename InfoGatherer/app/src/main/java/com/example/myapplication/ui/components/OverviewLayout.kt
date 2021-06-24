@@ -1,24 +1,25 @@
 package com.example.myapplication.ui.components
 
-import android.animation.Animator
-import android.animation.ArgbEvaluator
-import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.R
 import com.example.myapplication.callbacks.FragmentCommunicator
+import com.example.myapplication.debugToaster.Toaster
 import com.example.myapplication.managers.OverviewStateHolderUpdater
 import com.example.myapplication.ui.fragments.InfoOverviewFragment
+import com.example.myapplication.utils.default
 
 
 class OverviewLayout private constructor(
@@ -30,15 +31,22 @@ class OverviewLayout private constructor(
     private var childView: View = inflate(context, R.layout.screen_overview_background, this)
 
     private var isOverviewVisible = false
+    private var isRemoveModeEnabled = false
 
     private val stateHolderInstance = OverviewStateHolderUpdater()
 
-    private val insideLayout by lazy { childView.findViewById<ConstraintLayout>(R.id.insideLayout) }
-    private val infoOverviewTab by lazy { childView.findViewById<RelativeLayout>(R.id.infoOverviewTab) }
+    private val insideLayout by lazy { childView.findViewById<ConstraintLayout>(R.id.inside_layout) }
+    private val infoOverviewTab by lazy { childView.findViewById<RelativeLayout>(R.id.info_overview_tab) }
     private val close by lazy { childView.findViewById<RelativeLayout>(R.id.close) }
     private val background by lazy { childView.findViewById<View>(R.id.background) }
 
+    private val removeImageView by lazy { childView.findViewById<ImageView>(R.id.remove_image_view) }
+    private val removeAllTextView by lazy { childView.findViewById<TextView>(R.id.remove_all_text_view) }
+
     private val fragmentActivity get() = context as? FragmentActivity
+
+    private val toaster get() = Toaster.instance
+    private val infoHolder get() = toaster.infoHolder
 
     //-------------------------- Factory --------------------------
 
@@ -55,6 +63,11 @@ class OverviewLayout private constructor(
             return OverviewLayout(activity).also {container.addView(it) }
         }
 
+        /**
+         * Used to inform the items that the remove-mode was enabled or disabled
+         */
+        internal val removeModeLiveData = MutableLiveData<Boolean>().default(false)
+
     }
 
     //------------------- Initialization -------------------
@@ -68,6 +81,17 @@ class OverviewLayout private constructor(
         close.setOnClickListener { close() }
         background.setOnClickListener { close() }
         infoOverviewTab.setOnClickListener { openOverview() }
+        removeImageView.setOnClickListener {
+            isRemoveModeEnabled = !isRemoveModeEnabled
+            removeAllTextView.visibility = if (isRemoveModeEnabled) View.VISIBLE else View.GONE
+            removeModeLiveData.postValue(isRemoveModeEnabled)
+        }
+        removeAllTextView.setOnClickListener {
+            // Remove all logs
+            infoHolder.clearAllLogs()
+            // Clear toasts queue
+            toaster.clearQueue()
+        }
     }
 
     private fun loadOverview() {
