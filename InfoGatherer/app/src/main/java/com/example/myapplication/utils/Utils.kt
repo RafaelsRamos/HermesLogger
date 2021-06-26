@@ -18,7 +18,7 @@ const val DateFormat = "dd/MM 'at' HH:mm:ss.SSS"
  * @param activity      Activity reference
  * @param dataHolder    Instance of [LogDataHolder]
  */
-fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
+internal fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
     val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
     val info = buildInfo(dataHolder)
     val clip = ClipData.newPlainText(CopyDefaultLabel, info)
@@ -30,7 +30,7 @@ fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
  * @param dataHolder Log data holder
  * @return  String that contains information from the log data holder received
  */
-fun buildInfo(dataHolder: LogDataHolder) = buildString {
+internal fun buildInfo(dataHolder: LogDataHolder) = buildString {
         append("${dataHolder.creationDate} - ${dataHolder.type} Message: ${dataHolder.message} ")
         dataHolder.genericInfo?.let { append("Generic information: $it ") }
         dataHolder.extraInfo?.let { append("Extra information: $it.") }

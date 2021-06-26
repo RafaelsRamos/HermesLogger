@@ -12,7 +12,7 @@ import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.utils.animateCopyToClipboardColor
 import com.example.myapplication.utils.copyToClipboard
 
-class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragment() {
+internal class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragment() {
 
     private lateinit var binding: ScreenDetailedViewBinding
 

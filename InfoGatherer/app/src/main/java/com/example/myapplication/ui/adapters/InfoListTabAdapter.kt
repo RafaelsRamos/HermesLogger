@@ -6,7 +6,7 @@ import com.example.myapplication.callbacks.SpecificItemCallback
 import com.example.myapplication.debugToaster.LogType
 import com.example.myapplication.ui.fragments.InfoListFragment
 
-class InfoListTabAdapter(fragment: Fragment, private val specificItemCallback: SpecificItemCallback) : FragmentStateAdapter(fragment) {
+internal class InfoListTabAdapter(fragment: Fragment, private val specificItemCallback: SpecificItemCallback) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount() = 6
 

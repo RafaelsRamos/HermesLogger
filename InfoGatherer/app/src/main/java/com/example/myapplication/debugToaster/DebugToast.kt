@@ -30,7 +30,7 @@ private const val InactiveToastAlpha = 0f
 private const val VerticalMargin = 100
 private const val HorizontalMargin = 15
 
-class DebugToast private constructor(activity: Activity, private val dataHolder: LogDataHolder) : FrameLayout(activity) {
+internal class DebugToast private constructor(activity: Activity, private val dataHolder: LogDataHolder) : FrameLayout(activity) {
 
     private var binding: ToastLayoutBinding
     private var mGravity = Gravity.BOTTOM

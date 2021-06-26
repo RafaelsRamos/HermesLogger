@@ -5,8 +5,9 @@ import com.example.myapplication.ui.search.CustomSearch
 
 /**
  * Class responsible for storing the up-to-date states.
+ * states such as current search content, ect.
  */
-class OverviewStateHolderUpdater: StateStorageUpdater {
+internal class OverviewStateHolderUpdater: StateStorageUpdater {
 
     val currentContent get() =  customSearch.filterContent
     var customSearch = CustomSearch()

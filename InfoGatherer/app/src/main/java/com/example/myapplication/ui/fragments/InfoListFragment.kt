@@ -18,13 +18,13 @@ import com.example.myapplication.ui.search.CustomSearch
 
 private const val LOG_TYPE_ARG = "LogTypeArg"
 
-class InfoListFragment : Fragment(R.layout.screen_info_list) {
+internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
     private lateinit var specificItemCallback: SpecificItemCallback
     private var type: LogType? = null
     private var filterString = EMPTY_STRING
 
-    var storedLogList: List<LogDataHolder> = mutableListOf()
+    private var storedLogList: List<LogDataHolder> = mutableListOf()
 
     private var customSearch = CustomSearch()
     private var nrOfLogs = 0

@@ -5,7 +5,7 @@ import com.example.myapplication.ui.search.CustomSearch
 import com.example.myapplication.ui.search.contains
 import java.util.*
 
-data class LogDataHolder(val message: String, val duration: Long, val type: LogType, var extraInfo: String? = null, var genericInfo: String? = null) {
+internal data class LogDataHolder(val message: String, val duration: Long, val type: LogType, var extraInfo: String? = null, var genericInfo: String? = null) {
 
     val creationDate: Date = Calendar.getInstance().time
     var id: String = ""
@@ -15,4 +15,4 @@ data class LogDataHolder(val message: String, val duration: Long, val type: LogT
 /**
  * Filter the logs on [this] according to [CustomSearch]
  */
-fun List<LogDataHolder>.filterLogs(cs: CustomSearch) = filter { dataHolder -> dataHolder.contains(cs) }
+internal fun List<LogDataHolder>.filterLogs(cs: CustomSearch) = filter { dataHolder -> dataHolder.contains(cs) }

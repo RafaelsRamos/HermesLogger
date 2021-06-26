@@ -10,7 +10,7 @@ import com.google.android.material.tabs.TabLayout
  * Class responsible for handling the login of showing and hiding
  * notifications badges on the tabs
  */
-class TabNotificationsHandler(private val tabLayout: TabLayout) {
+internal class TabNotificationsHandler(private val tabLayout: TabLayout) {
 
     private val infoHolder get() = Toaster.instance.infoHolder
 

@@ -3,7 +3,7 @@ package com.example.myapplication.ui.search
 import com.example.myapplication.models.LogDataHolder
 import com.example.myapplication.utils.EMPTY_STRING
 
-class CustomSearch {
+internal class CustomSearch {
 
     var ignoreCase = true
 
@@ -13,7 +13,7 @@ class CustomSearch {
 
 }
 
-fun LogDataHolder.contains(cs: CustomSearch): Boolean {
+internal fun LogDataHolder.contains(cs: CustomSearch): Boolean {
 
     return if (cs.isRegexEnabled) {
         creationDate.toString().contains(cs.filterContent.toRegex())

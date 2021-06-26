@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @BindingAdapter(value = ["logIcon", "applyTint"], requireAll = false)
-fun setLogIcon(imageView: ImageView, logType: LogType, tintColorRes: Int = NO_RES) {
+internal fun setLogIcon(imageView: ImageView, logType: LogType, tintColorRes: Int = NO_RES) {
     imageView.run {
         setImageDrawable(ContextCompat.getDrawable(context, logType.drawableResource))
 

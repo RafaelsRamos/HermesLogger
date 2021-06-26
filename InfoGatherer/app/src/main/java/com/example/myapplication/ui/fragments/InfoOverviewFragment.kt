@@ -30,7 +30,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 const val EMPTY_STRING = ""
 private const val SEARCH_STRING = "Search"
 
-class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), SpecificItemCallback {
+internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), SpecificItemCallback {
 
     companion object {
         val customSearchLiveData = MutableLiveData<CustomSearch>().default(CustomSearch())

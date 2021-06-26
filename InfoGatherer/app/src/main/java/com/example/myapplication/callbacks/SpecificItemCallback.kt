@@ -5,7 +5,7 @@ import com.example.myapplication.models.LogDataHolder
 /**
  * Callback for logs' Overview
  */
-interface SpecificItemCallback {
+internal interface SpecificItemCallback {
 
     /**
      * Method invoked on Specific item clicked

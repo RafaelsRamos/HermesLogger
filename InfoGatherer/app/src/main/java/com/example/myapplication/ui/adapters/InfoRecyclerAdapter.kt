@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat
 
 private const val TAG = "InfoRecyclerAdapter"
 
-class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolder>, activity: Activity, private val callback: SpecificItemCallback, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
+internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolder>, activity: Activity, private val callback: SpecificItemCallback, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
 
     private val actReference = WeakReference(activity)
 
@@ -91,10 +91,9 @@ class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolder>, activ
         notifyItemRangeInserted(0, nrOfItemsAdded)
     }
 
-    fun removeItemInPosition(pos: Int) {
+    private fun removeItemInPosition(pos: Int) {
         this.logList.removeAt(pos)
         notifyDataSetChanged()
-        //notifyItemRemoved(pos)
     }
 
     //---------------- Helper methods ----------------

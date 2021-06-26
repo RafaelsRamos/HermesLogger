@@ -5,7 +5,7 @@ import com.example.myapplication.ui.search.CustomSearch
 /**
  * Interface used to update state holders.
  */
-interface StateStorageUpdater {
+internal interface StateStorageUpdater {
 
     /**
      * When the search content changes, this method is called to update string content on the
