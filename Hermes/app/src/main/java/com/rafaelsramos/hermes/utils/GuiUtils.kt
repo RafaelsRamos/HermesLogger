@@ -1,11 +1,11 @@
-package com.example.myapplication.utils
+package com.rafaelsramos.hermes.utils
 
 import android.animation.Animator
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.example.myapplication.R
+import com.rafaelsramos.hermes.R
 
 private const val COPY_TO_CLIPBOARD_ANIMATION_DURATION = 250L
 

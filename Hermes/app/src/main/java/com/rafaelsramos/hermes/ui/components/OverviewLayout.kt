@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.components
+package com.rafaelsramos.hermes.ui.components
 
 import android.app.Activity
 import android.content.Context
@@ -14,12 +14,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.R
-import com.example.myapplication.callbacks.FragmentCommunicator
-import com.example.myapplication.debugToaster.Toaster
-import com.example.myapplication.managers.OverviewStateHolderUpdater
-import com.example.myapplication.ui.fragments.InfoOverviewFragment
-import com.example.myapplication.utils.default
+import com.rafaelsramos.hermes.R
+import com.rafaelsramos.hermes.callbacks.FragmentCommunicator
+import com.rafaelsramos.hermes.debugToaster.Toaster
+import com.rafaelsramos.hermes.managers.OverviewStateHolderUpdater
+import com.rafaelsramos.hermes.ui.fragments.InfoOverviewFragment
+import com.rafaelsramos.hermes.utils.default
 
 
 class OverviewLayout private constructor(

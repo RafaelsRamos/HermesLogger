@@ -1,7 +1,7 @@
-package com.example.myapplication.managers
+package com.rafaelsramos.hermes.managers
 
-import com.example.myapplication.callbacks.StateStorageUpdater
-import com.example.myapplication.ui.search.CustomSearch
+import com.rafaelsramos.hermes.callbacks.StateStorageUpdater
+import com.rafaelsramos.hermes.ui.search.CustomSearch
 
 /**
  * Class responsible for storing the up-to-date states.

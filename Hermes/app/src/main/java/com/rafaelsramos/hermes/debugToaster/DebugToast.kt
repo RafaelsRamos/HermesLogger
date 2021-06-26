@@ -1,4 +1,4 @@
-package com.example.myapplication.debugToaster
+package com.rafaelsramos.hermes.debugToaster
 
 import android.app.Activity
 import android.os.Handler
@@ -12,10 +12,10 @@ import android.view.animation.Animation
 import android.widget.FrameLayout
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
-import com.example.myapplication.R
-import com.example.myapplication.databinding.ToastLayoutBinding
-import com.example.myapplication.models.LogDataHolder
-import com.example.myapplication.utils.copyToClipboard
+import com.rafaelsramos.hermes.R
+import com.rafaelsramos.hermes.databinding.ToastLayoutBinding
+import com.rafaelsramos.hermes.models.LogDataHolder
+import com.rafaelsramos.hermes.utils.copyToClipboard
 import java.lang.ref.WeakReference
 
 

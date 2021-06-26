@@ -1,7 +1,7 @@
-package com.example.myapplication.debugToaster
+package com.rafaelsramos.hermes.debugToaster
 
 import androidx.annotation.DrawableRes
-import com.example.myapplication.R
+import com.rafaelsramos.hermes.R
 
 internal enum class LogType(@JvmField @DrawableRes val drawableResource: Int) {
     Info(R.drawable.ic_info),

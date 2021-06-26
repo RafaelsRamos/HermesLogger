@@ -1,11 +1,11 @@
-package com.example.myapplication.debugToaster
+package com.rafaelsramos.hermes.debugToaster
 
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.example.myapplication.data.InfoHolder
-import com.example.myapplication.models.LogDataHolder
+import com.rafaelsramos.hermes.data.InfoHolder
+import com.rafaelsramos.hermes.models.LogDataHolder
 import java.lang.ref.WeakReference
 import java.util.*
 

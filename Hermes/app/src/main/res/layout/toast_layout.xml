@@ -5,12 +5,12 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="com.example.myapplication.debugToaster.LogType"/>
-        <import type="com.example.myapplication.R"/>
-        <import type="com.example.myapplication.utils.UtilsKt"/>
+        <import type="com.rafaelsramos.hermes.debugToaster.LogType"/>
+        <import type="com.rafaelsramos.hermes.R"/>
+        <import type="com.rafaelsramos.hermes.utils.UtilsKt"/>
         <variable
             name="logDataHolder"
-            type="com.example.myapplication.models.LogDataHolder" />
+            type="com.rafaelsramos.hermes.models.LogDataHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

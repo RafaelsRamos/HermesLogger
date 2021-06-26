@@ -1,11 +1,11 @@
-package com.example.myapplication.utils
+package com.rafaelsramos.hermes.utils
 
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.models.LogDataHolder
+import com.rafaelsramos.hermes.models.LogDataHolder
 
 private const val CopyDefaultLabel = "Clipboard info"
 

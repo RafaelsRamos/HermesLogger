@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.adapters
+package com.rafaelsramos.hermes.ui.adapters
 
 import android.app.Activity
 import android.util.Log
@@ -11,14 +11,14 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.R
-import com.example.myapplication.callbacks.SpecificItemCallback
-import com.example.myapplication.debugToaster.Toaster
-import com.example.myapplication.models.LogDataHolder
-import com.example.myapplication.ui.components.OverviewLayout
-import com.example.myapplication.utils.DateFormat
-import com.example.myapplication.utils.animateCopyToClipboardColor
-import com.example.myapplication.utils.copyToClipboard
+import com.rafaelsramos.hermes.R
+import com.rafaelsramos.hermes.callbacks.SpecificItemCallback
+import com.rafaelsramos.hermes.debugToaster.Toaster
+import com.rafaelsramos.hermes.models.LogDataHolder
+import com.rafaelsramos.hermes.ui.components.OverviewLayout
+import com.rafaelsramos.hermes.utils.DateFormat
+import com.rafaelsramos.hermes.utils.animateCopyToClipboardColor
+import com.rafaelsramos.hermes.utils.copyToClipboard
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 

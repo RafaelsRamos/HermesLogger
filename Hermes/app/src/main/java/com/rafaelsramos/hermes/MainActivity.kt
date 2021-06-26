@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.rafaelsramos.hermes
 
 import android.content.res.Resources
 import android.os.Build
@@ -11,10 +11,10 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.debugToaster.LongToastDuration
-import com.example.myapplication.debugToaster.ShortToastDuration
-import com.example.myapplication.debugToaster.Toaster
-import com.example.myapplication.ui.components.OverviewLayout
+import com.rafaelsramos.hermes.debugToaster.LongToastDuration
+import com.rafaelsramos.hermes.debugToaster.ShortToastDuration
+import com.rafaelsramos.hermes.debugToaster.Toaster
+import com.rafaelsramos.hermes.ui.components.OverviewLayout
 
 private const val GENERATE_LOGS_TEXT = "Generate automatic logs"
 private const val STOP_GENERATING_LOGS_TEXT = "Stop generating automatic logs"

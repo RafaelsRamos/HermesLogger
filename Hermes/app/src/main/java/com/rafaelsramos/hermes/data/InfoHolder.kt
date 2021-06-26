@@ -1,9 +1,9 @@
-package com.example.myapplication.data
+package com.rafaelsramos.hermes.data
 
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.debugToaster.LogType
-import com.example.myapplication.models.LogDataHolder
-import com.example.myapplication.utils.default
+import com.rafaelsramos.hermes.debugToaster.LogType
+import com.rafaelsramos.hermes.models.LogDataHolder
+import com.rafaelsramos.hermes.utils.default
 
 /**
  * Class responsible for storing the logs adding during the session

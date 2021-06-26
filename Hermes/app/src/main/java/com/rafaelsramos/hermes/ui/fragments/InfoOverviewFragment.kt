@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.fragments
+package com.rafaelsramos.hermes.ui.fragments
 
 import android.os.Bundle
 import android.text.Editable
@@ -12,17 +12,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
-import com.example.myapplication.R
-import com.example.myapplication.callbacks.FragmentCommunicator
-import com.example.myapplication.callbacks.SpecificItemCallback
-import com.example.myapplication.debugToaster.LogType
-import com.example.myapplication.debugToaster.Toaster
-import com.example.myapplication.managers.OverviewStateHolderUpdater
-import com.example.myapplication.managers.TabNotificationsHandler
-import com.example.myapplication.models.LogDataHolder
-import com.example.myapplication.ui.adapters.InfoListTabAdapter
-import com.example.myapplication.ui.search.CustomSearch
-import com.example.myapplication.utils.default
+import com.rafaelsramos.hermes.R
+import com.rafaelsramos.hermes.callbacks.FragmentCommunicator
+import com.rafaelsramos.hermes.callbacks.SpecificItemCallback
+import com.rafaelsramos.hermes.debugToaster.LogType
+import com.rafaelsramos.hermes.debugToaster.Toaster
+import com.rafaelsramos.hermes.managers.OverviewStateHolderUpdater
+import com.rafaelsramos.hermes.managers.TabNotificationsHandler
+import com.rafaelsramos.hermes.models.LogDataHolder
+import com.rafaelsramos.hermes.ui.adapters.InfoListTabAdapter
+import com.rafaelsramos.hermes.ui.search.CustomSearch
+import com.rafaelsramos.hermes.utils.default
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -30,7 +30,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 const val EMPTY_STRING = ""
 private const val SEARCH_STRING = "Search"
 
-internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), SpecificItemCallback {
+internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview),
+    SpecificItemCallback {
 
     companion object {
         val customSearchLiveData = MutableLiveData<CustomSearch>().default(CustomSearch())

@@ -1,8 +1,8 @@
-package com.example.myapplication.models
+package com.rafaelsramos.hermes.models
 
-import com.example.myapplication.debugToaster.LogType
-import com.example.myapplication.ui.search.CustomSearch
-import com.example.myapplication.ui.search.contains
+import com.rafaelsramos.hermes.debugToaster.LogType
+import com.rafaelsramos.hermes.ui.search.CustomSearch
+import com.rafaelsramos.hermes.ui.search.contains
 import java.util.*
 
 internal data class LogDataHolder(val message: String, val duration: Long, val type: LogType, var extraInfo: String? = null, var genericInfo: String? = null) {

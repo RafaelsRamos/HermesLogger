@@ -1,4 +1,4 @@
-package com.example.myapplication.callbacks
+package com.rafaelsramos.hermes.callbacks
 
 /**
  * Interface used to communicate with fragment from outside

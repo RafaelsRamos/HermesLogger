@@ -1,12 +1,12 @@
-package com.example.myapplication.ui
+package com.rafaelsramos.hermes.ui
 
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
-import com.example.myapplication.debugToaster.LogType
-import com.example.myapplication.utils.DateFormat
-import com.example.myapplication.utils.NO_RES
+import com.rafaelsramos.hermes.debugToaster.LogType
+import com.rafaelsramos.hermes.utils.DateFormat
+import com.rafaelsramos.hermes.utils.NO_RES
 import java.text.SimpleDateFormat
 import java.util.*
 

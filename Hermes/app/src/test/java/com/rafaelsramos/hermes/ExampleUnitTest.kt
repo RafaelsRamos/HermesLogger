@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.rafaelsramos.hermes
 
 import org.junit.Test
 

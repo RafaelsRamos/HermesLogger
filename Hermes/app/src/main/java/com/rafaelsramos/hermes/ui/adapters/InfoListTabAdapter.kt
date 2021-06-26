@@ -1,10 +1,10 @@
-package com.example.myapplication.ui.adapters
+package com.rafaelsramos.hermes.ui.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.myapplication.callbacks.SpecificItemCallback
-import com.example.myapplication.debugToaster.LogType
-import com.example.myapplication.ui.fragments.InfoListFragment
+import com.rafaelsramos.hermes.callbacks.SpecificItemCallback
+import com.rafaelsramos.hermes.debugToaster.LogType
+import com.rafaelsramos.hermes.ui.fragments.InfoListFragment
 
 internal class InfoListTabAdapter(fragment: Fragment, private val specificItemCallback: SpecificItemCallback) : FragmentStateAdapter(fragment) {
 

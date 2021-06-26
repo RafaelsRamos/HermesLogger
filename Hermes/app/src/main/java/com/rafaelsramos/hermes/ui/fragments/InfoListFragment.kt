@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.fragments
+package com.rafaelsramos.hermes.ui.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -7,14 +7,14 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.R
-import com.example.myapplication.callbacks.SpecificItemCallback
-import com.example.myapplication.debugToaster.LogType
-import com.example.myapplication.debugToaster.Toaster
-import com.example.myapplication.models.LogDataHolder
-import com.example.myapplication.models.filterLogs
-import com.example.myapplication.ui.adapters.InfoRecyclerAdapter
-import com.example.myapplication.ui.search.CustomSearch
+import com.rafaelsramos.hermes.R
+import com.rafaelsramos.hermes.callbacks.SpecificItemCallback
+import com.rafaelsramos.hermes.debugToaster.LogType
+import com.rafaelsramos.hermes.debugToaster.Toaster
+import com.rafaelsramos.hermes.models.LogDataHolder
+import com.rafaelsramos.hermes.models.filterLogs
+import com.rafaelsramos.hermes.ui.adapters.InfoRecyclerAdapter
+import com.rafaelsramos.hermes.ui.search.CustomSearch
 
 private const val LOG_TYPE_ARG = "LogTypeArg"
 

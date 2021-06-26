@@ -1,7 +1,7 @@
-package com.example.myapplication.ui.search
+package com.rafaelsramos.hermes.ui.search
 
-import com.example.myapplication.models.LogDataHolder
-import com.example.myapplication.utils.EMPTY_STRING
+import com.rafaelsramos.hermes.models.LogDataHolder
+import com.rafaelsramos.hermes.utils.EMPTY_STRING
 
 internal class CustomSearch {
 

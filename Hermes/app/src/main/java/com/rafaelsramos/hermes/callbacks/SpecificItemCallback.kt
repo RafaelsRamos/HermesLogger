@@ -1,6 +1,6 @@
-package com.example.myapplication.callbacks
+package com.rafaelsramos.hermes.callbacks
 
-import com.example.myapplication.models.LogDataHolder
+import com.rafaelsramos.hermes.models.LogDataHolder
 
 /**
  * Callback for logs' Overview

@@ -1,9 +1,9 @@
-package com.example.myapplication.managers
+package com.rafaelsramos.hermes.managers
 
 import android.widget.TextView
-import com.example.myapplication.R
-import com.example.myapplication.debugToaster.LogType
-import com.example.myapplication.debugToaster.Toaster
+import com.rafaelsramos.hermes.R
+import com.rafaelsramos.hermes.debugToaster.LogType
+import com.rafaelsramos.hermes.debugToaster.Toaster
 import com.google.android.material.tabs.TabLayout
 
 /**

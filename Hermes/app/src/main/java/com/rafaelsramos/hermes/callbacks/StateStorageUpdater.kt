@@ -1,6 +1,6 @@
-package com.example.myapplication.callbacks
+package com.rafaelsramos.hermes.callbacks
 
-import com.example.myapplication.ui.search.CustomSearch
+import com.rafaelsramos.hermes.ui.search.CustomSearch
 
 /**
  * Interface used to update state holders.
