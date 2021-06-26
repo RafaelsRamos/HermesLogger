@@ -11,10 +11,10 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.rafaelsramos.hermes.debugToaster.LongToastDuration
-import com.rafaelsramos.hermes.debugToaster.ShortToastDuration
-import com.rafaelsramos.hermes.debugToaster.Toaster
-import com.rafaelsramos.hermes.ui.components.OverviewLayout
+import com.spartancookie.hermeslogger.debugToaster.LongToastDuration
+import com.spartancookie.hermeslogger.debugToaster.ShortToastDuration
+import com.spartancookie.hermeslogger.debugToaster.Toaster
+import com.spartancookie.hermeslogger.ui.components.OverviewLayout
 
 private const val GENERATE_LOGS_TEXT = "Generate automatic logs"
 private const val STOP_GENERATING_LOGS_TEXT = "Stop generating automatic logs"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+
+    <color name="tabsOptionBackgroundColor">#BDBDBD</color>
+    <color name="tabsIndicatorColor">#7E7D7D</color>
+
+    <color name="copyFinalColor">#BABABA</color>
+</resources>
