@@ -9,7 +9,7 @@
 
     <dimen name="tab_weight">50dp</dimen>
     <dimen name="tab_height">60dp</dimen>
-    <dimen name="tab_notifications_badge_size">25dp</dimen>
+    <dimen name="tab_notifications_badge_size">27dp</dimen>
 
     <dimen name="close_overview_icon_size">25dp</dimen>
 
