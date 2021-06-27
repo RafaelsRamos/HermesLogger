@@ -29,7 +29,7 @@
         android:layout_width="125dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginHorizontal="32dp"
         android:text="Initialize generic information"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,9 +41,8 @@
         android:id="@+id/edit_text_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginHorizontal="32dp"
         android:hint="Message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,9 +52,8 @@
         android:id="@+id/edit_text_extra_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginHorizontal="32dp"
         android:hint="Extra information"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,8 +103,7 @@
         android:id="@+id/durationEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginHorizontal="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/duration_radio_group"
         app:layout_constraintEnd_toEndOf="@+id/edit_text_extra_message"
         app:layout_constraintStart_toEndOf="@id/duration_radio_group"
@@ -114,6 +111,31 @@
         android:hint="Duration(ms)"
         android:textSize="12sp"
         android:inputType="number"/>
+
+    <TextView
+        android:id="@+id/duration_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="32dp"
+        android:text="Duration between logs 1000 ms"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/duration_radio_group"/>
+
+    <SeekBar
+        android:id="@+id/simpleSeekBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="5000"
+        android:progress="1000"
+        android:min="100"
+        android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/duration_message"
+        tools:targetApi="o" />
 
     <Button
         android:id="@+id/generate_logs_button"

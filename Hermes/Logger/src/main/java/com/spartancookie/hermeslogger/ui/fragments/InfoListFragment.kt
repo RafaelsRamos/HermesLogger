@@ -63,7 +63,7 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
                 val removedItems = nrOfLogs > logList.size
 
                 storedLogList = logList.filterLogs(customSearch)
-                
+
                 if (!recyclerView.canScrollVertically(-1) || removedItems) {
                     mAdapter.updateList(storedLogList)
                 } else {

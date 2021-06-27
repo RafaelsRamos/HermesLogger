@@ -6,23 +6,24 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.RadioGroup
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.spartancookie.hermeslogger.debugToaster.LongToastDuration
 import com.spartancookie.hermeslogger.debugToaster.ShortToastDuration
 import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
 
+private const val BASE_DURATION_TEXT = "Duration between logs"
+
 private const val GENERATE_LOGS_TEXT = "Generate automatic logs"
 private const val STOP_GENERATING_LOGS_TEXT = "Stop generating automatic logs"
 
 private const val MAX_DURATION = 5000L
-private const val FIRE_LOGS_DURATION = 7500L
 
 class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnClickListener {
+
+    private val durationMessage by lazy { findViewById<TextView>(R.id.duration_message) }
+    private val durationSeekBar by lazy { findViewById<SeekBar>(R.id.simpleSeekBar) }
 
     private val passActivityCheckBox by lazy { findViewById<CheckBox>(R.id.pass_activity_cb) }
     private val radioGroup by lazy { findViewById<RadioGroup>(R.id.duration_radio_group) }
@@ -39,6 +40,8 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
     private val extraMessageText get() = extraInfoEditText.text.toString()
     private val canPassActivity get() = passActivityCheckBox.isChecked
 
+    private var fireLogDuration = 1000L
+
     private val duration get() = when (radioGroup.checkedRadioButtonId) {
         R.id.longRB -> LongToastDuration
         R.id.shortRB -> ShortToastDuration
@@ -49,6 +52,8 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.test_activity)
+
+        setDurationSeekBar()
 
         findViewById<View>(R.id.button_success).setOnClickListener(this)
         findViewById<View>(R.id.button_info).setOnClickListener(this)
@@ -72,6 +77,18 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
             Toaster.updateSystemInfo(this)
             OverviewLayout.create(this)
         }
+
+    }
+
+    private fun setDurationSeekBar() {
+        durationSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+            override fun onStartTrackingTouch(seekBar: SeekBar) { }
+            override fun onStopTrackingTouch(seekBar: SeekBar) { }
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                fireLogDuration = progress.toLong()
+                durationMessage.text = "$BASE_DURATION_TEXT $progress ms"
+            }
+        })
     }
 
     override fun buildGenericInfo(): String {
@@ -123,7 +140,9 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
     // -------------------------- Helper methods --------------------------
 
     private fun randomizeToaster(toastBuilder: Toaster.Builder) {
-        toastBuilder.withMessage(RandomMessages.getSample).withExtraInfo(RandomExtraInfo.getSample).addToQueue(this)
+        toastBuilder.withMessage(RandomMessages.getSample).withExtraInfo(RandomExtraInfo.getSample)
+        //.addToQueue(this)
+            .addToList()
     }
 
     private fun scheduleAutomaticLogs() {
@@ -135,7 +154,7 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
         handler.postDelayed(debugLogSample, (Math.random() * MAX_DURATION).toLong())
 
         // Reschedule firing logs
-        handler.postDelayed(scheduleFireLogs, FIRE_LOGS_DURATION)
+        handler.postDelayed(scheduleFireLogs, fireLogDuration)
     }
 
     private fun buildInfo(toasterBuilder: Toaster.Builder) {
