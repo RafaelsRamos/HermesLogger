@@ -22,7 +22,7 @@ private const val STOP_GENERATING_LOGS_TEXT = "Stop generating automatic logs"
 private const val MAX_DURATION = 5000L
 private const val FIRE_LOGS_DURATION = 7500L
 
-class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuilder, View.OnClickListener {
+class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnClickListener {
 
     private val passActivityCheckBox by lazy { findViewById<CheckBox>(R.id.pass_activity_cb) }
     private val radioGroup by lazy { findViewById<RadioGroup>(R.id.duration_radio_group) }
@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuil
         val isDebugEnvironment = true
         if (isDebugEnvironment) {
             Toaster.initialize(true)
+            Toaster.updateSystemInfo(this)
             OverviewLayout.create(this)
         }
     }
@@ -122,7 +123,7 @@ class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuil
     // -------------------------- Helper methods --------------------------
 
     private fun randomizeToaster(toastBuilder: Toaster.Builder) {
-        toastBuilder.withMessage(RandomMessages.getSample).withExtraInfo(RandomExtraInfo.getSample).show(this, this)
+        toastBuilder.withMessage(RandomMessages.getSample).withExtraInfo(RandomExtraInfo.getSample).addToQueue(this)
     }
 
     private fun scheduleAutomaticLogs() {
@@ -145,7 +146,7 @@ class MainActivity : AppCompatActivity(), Toaster.CopyToClipboardGenericInfoBuil
             if (extraMessageText.isNotEmpty()) {
                 withExtraInfo(extraMessageText)
             }
-        }.show(if (canPassActivity) this else null, this)
+        }.addToQueue(if (canPassActivity) this else null)
 
     }
 }

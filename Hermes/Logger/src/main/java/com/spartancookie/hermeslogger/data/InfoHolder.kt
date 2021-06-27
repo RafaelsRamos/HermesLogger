@@ -82,7 +82,7 @@ internal class InfoHolder {
         nrOfErrors = 0
         nrOfInfo = 0
     }
-
+    
     fun removeLogById(id: String) {
         val indexOfLog = logList.indexOfFirst { id == it.id }
         if (indexOfLog >= 0) {

@@ -20,13 +20,13 @@ const val LongToastDuration = 3500
  */
 const val ShortToastDuration = 2000
 
-class Toaster(internal val isDebugEnvironment: Boolean = false) {
+class Toaster private constructor(var isDebugEnvironment: Boolean = false) {
 
     internal val infoHolder = InfoHolder()
 
     lateinit var actReference: WeakReference<Activity>
 
-    var copyGenericInfoBuilder : CopyToClipboardGenericInfoBuilder? = null
+    var systemInfoBuildable : SystemInfoBuildable? = null
 
     // List of logs that will be displayed as toasts
     private var logQueue : LinkedList<LogDataHolder> = LinkedList()
@@ -47,7 +47,11 @@ class Toaster(internal val isDebugEnvironment: Boolean = false) {
     companion object {
 
         fun initialize(isDebugEnvironment: Boolean) {
-            instance = Toaster(isDebugEnvironment)
+            instance.isDebugEnvironment = isDebugEnvironment
+        }
+
+        fun updateSystemInfo(systemInfoBuildable: SystemInfoBuildable) {
+            instance.systemInfoBuildable = systemInfoBuildable
         }
 
         internal var instance = Toaster()
@@ -71,10 +75,15 @@ class Toaster(internal val isDebugEnvironment: Boolean = false) {
      * Add Toast information to the queue
      *
      * @param dataHolder Toast information
+     * @param showToast  True to show bottom toast, False to hide it (Shows the toast by default)
      */
-    private fun add(dataHolder: LogDataHolder) {
+    private fun add(dataHolder: LogDataHolder, showToast: Boolean) {
         // Add log to the list of logs
         infoHolder.addInfo(dataHolder)
+
+        if (!showToast) {
+            return
+        }
 
         // If we have a valid instance of the activity, show the toast
         activity?.run {
@@ -109,7 +118,7 @@ class Toaster(internal val isDebugEnvironment: Boolean = false) {
      */
     private fun buildGenericInfo(dataHolder: LogDataHolder) : LogDataHolder {
         return dataHolder.apply {
-            genericInfo = copyGenericInfoBuilder?.buildGenericInfo()
+            genericInfo = systemInfoBuildable?.buildGenericInfo()
         }
     }
 
@@ -122,7 +131,7 @@ class Toaster(internal val isDebugEnvironment: Boolean = false) {
      * Implement this to build the Generic information that the user can copy to clipboard
      * @constructor Create empty Copy to clipboard generic info builder
      */
-    interface CopyToClipboardGenericInfoBuilder { fun buildGenericInfo() : String }
+    interface SystemInfoBuildable { fun buildGenericInfo() : String }
 
     // --------------------- Builder ---------------------
 
@@ -138,8 +147,14 @@ class Toaster(internal val isDebugEnvironment: Boolean = false) {
 
         fun withExtraInfo(extraInfo: String) = apply { this@Builder.extraInfo = extraInfo }
 
+        /**
+         * Create a log with the parameters built and add it to the queue of Toasts being shown and to
+         * the list of logs that can be seen through the [OverviewLayout]
+         * @param activity Possible reference to an activity. If not null, update the activity's
+         *                 weak reference instance.
+         */
         @JvmOverloads
-        fun show(activity: Activity? = null, genericInfoBuilder: CopyToClipboardGenericInfoBuilder? = null) {
+        fun addToQueue(activity: Activity? = null) {
 
             if (!instance.isDebugEnvironment) {
                 return
@@ -150,11 +165,19 @@ class Toaster(internal val isDebugEnvironment: Boolean = false) {
                 instance.actReference = WeakReference(this)
             }
 
-            genericInfoBuilder?.run {
-                instance.copyGenericInfoBuilder = this
+            instance.add(LogDataHolder(message, duration.toLong(), type, extraInfo), true)
+        }
+
+        /**
+         * Create a log with the parameters built and add it to the list of logs, without showing a toast
+         */
+        fun addToList() {
+
+            if (!instance.isDebugEnvironment) {
+                return
             }
 
-            instance.add(LogDataHolder(message, duration.toLong(), type, extraInfo))
+            instance.add(LogDataHolder(message, duration.toLong(), type, extraInfo), false)
         }
     }
 
