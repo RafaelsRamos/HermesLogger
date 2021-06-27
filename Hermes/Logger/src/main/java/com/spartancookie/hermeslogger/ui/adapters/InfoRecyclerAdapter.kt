@@ -81,12 +81,12 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
     }
 
     fun updateList(logList: List<LogDataHolder>) {
-        this.logList = logList.toMutableList()
+        updateAllItems(logList)
         notifyDataSetChanged()
     }
 
     fun updateListOnTop(logList: List<LogDataHolder>, nrOfItemsAdded: Int) {
-        this.logList = logList.toMutableList()
+        updateAllItems(logList)
         notifyItemRangeInserted(0, nrOfItemsAdded)
     }
 
@@ -98,5 +98,10 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
     //---------------- Helper methods ----------------
 
     private fun getResource(isRemoveModeEnabled: Boolean) = if (isRemoveModeEnabled) R.drawable.ic_remove else R.drawable.ic_copy
+
+    private fun updateAllItems(logList: List<LogDataHolder>) {
+        this.logList.clear()
+        this.logList.addAll(logList)
+    }
 
 }

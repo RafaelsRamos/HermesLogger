@@ -59,14 +59,16 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
         infoHolder.infoLiveData.observe(viewLifecycleOwner, Observer {
             if (nrOfLogs != logList.size) {
-                storedLogList = logList.filterLogs(customSearch)
 
-                if (!recyclerView.canScrollVertically(-1)) {
+                val removedItems = nrOfLogs > logList.size
+
+                storedLogList = logList.filterLogs(customSearch)
+                
+                if (!recyclerView.canScrollVertically(-1) || removedItems) {
                     mAdapter.updateList(storedLogList)
                 } else {
                     mAdapter.updateListOnTop(storedLogList, logList.size - nrOfLogs)
                 }
-
                 nrOfLogs = logList.size
             }
         })
