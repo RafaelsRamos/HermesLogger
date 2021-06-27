@@ -97,7 +97,7 @@ class OverviewLayout private constructor(
     private fun loadOverview() {
         val overviewFragment = InfoOverviewFragment().apply {
             stateHolder = stateHolderInstance
-            communicator = this@OverviewLayout as FragmentCommunicator
+            communicator = this@OverviewLayout
         }
 
         loadFragment(overviewFragment)

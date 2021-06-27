@@ -33,8 +33,8 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     private val logList: List<LogDataHolder>
         get() = type?.let { infoHolder.getLogListByType(it).reversed() } ?: infoHolder.logList.reversed()
 
-    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(logList.toMutableList(), activity!!, specificItemCallback, this) }
-    private val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(activity!!) }
+    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(logList.toMutableList(), requireActivity(), specificItemCallback, this) }
+    private val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(requireActivity()) }
     private val recyclerView: RecyclerView by lazy { requireView().findViewById<RecyclerView>(R.id.recycler) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,7 +56,7 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
     private fun setObservers() {
 
-        infoHolder.infoLiveData.observe(this, Observer {
+        infoHolder.infoLiveData.observe(viewLifecycleOwner, Observer {
             if (nrOfLogs != logList.size) {
                 storedLogList = logList.filterLogs(customSearch)
 
@@ -70,7 +70,7 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
             }
         })
 
-        InfoOverviewFragment.customSearchLiveData.observe(this, Observer {
+        InfoOverviewFragment.customSearchLiveData.observe(viewLifecycleOwner, Observer {
             customSearch = it
             val canUsePreviousFilter = customSearch.filterContent.isNotEmpty() && customSearch.filterContent.contains(filterString)
             filterString = customSearch.filterContent

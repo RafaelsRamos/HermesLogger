@@ -144,7 +144,7 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview),
     //----------------------------- Observers -------------------------
 
     private fun setObservers() {
-        infoHolder.infoLiveData.observe(this, Observer {
+        infoHolder.infoLiveData.observe(viewLifecycleOwner, Observer {
             tabNotificationsHandler.updateBadges()
         })
     }

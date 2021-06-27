@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/roboto_bold"
-        android:gravity="bottom"
         android:maxLines="1"
         android:textAlignment="center"
         android:textSize="12sp"
