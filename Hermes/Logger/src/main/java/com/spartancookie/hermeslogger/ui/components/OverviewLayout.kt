@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.callbacks.FragmentCommunicator
 import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.managers.OverviewStateHolderUpdater
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
@@ -26,7 +25,7 @@ class OverviewLayout private constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), FragmentCommunicator {
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private var childView: View = inflate(context, R.layout.screen_overview_background, this)
 
@@ -97,7 +96,8 @@ class OverviewLayout private constructor(
     private fun loadOverview() {
         val overviewFragment = InfoOverviewFragment().apply {
             stateHolder = stateHolderInstance
-            communicator = this@OverviewLayout
+            // Invoke close() on InfoOverview fragment detached
+            onDismissedFunc = ::close
         }
 
         loadFragment(overviewFragment)
@@ -148,14 +148,5 @@ class OverviewLayout private constructor(
             context,
             if (state) R.drawable.half_circle_pressed else R.drawable.half_circle_unpressed
         )
-    }
-
-    //----------- FragmentCommunicator implementation -----------
-
-    /**
-     * Method triggered on InfoOverviewFragment detached
-     */
-    override fun onFragmentDetached() {
-        close()
     }
 }

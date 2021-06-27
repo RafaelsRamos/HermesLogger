@@ -5,7 +5,7 @@ import com.spartancookie.hermeslogger.utils.EMPTY_STRING
 
 internal class CustomSearch {
 
-    var ignoreCase = true
+    var matchCase = false
 
     var filterContent = EMPTY_STRING
 
@@ -21,10 +21,10 @@ internal fun LogDataHolder.contains(cs: CustomSearch): Boolean {
                 || message.contains(cs.filterContent.toRegex())
                 || id.contains(cs.filterContent.toRegex())
     } else {
-        creationDate.toString().contains(cs.filterContent, cs.ignoreCase)
-                || extraInfo?.contains(cs.filterContent, cs.ignoreCase) == true
-                || message.contains(cs.filterContent, cs.ignoreCase)
-                || id.contains(cs.filterContent, cs.ignoreCase)
+        creationDate.toString().contains(cs.filterContent, !cs.matchCase)
+                || extraInfo?.contains(cs.filterContent, !cs.matchCase) == true
+                || message.contains(cs.filterContent, !cs.matchCase)
+                || id.contains(cs.filterContent, !cs.matchCase)
     }
 
 }

@@ -13,8 +13,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.callbacks.FragmentCommunicator
-import com.spartancookie.hermeslogger.callbacks.SpecificItemCallback
 import com.spartancookie.hermeslogger.debugToaster.LogType
 import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.managers.OverviewStateHolderUpdater
@@ -30,15 +28,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 const val EMPTY_STRING = ""
 private const val SEARCH_STRING = "Search"
 
-internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview),
-    SpecificItemCallback {
+internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview) {
 
     companion object {
         val customSearchLiveData = MutableLiveData<CustomSearch>().default(CustomSearch())
     }
 
     lateinit var stateHolder: OverviewStateHolderUpdater
-    lateinit var communicator: FragmentCommunicator
+    lateinit var onDismissedFunc: () -> Unit
 
     private lateinit var tabNotificationsHandler: TabNotificationsHandler
     private lateinit var adapter: InfoListTabAdapter
@@ -56,7 +53,7 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview),
     private val customSearch by lazy { stateHolder.customSearch }
 
     override fun onDetach() {
-        communicator.onFragmentDetached()
+        onDismissedFunc()
         super.onDetach()
     }
 
@@ -65,7 +62,7 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview),
         initViews(view)
         setSearchLogic()
 
-        adapter = InfoListTabAdapter(this, this)
+        adapter = InfoListTabAdapter(this) { item -> onItemClicked(item) }
         viewPager.adapter = adapter
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -124,15 +121,19 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview),
         }
 
         capsSearchImageView.setOnClickListener {
-            customSearch.ignoreCase = !customSearch.ignoreCase
+            customSearch.matchCase = !customSearch.matchCase
             updateUI()
             updateFilters(customSearch.filterContent)
         }
     }
 
-    //-------------------- SpecificItemCallback Implementation --------------------
+    //-------------------- on  Implementation --------------------
 
-    override fun onSpecificItemClicked(item: LogDataHolder) {
+    /**
+     * On item from list clicked
+     * @param item Information from the item clicked
+     */
+    private fun onItemClicked(item: LogDataHolder) {
         val fragment = InfoDetailedViewFragment(item)
         requireActivity().supportFragmentManager.beginTransaction().apply {
             add(R.id.runtimeInfoContentContainer, fragment)
@@ -155,13 +156,13 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview),
      * @param content Search content
      */
     private fun updateFilters(content: String?) {
-        stateHolder.onCustomSearchChanged(customSearch)
+        stateHolder.updateSearchContent(customSearch)
         customSearch.filterContent = content ?: EMPTY_STRING
         customSearchLiveData.postValue(customSearch)
     }
 
     private fun updateUI() {
-        val capsDrawableRes = if (customSearch.ignoreCase) R.drawable.ic_match_case_enabled else R.drawable.ic_match_case_disabled
+        val capsDrawableRes = if (customSearch.matchCase) R.drawable.ic_match_case_enabled else R.drawable.ic_match_case_disabled
         capsSearchImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), capsDrawableRes))
     }
 }

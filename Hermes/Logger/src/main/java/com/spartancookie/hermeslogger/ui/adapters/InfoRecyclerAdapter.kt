@@ -12,7 +12,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.callbacks.SpecificItemCallback
 import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
@@ -24,7 +23,7 @@ import java.text.SimpleDateFormat
 
 private const val TAG = "InfoRecyclerAdapter"
 
-internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolder>, activity: Activity, private val callback: SpecificItemCallback, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
+internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolder>, activity: Activity, private val callback: LogDataHolder.() -> Unit, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
 
     private val actReference = WeakReference(activity)
 
@@ -59,7 +58,7 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
                 } ?: Log.e(TAG, "There is no valid instance of an activity. data could not be copied successfully")
             }
         }
-        holder.entireView.setOnClickListener { callback.onSpecificItemClicked(item) }
+        holder.entireView.setOnClickListener { item.callback() }
 
         // Observe changes on remove mode state change live data
         OverviewLayout.removeModeLiveData.observe(lifecycleOwner, Observer { isEnabled ->

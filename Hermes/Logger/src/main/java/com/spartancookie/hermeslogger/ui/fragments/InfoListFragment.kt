@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.callbacks.SpecificItemCallback
 import com.spartancookie.hermeslogger.debugToaster.LogType
 import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.models.LogDataHolder
@@ -20,9 +19,11 @@ private const val LOG_TYPE_ARG = "LogTypeArg"
 
 internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
-    private lateinit var specificItemCallback: SpecificItemCallback
+    private lateinit var specificItemClickedFunc: (LogDataHolder) -> Unit
     private var type: LogType? = null
+
     private var filterString = EMPTY_STRING
+    private var matchCase = false
 
     private var storedLogList: List<LogDataHolder> = mutableListOf()
 
@@ -33,7 +34,7 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     private val logList: List<LogDataHolder>
         get() = type?.let { infoHolder.getLogListByType(it).reversed() } ?: infoHolder.logList.reversed()
 
-    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(logList.toMutableList(), requireActivity(), specificItemCallback, this) }
+    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(logList.toMutableList(), requireActivity(), specificItemClickedFunc, this) }
     private val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(requireActivity()) }
     private val recyclerView: RecyclerView by lazy { requireView().findViewById<RecyclerView>(R.id.recycler) }
 
@@ -72,8 +73,13 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
         InfoOverviewFragment.customSearchLiveData.observe(viewLifecycleOwner, Observer {
             customSearch = it
-            val canUsePreviousFilter = customSearch.filterContent.isNotEmpty() && customSearch.filterContent.contains(filterString)
+            val changedCase = customSearch.matchCase && matchCase
+            val changedContent = customSearch.filterContent.contains(filterString)
+            val canUsePreviousFilter = customSearch.filterContent.isNotEmpty() && changedContent && changedCase
+
             filterString = customSearch.filterContent
+            matchCase = customSearch.matchCase
+
             storedLogList = (if (canUsePreviousFilter) storedLogList else logList).filterLogs(customSearch)
             mAdapter.updateList(storedLogList)
         })
@@ -83,11 +89,11 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     //------------------------------ Factory ------------------------------
 
     companion object {
-        fun newInstance(type: LogType?, itemCallback: SpecificItemCallback): InfoListFragment {
+        fun newInstance(type: LogType?, onSpecificItemClickedFunc: (LogDataHolder) -> Unit): InfoListFragment {
             val args = Bundle().apply { putSerializable(LOG_TYPE_ARG, type) }
             return InfoListFragment().apply {
                 arguments = args
-                specificItemCallback = itemCallback
+                specificItemClickedFunc = onSpecificItemClickedFunc
             }
         }
     }
