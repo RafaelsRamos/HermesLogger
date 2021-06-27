@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat
 
 private const val TAG = "InfoRecyclerAdapter"
 
-internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolder>, activity: Activity, private val callback: LogDataHolder.() -> Unit, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
+internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolder>, activity: Activity, private val callback: (LogDataHolder) -> Unit, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
 
     private val actReference = WeakReference(activity)
 
@@ -58,7 +58,7 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
                 } ?: Log.e(TAG, "There is no valid instance of an activity. data could not be copied successfully")
             }
         }
-        holder.entireView.setOnClickListener { item.callback() }
+        holder.entireView.setOnClickListener { callback(item) }
 
         // Observe changes on remove mode state change live data
         OverviewLayout.removeModeLiveData.observe(lifecycleOwner, Observer { isEnabled ->
