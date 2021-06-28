@@ -46,24 +46,54 @@ class Toaster private constructor(var isDebugEnvironment: Boolean = false) {
 
     companion object {
 
+        /**
+         * Inform Toaster class that the current the current environment is a debug environment or not.
+         * If the environment is not a debug environment, no logs will be stored or shown.
+         * @param isDebugEnvironment True if the current environment is a debug environment, false otherwise
+         */
         fun initialize(isDebugEnvironment: Boolean) {
             instance.isDebugEnvironment = isDebugEnvironment
         }
 
+        /**
+         * Add an implementation of [SystemInfoBuildable] so that the user can copy system info
+         * on copying log information
+         * @param systemInfoBuildable [SystemInfoBuildable] implementation
+         */
         fun updateSystemInfo(systemInfoBuildable: SystemInfoBuildable) {
             instance.systemInfoBuildable = systemInfoBuildable
         }
 
         internal var instance = Toaster()
 
+        /**
+         * Initialize an instance of [Builder] with type of [LogType.Success]
+         */
+        @JvmStatic
         fun success() = Builder().apply { type = LogType.Success }
 
+        /**
+         * Initialize an instance of [Builder] with type of [LogType.Error]
+         */
+        @JvmStatic
         fun error() = Builder().apply { type = LogType.Error }
 
+        /**
+         * Initialize an instance of [Builder] with type of [LogType.Warning]
+         */
+        @JvmStatic
         fun warning() = Builder().apply { type = LogType.Warning }
 
+        /**
+         * Initialize an instance of [Builder] with type of [LogType.Debug]
+         */
+        @JvmStatic
         fun debug() = Builder().apply { type = LogType.Debug }
 
+        /**
+         * Initialize an instance of [Builder] with type of [LogType.Info]
+         */
+        @JvmStatic
         fun info() = Builder().apply { type = LogType.Info }
     }
 
@@ -73,7 +103,6 @@ class Toaster private constructor(var isDebugEnvironment: Boolean = false) {
 
     /**
      * Add Toast information to the queue
-     *
      * @param dataHolder Toast information
      * @param showToast  True to show bottom toast, False to hide it (Shows the toast by default)
      */
