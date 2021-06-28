@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.NonNull
-import androidx.databinding.DataBindingUtil
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.databinding.ToastLayoutBinding
 import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.ui.setLogIcon
+import com.spartancookie.hermeslogger.utils.NO_RES
 import com.spartancookie.hermeslogger.utils.copyToClipboard
 import java.lang.ref.WeakReference
 
@@ -27,12 +29,13 @@ private const val AnimationDuration = 450
 private const val ActiveToastAlpha = 1f
 private const val InactiveToastAlpha = 0f
 
-private const val VerticalMargin = 100
-private const val HorizontalMargin = 15
-
 internal class DebugToast private constructor(activity: Activity, private val dataHolder: LogDataHolder) : FrameLayout(activity) {
 
-    private var binding: ToastLayoutBinding
+    private lateinit var rootLayout: View
+    private val iconIV by lazy { rootLayout.findViewById<ImageView>(R.id.icon) }
+    private val textTV by lazy { rootLayout.findViewById<TextView>(R.id.text) }
+    private val copyIV by lazy { rootLayout.findViewById<ImageView>(R.id.copy) }
+
     private var mGravity = Gravity.BOTTOM
 
     private val activityReference = WeakReference(activity)
@@ -51,32 +54,46 @@ internal class DebugToast private constructor(activity: Activity, private val da
         val container = activity.findViewById<ViewGroup>(android.R.id.content)
 
         // Inflate the view
-        binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.toast_layout, this, false)
+        rootLayout = LayoutInflater.from(activity).inflate(R.layout.toast_layout, this, true)
 
         // Add the view onto the container fetched above
-        container.addView(binding.root, container.childCount, buildLayoutParams())
+        container.addView(rootLayout, container.childCount, buildLayoutParams())
 
-        binding.logDataHolder = dataHolder
-
-        binding.root.let { viewRoot ->
+        with(rootLayout) {
             // Start toast fade in
-            fade(viewRoot, true)
+            fade(this, true)
             // Set copy to clipboard action to on view click
-            viewRoot.setOnClickListener {
-                activityReference.get()?.run { copyToClipboard(this, dataHolder) }
-            }
+            setOnClickListener { activityReference.get()?.run { copyToClipboard(this, dataHolder) } }
             // Schedule toast's fade out and description
-            scheduleDestruction(viewRoot)
+            scheduleDestruction(this)
+        }
+
+        fillContent()
+    }
+
+    private fun fillContent() {
+        iconIV.setLogIcon(dataHolder.type, if (dataHolder.type == LogType.Debug) R.color.white else NO_RES)
+        copyIV.visibility = dataHolder.extraInfo?.run { GONE } ?: VISIBLE
+
+        with(textTV) {
+            text = dataHolder.message
+            visibility = if (dataHolder.message.isEmpty()) GONE else VISIBLE
         }
     }
 
     private fun scheduleDestruction(view: View) {
         Handler(Looper.getMainLooper()).apply {
-            postDelayed( { fade(view, false) }, dataHolder.duration - AnimationDuration - CooldownDuration)
+            postDelayed(
+                { fade(view, false) },
+                dataHolder.duration - AnimationDuration - CooldownDuration
+            )
         }
     }
 
-    private fun buildLayoutParams() = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+    private fun buildLayoutParams() = LayoutParams(
+        LayoutParams.WRAP_CONTENT,
+        LayoutParams.WRAP_CONTENT
+    ).apply {
         gravity = mGravity or Gravity.CENTER_HORIZONTAL
         when (mGravity) {
             Gravity.BOTTOM -> setMargins(horizontalMargins, 0, horizontalMargins, downMargin)

@@ -1,31 +1,47 @@
 package com.spartancookie.hermeslogger.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.models.LogDataHolder
-import com.spartancookie.hermeslogger.databinding.ScreenDetailedViewBinding
+import com.spartancookie.hermeslogger.ui.setCreationDate
+import com.spartancookie.hermeslogger.ui.setLogIcon
 import com.spartancookie.hermeslogger.utils.animateCopyToClipboardColor
 import com.spartancookie.hermeslogger.utils.copyToClipboard
 
-internal class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragment() {
+internal class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragment(R.layout.screen_detailed_view) {
 
-    private lateinit var binding: ScreenDetailedViewBinding
+    private lateinit var rootLayout: View
+    private val backIV by lazy { rootLayout.findViewById<ImageView>(R.id.back) }
+    private val copyToClipboardIV by lazy { rootLayout.findViewById<ImageView>(R.id.copy_to_clipboard) }
+    private val typeIconIV by lazy { rootLayout.findViewById<ImageView>(R.id.type_icon) }
+    private val typeNameTV by lazy { rootLayout.findViewById<TextView>(R.id.typeName) }
+    private val dateTV by lazy { rootLayout.findViewById<TextView>(R.id.date) }
+    private val messageTV by lazy { rootLayout.findViewById<TextView>(R.id.message) }
+    private val extraInfoTV by lazy { rootLayout.findViewById<TextView>(R.id.extra_info) }
+    private val genericInfoTV by lazy { rootLayout.findViewById<TextView>(R.id.generic_info) }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.screen_detailed_view, container, false)
-        binding.logDataHolder = item
-        binding.back.setOnClickListener { activity?.onBackPressed() }
-        binding.copyToClipboard.setOnClickListener { view ->
-            animateCopyToClipboardColor(view)
-            activity?.let{ copyToClipboard(it, item) }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        rootLayout = view
+
+        // Set listeners
+        backIV.setOnClickListener { activity?.onBackPressed() }
+        copyToClipboardIV.setOnClickListener { imageView ->
+            animateCopyToClipboardColor(imageView)
+            activity?.let { copyToClipboard(it, item) }
         }
 
-        return binding.root
+        // Fill views with log data
+        typeIconIV.setLogIcon(item.type)
+        dateTV.setCreationDate(item)
+        typeNameTV.text = item.type.name
+        messageTV.text = item.message
+        extraInfoTV.text = item.extraInfo
+        genericInfoTV.text = item.genericInfo
     }
 }
