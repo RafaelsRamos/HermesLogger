@@ -97,7 +97,7 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
 
     //---------------- Helper methods ----------------
 
-    private fun getResource(isRemoveModeEnabled: Boolean) = if (isRemoveModeEnabled) R.drawable.ic_remove else R.drawable.ic_copy
+    private fun getResource(isRemoveModeEnabled: Boolean) = if (isRemoveModeEnabled) R.drawable.ic_hermes_logger_remove else R.drawable.ic_hermes_logger_copy
 
     private fun updateAllItems(logList: List<LogDataHolder>) {
         this.logList.clear()

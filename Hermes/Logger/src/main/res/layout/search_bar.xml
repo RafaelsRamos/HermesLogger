@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/search_background">
+    android:background="@drawable/search_hermes_logger_background">
 
     <EditText
         android:id="@+id/search_edit_text"
@@ -30,7 +30,7 @@
         android:layout_marginEnd="8dp"
         android:alpha="0.8"
         android:padding="5dp"
-        android:src="@drawable/ic_match_case_disabled"
+        android:src="@drawable/ic_hermes_logger_match_case_disabled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
         android:layout_height="@dimen/search_icons_size"
         android:alpha="0.8"
         android:padding="3dp"
-        android:src="@drawable/ic_clear"
+        android:src="@drawable/ic_hermes_logger_clear"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/caps_search_image_view"

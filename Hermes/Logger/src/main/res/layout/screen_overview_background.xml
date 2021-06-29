@@ -35,7 +35,7 @@
             android:layout_height="32dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/commands_section_background"
+            android:background="@drawable/hermes_logger_commands_section_background"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:paddingHorizontal="5dp"
-                android:src="@drawable/ic_remove"
+                android:src="@drawable/ic_hermes_logger_remove"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/list_background"
+            android:background="@drawable/list_hermes_logger_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -103,14 +103,14 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/icon_background" />
+                android:src="@drawable/ic_hermes_logger_background" />
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_clear" />
+                android:src="@drawable/ic_hermes_logger_clear" />
 
         </RelativeLayout>
 
@@ -123,7 +123,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/half_circle_unpressed">
+        android:background="@drawable/hermes_logger_half_circle_unpressed">
 
         <ImageView
             android:layout_width="match_parent"
@@ -131,7 +131,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginVertical="5dp"
             android:layout_marginEnd="3dp"
-            android:src="@drawable/ic_open_in_new" />
+            android:src="@drawable/ic_hermes_logger_open_in_new" />
 
     </RelativeLayout>
 

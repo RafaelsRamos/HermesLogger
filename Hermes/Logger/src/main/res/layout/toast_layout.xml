@@ -6,7 +6,7 @@
     android:id="@+id/custom_toast_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/toast_background"
+    android:background="@drawable/toast_hermes_logger_background"
     android:padding="10dp"
     android:alpha="0.85"
     android:layout_gravity="center_horizontal">
@@ -15,7 +15,7 @@
         android:id="@+id/icon"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:src="@drawable/ic_unknown"
+        android:src="@drawable/ic_hermes_logger_unknown"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +40,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginEnd="4dp"
-        android:src="@drawable/ic_copy"
+        android:src="@drawable/ic_hermes_logger_copy"
         app:layout_constraintBottom_toBottomOf="@+id/icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/icon" />

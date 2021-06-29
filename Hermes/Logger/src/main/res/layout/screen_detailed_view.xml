@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:clickable="true"
-    android:background="@drawable/list_background">
+    android:background="@drawable/list_hermes_logger_background">
 
     <View
         android:id="@+id/divider"
@@ -26,7 +26,7 @@
         android:layout_height="20dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/ic_back"
+        android:src="@drawable/ic_hermes_logger_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:backgroundTint="@color/black"/>
@@ -37,7 +37,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:src="@drawable/ic_copy"
+        android:src="@drawable/ic_hermes_logger_copy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/black" />
@@ -51,7 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        tools:src="@drawable/ic_success" />
+        tools:src="@drawable/ic_hermes_logger_success" />
 
     <TextView
         android:id="@+id/typeName"

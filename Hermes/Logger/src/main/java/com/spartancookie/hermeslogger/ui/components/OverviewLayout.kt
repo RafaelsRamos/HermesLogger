@@ -105,7 +105,7 @@ class OverviewLayout private constructor(
         background.visibility = View.VISIBLE
         infoOverviewTab.background = ContextCompat.getDrawable(
             context,
-            R.drawable.half_circle_pressed
+            R.drawable.hermes_logger_half_circle_pressed
         )
     }
 
@@ -146,7 +146,7 @@ class OverviewLayout private constructor(
     private fun getTabDrawable(state: Boolean): Drawable? {
         return ContextCompat.getDrawable(
             context,
-            if (state) R.drawable.half_circle_pressed else R.drawable.half_circle_unpressed
+            if (state) R.drawable.hermes_logger_half_circle_pressed else R.drawable.hermes_logger_half_circle_unpressed
         )
     }
 }

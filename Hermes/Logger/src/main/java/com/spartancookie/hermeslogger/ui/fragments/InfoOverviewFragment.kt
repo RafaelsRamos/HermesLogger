@@ -162,7 +162,7 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview) {
     }
 
     private fun updateUI() {
-        val capsDrawableRes = if (customSearch.matchCase) R.drawable.ic_match_case_enabled else R.drawable.ic_match_case_disabled
+        val capsDrawableRes = if (customSearch.matchCase) R.drawable.ic_hermes_logger_match_case_enabled else R.drawable.ic_hermes_logger_match_case_disabled
         capsSearchImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), capsDrawableRes))
     }
 }

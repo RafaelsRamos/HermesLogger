@@ -82,7 +82,7 @@
         android:layout_height="@dimen/info_item_icon_dimens"
         android:padding="4dp"
         android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_copy"
+        android:src="@drawable/ic_hermes_logger_copy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
