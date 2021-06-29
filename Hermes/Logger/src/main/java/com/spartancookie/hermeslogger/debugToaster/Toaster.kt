@@ -20,7 +20,9 @@ const val LongToastDuration = 3500
  */
 const val ShortToastDuration = 2000
 
-class Toaster private constructor(var isDebugEnvironment: Boolean = false) {
+class Toaster private constructor() {
+
+    internal var isDebugEnvironment: Boolean = false
 
     internal val infoHolder = InfoHolder()
 
@@ -34,14 +36,6 @@ class Toaster private constructor(var isDebugEnvironment: Boolean = false) {
 
     private val activity get() = if (this::actReference.isInitialized) actReference.get() else null
 
-    init {
-        if (isDebugEnvironment) {
-            Log.i("Toaster", "Current environment is a debug environment. Ready to start sharing info.")
-        } else {
-            Log.i("Toaster", "Current environment is not a debug environment. Nothing will be shared or stored.")
-        }
-    }
-
     //----------------------------- Controls -----------------------------
 
     companion object {
@@ -54,6 +48,11 @@ class Toaster private constructor(var isDebugEnvironment: Boolean = false) {
         @JvmStatic
         fun initialize(isDebugEnvironment: Boolean) {
             instance.isDebugEnvironment = isDebugEnvironment
+            if (isDebugEnvironment) {
+                Log.i("Toaster", "Current environment is a debug environment. Ready to start sharing info.")
+            } else {
+                Log.i("Toaster", "Current environment is not a debug environment. Nothing will be shared or stored.")
+            }
         }
 
         /**
@@ -64,10 +63,11 @@ class Toaster private constructor(var isDebugEnvironment: Boolean = false) {
         @JvmStatic
         fun updateSystemInfo(systemInfoBuildable: SystemInfoBuildable) {
             instance.systemInfoBuildable = systemInfoBuildable
+            Log.i("Toaster", "SystemInfoBuildable successfully set")
         }
 
         @JvmField
-        internal var instance = Toaster()
+        internal val instance = Toaster()
 
         /**
          * Initialize an instance of [Builder] with type of [LogType.Success]

@@ -40,7 +40,7 @@
         android:src="@drawable/ic_hermes_logger_copy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/black" />
+        android:tint="@color/black"/>
 
     <ImageView
         android:id="@+id/type_icon"
