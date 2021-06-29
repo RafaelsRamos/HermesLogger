@@ -51,6 +51,7 @@ class Toaster private constructor(var isDebugEnvironment: Boolean = false) {
          * If the environment is not a debug environment, no logs will be stored or shown.
          * @param isDebugEnvironment True if the current environment is a debug environment, false otherwise
          */
+        @JvmStatic
         fun initialize(isDebugEnvironment: Boolean) {
             instance.isDebugEnvironment = isDebugEnvironment
         }
@@ -60,10 +61,12 @@ class Toaster private constructor(var isDebugEnvironment: Boolean = false) {
          * on copying log information
          * @param systemInfoBuildable [SystemInfoBuildable] implementation
          */
+        @JvmStatic
         fun updateSystemInfo(systemInfoBuildable: SystemInfoBuildable) {
             instance.systemInfoBuildable = systemInfoBuildable
         }
 
+        @JvmField
         internal var instance = Toaster()
 
         /**
