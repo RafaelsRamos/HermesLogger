@@ -21,20 +21,23 @@ import com.spartancookie.hermeslogger.managers.OverviewStateHolderUpdater
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
 import com.spartancookie.hermeslogger.utils.default
 import com.spartancookie.hermeslogger.utils.fromDPToPx
+import com.spartancookie.hermeslogger.utils.withOverlayOf
 
 
 class OverviewLayout private constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), LifecycleOwner {
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private var childView: View = inflate(context, R.layout.screen_overview_background, this)
 
-    private val registry = LifecycleRegistry(this)
+    private val toastDrawable = ContextCompat.getDrawable(context, R.drawable.ic_hermes_logger_toasts)
+    private val forbiddenDrawable = ContextCompat.getDrawable(context, R.drawable.ic_hermes_logger_forbidden_sign)
 
     private var isOverviewVisible = false
     private var isRemoveModeEnabled = false
+    private var areToastsEnabled = true
 
     private val collapsedBottomMargin = 80F.fromDPToPx()
     private val expandedBottomMargin = 20F.fromDPToPx()
@@ -46,6 +49,7 @@ class OverviewLayout private constructor(
     private val close by lazy { childView.findViewById<RelativeLayout>(R.id.close) }
     private val background by lazy { childView.findViewById<View>(R.id.background) }
 
+    private val toastsImageView by lazy { childView.findViewById<ImageView>(R.id.toasts_image_view) }
     private val removeImageView by lazy { childView.findViewById<ImageView>(R.id.remove_image_view) }
     private val removeAllTextView by lazy { childView.findViewById<TextView>(R.id.remove_all_text_view) }
 
@@ -53,6 +57,8 @@ class OverviewLayout private constructor(
 
     private val toaster get() = Toaster.instance
     private val infoHolder get() = toaster.infoHolder
+
+    private val getToastDrawable get() = if (areToastsEnabled) toastDrawable!! else toastDrawable!!.withOverlayOf(forbiddenDrawable!!)
 
     private val toasterQueueStateObserver = Observer<Boolean> { hasActiveQueue ->
         updateLayoutParams(hasActiveQueue)
@@ -100,14 +106,27 @@ class OverviewLayout private constructor(
     }
 
     private fun setListeners() {
+
         close.setOnClickListener { close() }
+
         background.setOnClickListener { close() }
+
         infoOverviewTab.setOnClickListener { openOverview() }
+
         removeImageView.setOnClickListener {
             isRemoveModeEnabled = !isRemoveModeEnabled
             removeAllTextView.visibility = if (isRemoveModeEnabled) View.VISIBLE else View.GONE
             removeModeLiveData.postValue(isRemoveModeEnabled)
         }
+
+        toastsImageView.setOnClickListener {
+            areToastsEnabled = !areToastsEnabled
+            toastsImageView.setImageDrawable(getToastDrawable)
+
+            toaster.toastsEnabled = areToastsEnabled
+            toaster.clearQueue()
+        }
+
         removeAllTextView.setOnClickListener {
             // Remove all logs
             infoHolder.clearAllLogs()
@@ -185,8 +204,4 @@ class OverviewLayout private constructor(
             applyTo(parentCL)
         }
     }
-
-    //-------------------- LifecycleOwner --------------------
-
-    override fun getLifecycle(): Lifecycle = registry
 }

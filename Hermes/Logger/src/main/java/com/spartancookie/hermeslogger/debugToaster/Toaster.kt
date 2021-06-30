@@ -26,6 +26,8 @@ class Toaster private constructor() {
 
     internal var isDebugEnvironment: Boolean = false
 
+    internal var toastsEnabled = true
+
     internal val infoHolder = InfoHolder()
 
     lateinit var actReference: WeakReference<Activity>
@@ -118,7 +120,10 @@ class Toaster private constructor() {
         fun info() = Builder().apply { type = LogType.Info }
     }
 
-    fun clearQueue() = logQueue.clear()
+    fun clearQueue() {
+        logQueue.clear()
+        refreshHasToastsLiveData()
+    }
 
     //--------------------------- Helper methods ------------------------
 
@@ -131,7 +136,7 @@ class Toaster private constructor() {
         // Add log to the list of logs
         infoHolder.addInfo(dataHolder)
 
-        if (!showToast) {
+        if (!showToast || !toastsEnabled) {
             return
         }
 

@@ -4,7 +4,10 @@ import android.animation.Animator
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
 import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.spartancookie.hermeslogger.R
@@ -60,4 +63,16 @@ fun Float.fromDPToPx(): Int {
     val metrics: DisplayMetrics = Resources.getSystem().displayMetrics
     val px = this * (metrics.densityDpi / 160f)
     return px.roundToInt()
+}
+
+/**
+ * Place [frontDrawable] in front of [this]
+ * @param frontDrawable Drawable that will be placed in front of [this]
+ * @return Drawable with the given drawable overlaying the one from [this]
+ */
+fun Drawable.withOverlayOf(frontDrawable: Drawable): Drawable {
+    return LayerDrawable(arrayOf(this, frontDrawable)).apply {
+        setLayerInsetBottom(0, 0)
+        setLayerGravity(1, Gravity.CENTER or Gravity.CENTER_HORIZONTAL)
+    }
 }
