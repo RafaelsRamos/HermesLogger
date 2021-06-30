@@ -32,7 +32,7 @@ internal fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
  */
 internal fun buildInfo(dataHolder: LogDataHolder) = buildString {
         append("${dataHolder.creationDate} - ${dataHolder.type} Message: ${dataHolder.message} ")
-        dataHolder.genericInfo?.let { append("Generic information: $it ") }
+        dataHolder.genericInfo?.let { append("System info: $it ") }
         dataHolder.extraInfo?.let { append("Extra information: $it.") }
     }
 

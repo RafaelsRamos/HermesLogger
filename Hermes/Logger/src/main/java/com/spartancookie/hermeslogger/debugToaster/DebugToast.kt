@@ -84,7 +84,10 @@ internal class DebugToast private constructor(activity: Activity, private val da
     private fun scheduleDestruction(view: View) {
         Handler(Looper.getMainLooper()).apply {
             postDelayed(
-                { fade(view, false) },
+                {
+                    fade(view, false)
+                    Toaster.refreshHasToastsLiveData()
+                },
                 dataHolder.duration - AnimationDuration - CooldownDuration
             )
         }

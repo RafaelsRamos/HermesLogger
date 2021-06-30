@@ -4,8 +4,10 @@ import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.data.InfoHolder
 import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.utils.default
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -36,9 +38,18 @@ class Toaster private constructor() {
 
     private val activity get() = if (this::actReference.isInitialized) actReference.get() else null
 
+    private val hasItemsInQueue get() = logQueue.size > 0
+
     //----------------------------- Controls -----------------------------
 
     companion object {
+
+
+        internal val hasToastsInQueue = MutableLiveData<Boolean>().default(false)
+
+        internal fun refreshHasToastsLiveData() {
+            hasToastsInQueue.postValue(instance.hasItemsInQueue)
+        }
 
         /**
          * Inform Toaster class that the current the current environment is a debug environment or not.
@@ -46,13 +57,20 @@ class Toaster private constructor() {
          * @param isDebugEnvironment True if the current environment is a debug environment, false otherwise
          */
         @JvmStatic
-        fun initialize(isDebugEnvironment: Boolean) {
+        @JvmOverloads
+        fun initialize(isDebugEnvironment: Boolean, activity: Activity? = null) {
             instance.isDebugEnvironment = isDebugEnvironment
+            activity?.run { updateActivityReference(this) }
             if (isDebugEnvironment) {
                 Log.i("Toaster", "Current environment is a debug environment. Ready to start sharing info.")
             } else {
                 Log.i("Toaster", "Current environment is not a debug environment. Nothing will be shared or stored.")
             }
+        }
+
+        @JvmStatic
+        fun updateActivityReference(activity: Activity) {
+            instance.actReference = WeakReference(activity)
         }
 
         /**
@@ -121,6 +139,7 @@ class Toaster private constructor() {
         activity?.run {
             logQueue.add(buildGenericInfo(dataHolder))
             if (!isShowing) {
+                hasToastsInQueue.postValue(hasItemsInQueue)
                 showFirst()
             }
         } ?: onNoActivityReference()

@@ -3,9 +3,13 @@ package com.spartancookie.hermeslogger.utils
 import android.animation.Animator
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.content.res.Resources
+import android.util.DisplayMetrics
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.spartancookie.hermeslogger.R
+import kotlin.math.roundToInt
+
 
 private const val COPY_TO_CLIPBOARD_ANIMATION_DURATION = 250L
 
@@ -46,4 +50,14 @@ fun animateColor(view: View, fromColorRes: Int, toColorRes: Int, duration: Long,
     colorAnimation.addUpdateListener { animator -> view.setBackgroundColor(animator.animatedValue as Int) }
     listener?.run { colorAnimation.addListener(this) }
     colorAnimation.start()
+}
+
+/**
+ * From DP to pixels
+ * @return Number of pixels in [this] DPs
+ */
+fun Float.fromDPToPx(): Int {
+    val metrics: DisplayMetrics = Resources.getSystem().displayMetrics
+    val px = this * (metrics.densityDpi / 160f)
+    return px.roundToInt()
 }

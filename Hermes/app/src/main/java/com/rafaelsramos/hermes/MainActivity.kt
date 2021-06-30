@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
         // If we are in a debug environment, inform the toaster we are in one and initialize the OverviewLayout
         val isDebugEnvironment = true
         if (isDebugEnvironment) {
-            Toaster.initialize(true)
+            Toaster.initialize(true, this)
             Toaster.updateSystemInfo(this)
             OverviewLayout.create(this)
         }
@@ -141,8 +141,8 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
 
     private fun randomizeToaster(toastBuilder: Toaster.Builder) {
         toastBuilder.withMessage(RandomMessages.getSample).withExtraInfo(RandomExtraInfo.getSample)
-        //.addToQueue(this)
-            .addToList()
+        .addToQueue()
+        //    .addToList()
     }
 
     private fun scheduleAutomaticLogs() {
