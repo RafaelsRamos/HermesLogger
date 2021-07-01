@@ -57,7 +57,9 @@ internal class DebugToast private constructor(activity: Activity, private val da
         rootLayout = LayoutInflater.from(activity).inflate(R.layout.toast_layout, this, true)
 
         // Add the view onto the container fetched above
-        container.addView(rootLayout, container.childCount, buildLayoutParams())
+        activity.runOnUiThread {
+            container.addView(rootLayout, container.childCount, buildLayoutParams())
+        }
 
         with(rootLayout) {
             // Start toast fade in

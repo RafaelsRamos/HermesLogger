@@ -14,28 +14,26 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.*
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.managers.OverviewStateHolderUpdater
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
 import com.spartancookie.hermeslogger.utils.default
 import com.spartancookie.hermeslogger.utils.fromDPToPx
+import com.spartancookie.hermeslogger.utils.removeFromStack
 import com.spartancookie.hermeslogger.utils.withOverlayOf
 
 
-class OverviewLayout private constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+class OverviewLayout private constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private var childView: View = inflate(context, R.layout.screen_overview_background, this)
 
     private val toastDrawable = ContextCompat.getDrawable(context, R.drawable.ic_hermes_logger_toasts)
     private val forbiddenDrawable = ContextCompat.getDrawable(context, R.drawable.ic_hermes_logger_forbidden_sign)
 
-    private var isOverviewVisible = false
     private var isRemoveModeEnabled = false
     private var areToastsEnabled = true
 
@@ -54,10 +52,12 @@ class OverviewLayout private constructor(
     private val removeAllTextView by lazy { childView.findViewById<TextView>(R.id.remove_all_text_view) }
 
     private val fragmentActivity get() = context as? FragmentActivity
+    private val fragmentManager get() = fragmentActivity?.supportFragmentManager
 
     private val toaster get() = Toaster.instance
     private val infoHolder get() = toaster.infoHolder
 
+    private val isOverviewVisible get() = insideLayout.visibility == View.VISIBLE
     private val getToastDrawable get() = if (areToastsEnabled) toastDrawable!! else toastDrawable!!.withOverlayOf(forbiddenDrawable!!)
 
     private val toasterQueueStateObserver = Observer<Boolean> { hasActiveQueue ->
@@ -76,7 +76,8 @@ class OverviewLayout private constructor(
         @JvmStatic
         fun create(activity: Activity): OverviewLayout {
             val container = activity.findViewById<ViewGroup>(android.R.id.content)
-            return OverviewLayout(activity).also {container.addView(it) }
+            val existingOverviewLayout = container.findViewById<View>(R.id.parent_overview_cl_homer_logger)?.parent as? OverviewLayout
+            return existingOverviewLayout ?: OverviewLayout(activity).also {container.addView(it) }
         }
 
         /**
@@ -89,7 +90,6 @@ class OverviewLayout private constructor(
     //------------------- Initialization -------------------
 
     init {
-        loadOverview()
         setListeners()
     }
 
@@ -154,7 +154,8 @@ class OverviewLayout private constructor(
     //--------------------------- Commands ---------------------------
 
     private fun close() {
-        this.removeView(childView)
+        clearFrameLayout()
+
         background.visibility = View.GONE
         insideLayout.visibility = View.GONE
         setTabsState(show = false)
@@ -171,18 +172,21 @@ class OverviewLayout private constructor(
 
     //--------------------- Helper methods ---------------------
 
+    private fun clearFrameLayout() {
+        fragmentManager?.run { removeFromStack(this, InfoOverviewFragment.TAG) }
+    }
+
     private fun loadFragment(fragment: Fragment) {
         fragmentActivity?.run {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.runtimeInfoContentContainer, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            transaction.add(R.id.runtimeInfoContentContainer, fragment, InfoOverviewFragment.TAG)
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            transaction.commitNowAllowingStateLoss()
         }
     }
 
     private fun setTabsState(show: Boolean) {
-        this.isOverviewVisible = show
-        infoOverviewTab.background = getTabDrawable(isOverviewVisible)
+        infoOverviewTab.background = getTabDrawable(show)
     }
 
     private fun getTabDrawable(state: Boolean): Drawable? {

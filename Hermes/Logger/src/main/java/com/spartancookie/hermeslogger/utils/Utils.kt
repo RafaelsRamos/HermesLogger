@@ -4,7 +4,10 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
+import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.models.LogDataHolder
 
 private const val CopyDefaultLabel = "Clipboard info"
@@ -31,12 +34,24 @@ internal fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
  * @return  String that contains information from the log data holder received
  */
 internal fun buildInfo(dataHolder: LogDataHolder) = buildString {
-        append("${dataHolder.creationDate} - ${dataHolder.type} Message: ${dataHolder.message} ")
-        dataHolder.genericInfo?.let { append("System info: $it ") }
-        dataHolder.extraInfo?.let { append("Extra information: $it.") }
-    }
+    append("${dataHolder.creationDate} - ${dataHolder.type} Message: ${dataHolder.message} ")
+    dataHolder.genericInfo?.let { append("System info: $it ") }
+    dataHolder.extraInfo?.let { append("Extra information: $it.") }
+}
 
 /**
  * Directly set a default type onto a [MutableLiveData] instance
  */
 fun <T : Any?> MutableLiveData<T>.default(initialValue: T) = apply { setValue(initialValue) }
+
+internal fun removeFromStack(fragmentManager: FragmentManager, fragmentTag: String) {
+    fragmentManager.run {
+        val fragment = findFragmentByTag(fragmentTag)
+        if (fragment != null) {
+            val transaction = beginTransaction()
+            transaction.remove(fragment)
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+            transaction.commit()
+        }
+    }
+}

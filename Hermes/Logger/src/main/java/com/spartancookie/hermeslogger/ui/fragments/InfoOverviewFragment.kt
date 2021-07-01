@@ -23,6 +23,7 @@ import com.spartancookie.hermeslogger.ui.search.CustomSearch
 import com.spartancookie.hermeslogger.utils.default
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.spartancookie.hermeslogger.utils.removeFromStack
 
 
 const val EMPTY_STRING = ""
@@ -31,6 +32,7 @@ private const val SEARCH_STRING = "Search"
 internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview) {
 
     companion object {
+        const val TAG = "InfoOverviewFragment"
         val customSearchLiveData = MutableLiveData<CustomSearch>().default(CustomSearch())
     }
 
@@ -54,6 +56,7 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview) {
 
     override fun onDetach() {
         onDismissedFunc()
+        removeFromStack(parentFragmentManager, InfoDetailedViewFragment.TAG)
         super.onDetach()
     }
 
@@ -136,8 +139,7 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview) {
     private fun onItemClicked(item: LogDataHolder) {
         val fragment = InfoDetailedViewFragment(item)
         requireActivity().supportFragmentManager.beginTransaction().apply {
-            add(R.id.runtimeInfoContentContainer, fragment)
-            addToBackStack(null)
+            add(R.id.runtimeInfoContentContainer, fragment, InfoDetailedViewFragment.TAG)
             commit()
         }
     }

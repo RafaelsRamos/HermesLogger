@@ -5,14 +5,20 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.ui.setCreationDate
 import com.spartancookie.hermeslogger.ui.setLogIcon
 import com.spartancookie.hermeslogger.utils.animateCopyToClipboardColor
 import com.spartancookie.hermeslogger.utils.copyToClipboard
+import com.spartancookie.hermeslogger.utils.removeFromStack
 
 internal class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragment(R.layout.screen_detailed_view) {
+
+    internal companion object {
+        const val TAG =  "InfoDetailedViewFragment"
+    }
 
     private lateinit var rootLayout: View
     private val backIV by lazy { rootLayout.findViewById<ImageView>(R.id.back) }
@@ -30,7 +36,7 @@ internal class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragm
         rootLayout = view
 
         // Set listeners
-        backIV.setOnClickListener { activity?.onBackPressed() }
+        backIV.setOnClickListener { removeFromStack(parentFragmentManager, TAG) }
         copyToClipboardIV.setOnClickListener { imageView ->
             animateCopyToClipboardColor(imageView)
             activity?.let { copyToClipboard(it, item) }
