@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.spartancookie.formatter.DataType
 import com.spartancookie.hermeslogger.data.InfoHolder
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.utils.default
@@ -24,13 +25,14 @@ const val ShortToastDuration = 2000
 
 class Toaster private constructor() {
 
+    lateinit var actReference: WeakReference<Activity>
+
     internal var isDebugEnvironment: Boolean = false
 
     internal var toastsEnabled = true
 
     internal val infoHolder = InfoHolder()
 
-    lateinit var actReference: WeakReference<Activity>
 
     var systemInfoBuildable : SystemInfoBuildable? = null
 
@@ -132,7 +134,7 @@ class Toaster private constructor() {
      * @param dataHolder Toast information
      * @param showToast  True to show bottom toast, False to hide it (Shows the toast by default)
      */
-    private fun add(dataHolder: LogDataHolder, showToast: Boolean) {
+    private fun add(showToast: Boolean, dataHolder: LogDataHolder) {
         // Add log to the list of logs
         infoHolder.addInfo(dataHolder)
 
@@ -195,13 +197,16 @@ class Toaster private constructor() {
         internal var type: LogType = LogType.Debug,
         private var duration: Int = ShortToastDuration,
         private var message: String = "",
-        private var extraInfo: String? = null) {
+        private var extraInfo: String? = null,
+        private var dataType: DataType? = null) {
 
         fun setDuration(duration: Int) = apply { this@Builder.duration = duration }
 
         fun withMessage(message: String) = apply { this@Builder.message = message }
 
         fun withExtraInfo(extraInfo: String) = apply { this@Builder.extraInfo = extraInfo }
+
+        fun withFormat(dataType: DataType) = apply { this@Builder.dataType = dataType }
 
         /**
          * Create a log with the parameters built and add it to the queue of Toasts being shown and to
@@ -221,7 +226,7 @@ class Toaster private constructor() {
                 instance.actReference = WeakReference(this)
             }
 
-            instance.add(LogDataHolder(message, duration.toLong(), type, extraInfo), true)
+            instance.add(true, LogDataHolder(message, duration.toLong(), type, extraInfo, dataType = dataType))
         }
 
         /**
@@ -233,7 +238,7 @@ class Toaster private constructor() {
                 return
             }
 
-            instance.add(LogDataHolder(message, duration.toLong(), type, extraInfo), false)
+            instance.add(false, LogDataHolder(message, duration.toLong(), type, extraInfo, dataType = dataType))
         }
     }
 

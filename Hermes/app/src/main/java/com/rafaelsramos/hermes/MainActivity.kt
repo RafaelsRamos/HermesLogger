@@ -8,6 +8,7 @@ import android.os.Looper
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.spartancookie.formatter.DataType
 import com.spartancookie.hermeslogger.debugToaster.LongToastDuration
 import com.spartancookie.hermeslogger.debugToaster.ShortToastDuration
 import com.spartancookie.hermeslogger.debugToaster.Toaster
@@ -77,6 +78,13 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
             Toaster.updateSystemInfo(this)
             OverviewLayout.create(this)
         }
+
+
+        // XML format sample
+        Toaster.debug().withMessage(RandomMessages.getSample).withExtraInfo(xmlSample1).withFormat(DataType.XML).addToList()
+
+        // JSON format sample
+        Toaster.debug().withMessage(RandomMessages.getSample).withExtraInfo(jsonSample1).withFormat(DataType.JSON).addToList()
 
     }
 

@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.spartancookie.formatter.Formatter
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.ui.setCreationDate
@@ -47,7 +48,10 @@ internal class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragm
         dateTV.setCreationDate(item)
         typeNameTV.text = item.type.name
         messageTV.text = item.message
-        extraInfoTV.text = item.extraInfo
         genericInfoTV.text = item.genericInfo
+
+        item.extraInfo?.let { extraInfo ->
+            extraInfoTV.text = item.dataType?.let { Formatter.format(it, extraInfo) } ?: extraInfo
+        }
     }
 }
