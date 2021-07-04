@@ -64,12 +64,14 @@ class Toaster private constructor() {
         @JvmOverloads
         fun initialize(isDebugEnvironment: Boolean, activity: Activity? = null) {
             instance.isDebugEnvironment = isDebugEnvironment
-            activity?.run { updateActivityReference(this) }
+
             if (isDebugEnvironment) {
+                activity?.run { updateActivityReference(this) }
                 Log.i("Toaster", "Current environment is a debug environment. Ready to start sharing info.")
             } else {
                 Log.i("Toaster", "Current environment is not a debug environment. Nothing will be shared or stored.")
             }
+            
         }
 
         @JvmStatic

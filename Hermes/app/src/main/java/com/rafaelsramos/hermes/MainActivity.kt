@@ -27,8 +27,11 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
     private val durationSeekBar by lazy { findViewById<SeekBar>(R.id.simpleSeekBar) }
 
     private val passActivityCheckBox by lazy { findViewById<CheckBox>(R.id.pass_activity_cb) }
-    private val radioGroup by lazy { findViewById<RadioGroup>(R.id.duration_radio_group) }
+    private val durationRadioGroup by lazy { findViewById<RadioGroup>(R.id.duration_radio_group) }
     private val durationEditText by lazy { findViewById<EditText>(R.id.durationEditText) }
+
+    private val dataTypeRadioGroup by lazy { findViewById<RadioGroup>(R.id.extra_info_type_radio_group) }
+
     private val messageEditText by lazy { findViewById<EditText>(R.id.edit_text_message) }
     private val extraInfoEditText by lazy { findViewById<EditText>(R.id.edit_text_extra_message) }
     private val generateLogsButton by lazy { findViewById<Button>(R.id.generate_logs_button) }
@@ -43,11 +46,22 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
 
     private var fireLogDuration = 1000L
 
-    private val duration get() = when (radioGroup.checkedRadioButtonId) {
-        R.id.longRB -> LongToastDuration
+    private val duration get() = when (durationRadioGroup.checkedRadioButtonId) {
         R.id.shortRB -> ShortToastDuration
         R.id.customRB -> durationText
         else -> LongToastDuration
+    }
+
+    private val randomExtraInfo get() = when (dataTypeRadioGroup.checkedRadioButtonId) {
+        R.id.xml_rb -> RandomExtraInfo.getXMLSample
+        R.id.json_rb -> RandomExtraInfo.getJSONSample
+        else -> RandomExtraInfo.getSample
+    }
+
+    private val dataType get() = when (dataTypeRadioGroup.checkedRadioButtonId) {
+        R.id.xml_rb -> DataType.XML
+        R.id.json_rb -> DataType.JSON
+        else -> null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +77,7 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
         findViewById<View>(R.id.button_error).setOnClickListener(this)
         generateLogsButton.setOnClickListener(this)
 
-        radioGroup.setOnCheckedChangeListener { _, i ->
+        durationRadioGroup.setOnCheckedChangeListener { _, i ->
             when (i) {
                 R.id.longRB -> durationEditText.visibility = View.GONE
                 R.id.shortRB -> durationEditText.visibility = View.GONE
@@ -78,14 +92,6 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
             Toaster.updateSystemInfo(this)
             OverviewLayout.create(this)
         }
-
-
-        // XML format sample
-        Toaster.debug().withMessage(RandomMessages.getSample).withExtraInfo(xmlSample1).withFormat(DataType.XML).addToList()
-
-        // JSON format sample
-        Toaster.debug().withMessage(RandomMessages.getSample).withExtraInfo(jsonSample1).withFormat(DataType.JSON).addToList()
-
     }
 
     private fun setDurationSeekBar() {
@@ -148,7 +154,14 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
     // -------------------------- Helper methods --------------------------
 
     private fun randomizeToaster(toastBuilder: Toaster.Builder) {
-        toastBuilder.withMessage(RandomMessages.getSample).withExtraInfo(RandomExtraInfo.getSample)
+        toastBuilder
+            .withMessage(RandomMessages.getSample)
+            .withExtraInfo(randomExtraInfo)
+            .apply {
+                dataType?.run {
+                    withFormat(this)
+                }
+            }
         .addToQueue()
         //    .addToList()
     }
