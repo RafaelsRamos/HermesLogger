@@ -3,11 +3,13 @@ package com.spartancookie.formatter
 import android.util.Log
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import org.json.JSONObject
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
 import org.xml.sax.InputSource
 import java.io.ByteArrayInputStream
 import java.io.StringWriter
+import java.lang.RuntimeException
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.Transformer
@@ -18,9 +20,12 @@ import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
+
 private const val DEFAULT_INDENT = 4
 
 private const val XML_INDENT_PROPERTY_NAME = "{http://xml.apache.org/xslt}indent-amount"
+
+private const val INVALID_JSON_MESSAGE = "Invalid json format"
 
 class Formatter private constructor() {
 
@@ -38,9 +43,7 @@ class Formatter private constructor() {
             } catch (e: Exception) {
                 Log.e(
                     TAG,
-                    "Could not prettify given string, returning input string. exception: ${
-                        RuntimeException(e)
-                    }"
+                    "Could not prettify given string, returning input string. exception: ${e.printStackTrace()}"
                 )
                 content
             }
@@ -91,11 +94,24 @@ class Formatter private constructor() {
      * @param jsonStr String in JSON format
      */
     fun prettifyJSON(jsonStr: String): String {
+
+        isValidJson(jsonStr)
+
         val objectMapper = ObjectMapper().apply {
             configure(SerializationFeature.INDENT_OUTPUT, true)
         }
         val tree = objectMapper.readTree(jsonStr)
         return objectMapper.writeValueAsString(tree)
+    }
+
+    /**
+     * Assess if Json is valid.
+     * TODO("Use an established library to do this")
+     */
+    private fun isValidJson(jsonStr: String) {
+        if (jsonStr.count { it == '{' } != jsonStr.count { it == '}' } ||
+            jsonStr.count { it == '[' } != jsonStr.count { it == ']' } )
+            throw RuntimeException(INVALID_JSON_MESSAGE)
     }
 
 }
