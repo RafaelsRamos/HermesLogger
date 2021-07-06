@@ -23,6 +23,8 @@ private const val FILE_NAME = "hl_log_stack"
 private const val HEADER_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
 private const val FOOTER = "\n\n-------------------------- END OF STACK --------------------------"
 
+private val creationDateFormat = SimpleDateFormat("MM-dd HH:mm:ss.SSS", Locale.getDefault())
+
 private val headerContent
     get() = "Hermes logger stack dump captured " +
             "at ${SimpleDateFormat(HEADER_DATE_FORMAT, Locale.getDefault()).format(Date())}"
@@ -72,7 +74,7 @@ private fun dumpLogStack(file: File) {
         append("$logCountContent\n")
         append("\n    Logs    \n")
         infoHolder.logList.forEach { log ->
-            append("\n||${log.creationDate}||${log.type}-${log.id}\nShort Message:${log.message}\nExtra Information:${log.extraInfo}\n")
+            append("\n\n|| ${creationDateFormat.format(log.creationDate)} || ${log.type}-${log.id}\nShort Message:${log.message}\nExtra Information:${log.extraInfo}\n")
         }
         append(FOOTER)
     }
