@@ -1,5 +1,6 @@
 package com.rafaelsramos.hermes
 
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
@@ -8,11 +9,14 @@ import android.os.Looper
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import com.spartancookie.formatter.DataType
 import com.spartancookie.hermeslogger.debugToaster.LongToastDuration
 import com.spartancookie.hermeslogger.debugToaster.ShortToastDuration
 import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
+import com.spartancookie.hermeslogger.utils.hasWriteStoragePermission
 
 private const val BASE_DURATION_TEXT = "Duration between logs"
 
@@ -85,13 +89,22 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
             }
         }
 
-        // If we are in a debug environment, inform the toaster we are in one and initialize the OverviewLayout
-        val isDebugEnvironment = true
-        if (isDebugEnvironment) {
-            Toaster.initialize(true, this)
-            Toaster.updateSystemInfo(this)
-            OverviewLayout.create(this)
+        if (hasWriteStoragePermission(applicationContext)) {
+            initializeOverlay()
         }
+
+        TedPermission.with(this)
+            .setPermissionListener(object: PermissionListener {
+                override fun onPermissionGranted() {
+                    initializeOverlay()
+                }
+                override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+                    initializeOverlay()
+                }
+            })
+            .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+            .setPermissions(WRITE_EXTERNAL_STORAGE)
+            .check()
     }
 
     private fun setDurationSeekBar() {
@@ -152,6 +165,16 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
     private val scheduleFireLogs by lazy { Runnable { scheduleAutomaticLogs() } }
 
     // -------------------------- Helper methods --------------------------
+
+    private fun initializeOverlay() {
+        // If we are in a debug environment, inform the toaster we are in one and initialize the OverviewLayout
+        val isDebugEnvironment = true
+        if (isDebugEnvironment) {
+            Toaster.initialize(true, this)
+            Toaster.updateSystemInfo(this)
+            OverviewLayout.create(this)
+        }
+    }
 
     private fun randomizeToaster(toastBuilder: Toaster.Builder) {
         toastBuilder

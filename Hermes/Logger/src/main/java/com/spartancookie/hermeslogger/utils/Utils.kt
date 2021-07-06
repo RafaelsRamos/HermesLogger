@@ -40,6 +40,16 @@ internal fun buildInfo(dataHolder: LogDataHolder) = buildString {
 }
 
 /**
+ * Create a string containing the information on the log data holder
+ * @param dataHolder Log data holder
+ * @return  String that contains information from the log data holder received
+ */
+internal fun buildInfoContentOnly(dataHolder: LogDataHolder) = buildString {
+    dataHolder.extraInfo?.let { append("Extra information: $it.") }
+    dataHolder.genericInfo?.let { append("System info: $it ") }
+}
+
+/**
  * Directly set a default type onto a [MutableLiveData] instance
  */
 fun <T : Any?> MutableLiveData<T>.default(initialValue: T) = apply { setValue(initialValue) }

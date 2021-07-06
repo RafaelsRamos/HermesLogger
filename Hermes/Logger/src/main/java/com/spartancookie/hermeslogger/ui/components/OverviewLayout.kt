@@ -21,7 +21,7 @@ import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.managers.OverviewStateHolderUpdater
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
-import com.spartancookie.hermeslogger.utils.default
+import com.spartancookie.hermeslogger.utils.*
 import com.spartancookie.hermeslogger.utils.fromDPToPx
 import com.spartancookie.hermeslogger.utils.removeFromStack
 import com.spartancookie.hermeslogger.utils.withOverlayOf
@@ -31,8 +31,10 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
 
     private var childView: View = inflate(context, R.layout.screen_overview_background, this)
 
-    private val toastDrawable = ContextCompat.getDrawable(context, R.drawable.ic_hermes_logger_toasts)
-    private val forbiddenDrawable = ContextCompat.getDrawable(context, R.drawable.ic_hermes_logger_forbidden_sign)
+    private val toastDrawable =
+        ContextCompat.getDrawable(context, R.drawable.ic_hermes_logger_toasts)
+    private val forbiddenDrawable =
+        ContextCompat.getDrawable(context, R.drawable.ic_hermes_logger_forbidden_sign)
 
     private var isRemoveModeEnabled = false
     private var areToastsEnabled = true
@@ -47,6 +49,7 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
     private val close by lazy { childView.findViewById<RelativeLayout>(R.id.close) }
     private val background by lazy { childView.findViewById<View>(R.id.background) }
 
+    private val shareImageView by lazy { childView.findViewById<ImageView>(R.id.export_image_view) }
     private val toastsImageView by lazy { childView.findViewById<ImageView>(R.id.toasts_image_view) }
     private val removeImageView by lazy { childView.findViewById<ImageView>(R.id.remove_image_view) }
     private val removeAllTextView by lazy { childView.findViewById<TextView>(R.id.remove_all_text_view) }
@@ -58,7 +61,10 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
     private val infoHolder get() = toaster.infoHolder
 
     private val isOverviewVisible get() = insideLayout.visibility == View.VISIBLE
-    private val getToastDrawable get() = if (areToastsEnabled) toastDrawable!! else toastDrawable!!.withOverlayOf(forbiddenDrawable!!)
+    private val getToastDrawable
+        get() = if (areToastsEnabled) toastDrawable!! else toastDrawable!!.withOverlayOf(
+            forbiddenDrawable!!
+        )
 
     private val toasterQueueStateObserver = Observer<Boolean> { hasActiveQueue ->
         updateLayoutParams(hasActiveQueue)
@@ -76,8 +82,9 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
         @JvmStatic
         fun create(activity: Activity): OverviewLayout {
             val container = activity.findViewById<ViewGroup>(android.R.id.content)
-            val existingOverviewLayout = container.findViewById<View>(R.id.parent_overview_cl_homer_logger)?.parent as? OverviewLayout
-            return existingOverviewLayout ?: OverviewLayout(activity).also {container.addView(it) }
+            val existingOverviewLayout =
+                container.findViewById<View>(R.id.parent_overview_cl_homer_logger)?.parent as? OverviewLayout
+            return existingOverviewLayout ?: OverviewLayout(activity).also { container.addView(it) }
         }
 
         /**
@@ -112,6 +119,14 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
         background.setOnClickListener { close() }
 
         infoOverviewTab.setOnClickListener { openOverview() }
+
+        shareImageView.run {
+            if (hasWriteStoragePermission(context)) {
+                setOnClickListener { shareLogDump(context) }
+            } else {
+                visibility = GONE
+            }
+        }
 
         removeImageView.setOnClickListener {
             isRemoveModeEnabled = !isRemoveModeEnabled
