@@ -49,6 +49,18 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/export_image_view"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:paddingHorizontal="5dp"
+                android:layout_marginStart="3dp"
+                android:src="@drawable/ic_hermes_logger_share"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
                 android:id="@+id/toasts_image_view"
                 android:layout_width="30dp"
                 android:layout_height="30dp"

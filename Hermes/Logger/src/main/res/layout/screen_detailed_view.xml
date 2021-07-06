@@ -43,6 +43,18 @@
         android:tint="@color/black"/>
 
     <ImageView
+        android:id="@+id/share_icon"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_hermes_logger_share"
+        app:layout_constraintEnd_toStartOf="@+id/copy_to_clipboard"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        android:tint="@color/black"/>
+
+    <ImageView
         android:id="@+id/type_icon"
         android:layout_width="@dimen/info_detailed_item_dimens"
         android:layout_height="@dimen/info_detailed_item_dimens"
