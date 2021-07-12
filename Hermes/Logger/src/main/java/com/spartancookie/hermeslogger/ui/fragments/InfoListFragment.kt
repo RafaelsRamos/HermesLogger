@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
+import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
 import com.spartancookie.hermeslogger.debugToaster.LogType
 import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.models.LogDataHolder
@@ -16,10 +17,11 @@ import com.spartancookie.hermeslogger.ui.adapters.InfoRecyclerAdapter
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
 
 private const val LOG_TYPE_ARG = "LogTypeArg"
+private const val LOG_SELECTED_CALLBACK_ARG = "LogSelectedCallback"
 
 internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
-    private lateinit var specificItemClickedFunc: (LogDataHolder) -> Unit
+    private lateinit var logSelectedCallback: LogSelectedCallback
     private var type: LogType? = null
 
     private var filterString = EMPTY_STRING
@@ -32,21 +34,32 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
     private val infoHolder get() = Toaster.instance.infoHolder
     private val logList: List<LogDataHolder>
-        get() = type?.let { infoHolder.getLogListByType(it).reversed() } ?: infoHolder.logList.reversed()
+        get() = type?.let { infoHolder.getLogListByType(it).reversed() }
+            ?: infoHolder.logList.reversed()
 
-    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(logList.toMutableList(), requireActivity(), specificItemClickedFunc, this) }
-    private val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(requireActivity()) }
+    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(logList.toMutableList(), requireActivity(), logSelectedCallback, this) }
+    private val mLayoutManager: RecyclerView.LayoutManager by lazy {
+        LinearLayoutManager(
+            requireActivity()
+        )
+    }
     private val recyclerView: RecyclerView by lazy { requireView().findViewById<RecyclerView>(R.id.recycler) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         // Get type from bundle
-        type = arguments?.getSerializable(LOG_TYPE_ARG) as? LogType
+        arguments?.run {
+            type = getSerializable(LOG_TYPE_ARG) as? LogType
+            logSelectedCallback = getSerializable(LOG_SELECTED_CALLBACK_ARG) as LogSelectedCallback
+        }
 
         activity?.let {
-            val dividerDecor = DividerItemDecoration(it.applicationContext, (mLayoutManager as LinearLayoutManager).orientation)
+            val dividerDecor = DividerItemDecoration(
+                it.applicationContext,
+                (mLayoutManager as LinearLayoutManager).orientation
+            )
 
-            with (recyclerView) {
+            with(recyclerView) {
                 layoutManager = mLayoutManager
                 adapter = mAdapter
                 addItemDecoration(dividerDecor)
@@ -77,12 +90,14 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
             customSearch = it
             val changedCase = customSearch.matchCase && matchCase
             val changedContent = customSearch.filterContent.contains(filterString)
-            val canUsePreviousFilter = customSearch.filterContent.isNotEmpty() && changedContent && changedCase
+            val canUsePreviousFilter =
+                customSearch.filterContent.isNotEmpty() && changedContent && changedCase
 
             filterString = customSearch.filterContent
             matchCase = customSearch.matchCase
 
-            storedLogList = (if (canUsePreviousFilter) storedLogList else logList).filterLogs(customSearch)
+            storedLogList =
+                (if (canUsePreviousFilter) storedLogList else logList).filterLogs(customSearch)
             mAdapter.updateList(storedLogList)
         })
 
@@ -91,12 +106,12 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     //------------------------------ Factory ------------------------------
 
     companion object {
-        fun newInstance(type: LogType?, onSpecificItemClickedFunc: (LogDataHolder) -> Unit): InfoListFragment {
-            val args = Bundle().apply { putSerializable(LOG_TYPE_ARG, type) }
-            return InfoListFragment().apply {
-                arguments = args
-                specificItemClickedFunc = onSpecificItemClickedFunc
+        fun newInstance(type: LogType?, logSelectedCallback: LogSelectedCallback) =
+            InfoListFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(LOG_TYPE_ARG, type)
+                    putSerializable(LOG_SELECTED_CALLBACK_ARG, logSelectedCallback)
+                }
             }
-        }
     }
 }

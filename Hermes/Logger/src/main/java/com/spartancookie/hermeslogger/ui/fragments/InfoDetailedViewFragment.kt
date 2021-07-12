@@ -1,5 +1,6 @@
 package com.spartancookie.hermeslogger.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.spartancookie.formatter.Formatter
 import com.spartancookie.hermeslogger.R
+import com.spartancookie.hermeslogger.debugToaster.LogType
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.ui.setCreationDate
 import com.spartancookie.hermeslogger.ui.setLogIcon
@@ -18,13 +20,10 @@ import com.spartancookie.hermeslogger.utils.copyToClipboard
 import com.spartancookie.hermeslogger.utils.removeFromStack
 import com.spartancookie.hermeslogger.utils.shareLog
 
-internal class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragment(R.layout.screen_detailed_view) {
+private const val ITEM_ARG = "selected_item"
 
-    internal companion object {
-        const val TAG =  "InfoDetailedViewFragment"
-    }
+internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view) {
 
-    private lateinit var rootLayout: View
     private val backIV by lazy { rootLayout.findViewById<ImageView>(R.id.back) }
     private val copyToClipboardIV by lazy { rootLayout.findViewById<ImageView>(R.id.copy_to_clipboard) }
     private val shareLogIV by lazy { rootLayout.findViewById<ImageView>(R.id.share_icon) }
@@ -35,8 +34,15 @@ internal class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragm
     private val extraInfoTV by lazy { rootLayout.findViewById<TextView>(R.id.extra_info) }
     private val genericInfoTV by lazy { rootLayout.findViewById<TextView>(R.id.generic_info) }
 
+    private lateinit var rootLayout: View
+
+    private lateinit var item: LogDataHolder
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        savedInstanceState?.run {
+            removeFromStack(parentFragmentManager, TAG)
+        }
 
         rootLayout = view
 
@@ -64,6 +70,21 @@ internal class InfoDetailedViewFragment(private val item: LogDataHolder) : Fragm
 
         item.extraInfo?.let { extraInfo ->
             extraInfoTV.text = item.dataType?.let { Formatter.format(it, extraInfo) } ?: extraInfo
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        arguments?.getParcelable<LogDataHolder>(ITEM_ARG)?.let {
+            item = it
+        }
+    }
+
+    internal companion object {
+        const val TAG = "InfoDetailedViewFragment"
+
+        fun newInstance(item: LogDataHolder) = InfoDetailedViewFragment().apply {
+            arguments = Bundle().apply { putParcelable(ITEM_ARG, item) }
         }
     }
 }

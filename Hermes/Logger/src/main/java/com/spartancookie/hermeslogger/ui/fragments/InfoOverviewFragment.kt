@@ -15,7 +15,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.debugToaster.LogType
 import com.spartancookie.hermeslogger.debugToaster.Toaster
-import com.spartancookie.hermeslogger.managers.OverviewStateHolderUpdater
+import com.spartancookie.hermeslogger.managers.OverviewStateHolder
 import com.spartancookie.hermeslogger.managers.TabNotificationsHandler
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.ui.adapters.InfoListTabAdapter
@@ -23,21 +23,29 @@ import com.spartancookie.hermeslogger.ui.search.CustomSearch
 import com.spartancookie.hermeslogger.utils.default
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
+import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
 import com.spartancookie.hermeslogger.utils.removeFromStack
 
 
-const val EMPTY_STRING = ""
+private const val FRAGMENT_STATE_CALLBACK = "fragment_state_callback_arg"
 private const val SEARCH_STRING = "Search"
+const val EMPTY_STRING = ""
 
-internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview) {
+internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), LogSelectedCallback {
 
     companion object {
         const val TAG = "InfoOverviewFragment"
         val customSearchLiveData = MutableLiveData<CustomSearch>().default(CustomSearch())
+
+        fun newInstance(callback: FragmentStateCallback) = InfoOverviewFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(FRAGMENT_STATE_CALLBACK, callback)
+            }
+        }
     }
 
-    lateinit var stateHolder: OverviewStateHolderUpdater
-    lateinit var onDismissedFunc: () -> Unit
+    private val fragmentStateCallback = arguments?.run { getSerializable(FRAGMENT_STATE_CALLBACK) as? FragmentStateCallback }
 
     private lateinit var tabNotificationsHandler: TabNotificationsHandler
     private lateinit var adapter: InfoListTabAdapter
@@ -52,20 +60,26 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview) {
     private val searchContent get() = searchEditText.text.toString()
     private val infoHolder get() = Toaster.instance.infoHolder
 
-    private val customSearch by lazy { stateHolder.customSearch }
+    private val customSearch by lazy { OverviewStateHolder.customSearch }
 
     override fun onDetach() {
-        onDismissedFunc()
+        fragmentStateCallback?.onFragmentDismissed()
         removeFromStack(parentFragmentManager, InfoDetailedViewFragment.TAG)
         super.onDetach()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        savedInstanceState?.run {
+            // if we're returning from a saved instance, remove this fragment and the details
+            removeFromStack(parentFragmentManager, InfoDetailedViewFragment.TAG)
+            removeFromStack(parentFragmentManager, TAG)
+        }
+
         initViews(view)
         setSearchLogic()
 
-        adapter = InfoListTabAdapter(this) { item -> onItemClicked(item) }
+        adapter = InfoListTabAdapter(this, this)
         viewPager.adapter = adapter
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -87,7 +101,7 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview) {
 
         }
 
-        searchEditText.setText(stateHolder.currentContent)
+        searchEditText.setText(OverviewStateHolder.currentContent)
         updateUI()
 
         setObservers()
@@ -130,14 +144,14 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview) {
         }
     }
 
-    //-------------------- on  Implementation --------------------
+    //-------------------- LogSelectedCallback Implementation --------------------
 
     /**
      * On item from list clicked
-     * @param item Information from the item clicked
+     * @param log Information from the item clicked
      */
-    private fun onItemClicked(item: LogDataHolder) {
-        val fragment = InfoDetailedViewFragment(item)
+    override fun onLogSelected(log: LogDataHolder) {
+        val fragment = InfoDetailedViewFragment.newInstance(log)
         requireActivity().supportFragmentManager.beginTransaction().apply {
             add(R.id.runtimeInfoContentContainer, fragment, InfoDetailedViewFragment.TAG)
             commit()
@@ -158,7 +172,7 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview) {
      * @param content Search content
      */
     private fun updateFilters(content: String?) {
-        stateHolder.updateSearchContent(customSearch)
+        OverviewStateHolder.updateSearchContent(customSearch)
         customSearch.filterContent = content ?: EMPTY_STRING
         customSearchLiveData.postValue(customSearch)
     }

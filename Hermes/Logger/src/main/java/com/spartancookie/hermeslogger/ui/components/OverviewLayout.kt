@@ -18,8 +18,8 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.spartancookie.hermeslogger.R
+import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
 import com.spartancookie.hermeslogger.debugToaster.Toaster
-import com.spartancookie.hermeslogger.managers.OverviewStateHolderUpdater
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
 import com.spartancookie.hermeslogger.utils.*
 import com.spartancookie.hermeslogger.utils.fromDPToPx
@@ -27,7 +27,7 @@ import com.spartancookie.hermeslogger.utils.removeFromStack
 import com.spartancookie.hermeslogger.utils.withOverlayOf
 
 
-class OverviewLayout private constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
+class OverviewLayout private constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr), FragmentStateCallback {
 
     private var childView: View = inflate(context, R.layout.screen_overview_background, this)
 
@@ -41,8 +41,6 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
 
     private val collapsedBottomMargin = 80F.fromDPToPx()
     private val expandedBottomMargin = 20F.fromDPToPx()
-
-    private val stateHolderInstance = OverviewStateHolderUpdater()
 
     private val insideLayout by lazy { childView.findViewById<ConstraintLayout>(R.id.inside_layout) }
     private val infoOverviewTab by lazy { childView.findViewById<RelativeLayout>(R.id.info_overview_tab) }
@@ -151,11 +149,7 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
     }
 
     private fun loadOverview() {
-        val overviewFragment = InfoOverviewFragment().apply {
-            stateHolder = stateHolderInstance
-            // Invoke close() on InfoOverview fragment detached
-            onDismissedFunc = ::close
-        }
+        val overviewFragment = InfoOverviewFragment.newInstance(this)
 
         loadFragment(overviewFragment)
         insideLayout.visibility = View.VISIBLE
@@ -222,5 +216,11 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
             setMargin(insideLayout.id, ConstraintSet.BOTTOM, if (collapse) collapsedBottomMargin else expandedBottomMargin)
             applyTo(parentCL)
         }
+    }
+
+    //--------------------- FragmentStateCallback implementation ---------------------
+
+    override fun onFragmentDismissed() {
+        close()
     }
 }

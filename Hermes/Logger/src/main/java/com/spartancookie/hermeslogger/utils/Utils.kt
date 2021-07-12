@@ -61,7 +61,7 @@ internal fun removeFromStack(fragmentManager: FragmentManager, fragmentTag: Stri
             val transaction = beginTransaction()
             transaction.remove(fragment)
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-            transaction.commit()
+            transaction.commitAllowingStateLoss()
         }
     }
 }
