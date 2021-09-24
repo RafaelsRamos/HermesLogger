@@ -43,8 +43,8 @@ internal class InfoHolder {
         }
 
     /**
-     * Add log into the list
-     * @param log log
+     * Add [log] into the list
+     * @param log log that will be added to the list
      */
     fun addInfo(log: LogDataHolder) {
         log.id = getValidID(log.type)
@@ -56,8 +56,8 @@ internal class InfoHolder {
 
     /**
      * Get a valid ID and increase the counter of the number of logs of type [LogType]
-     * @param type Log type
-     * @return Valid ID
+     * @param type Log type that whose ID will be generated and whose count will be increased
+     * @return Valid Log ID of the given [LogType]
      */
     private fun getValidID(type: LogType) = when (type) {
         LogType.Debug -> "D-${++nrOfDebugs}"
@@ -82,7 +82,11 @@ internal class InfoHolder {
         nrOfErrors = 0
         nrOfInfo = 0
     }
-    
+
+    /**
+     * Remove log with the given [id] from the log list.
+     * @param id ID of the log that will be removed.
+     */
     fun removeLogById(id: String) {
         val indexOfLog = logList.indexOfFirst { id == it.id }
         if (indexOfLog >= 0) {

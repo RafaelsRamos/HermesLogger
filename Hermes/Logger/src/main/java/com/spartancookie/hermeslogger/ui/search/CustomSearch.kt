@@ -3,16 +3,33 @@ package com.spartancookie.hermeslogger.ui.search
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.utils.EMPTY_STRING
 
+/**
+ * Class responsible for storing the state of the search
+ */
 internal class CustomSearch {
 
+    /**
+     * True if the logs are being filtered by case, False otherwise
+     */
     var matchCase = false
 
+    /**
+     * Content by which the logs are being filtered
+     */
     var filterContent = EMPTY_STRING
 
+    /**
+     * True if the logs are being filtered by regex, False otherwise
+     * TODO: Not implemented yet
+     */
     var isRegexEnabled = false
 
 }
 
+/**
+ * Assess if a specific [LogDataHolder] can be displayed according to the rules on [CustomSearch]
+ * @param cs [CustomSearch] that will be used to assess if the log that be displayed
+ */
 internal fun LogDataHolder.contains(cs: CustomSearch): Boolean {
 
     return if (cs.isRegexEnabled) {
