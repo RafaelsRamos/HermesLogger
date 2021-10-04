@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.debugToaster.LogType
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.utils.default
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Class responsible for storing the logs adding during the session
@@ -18,13 +19,17 @@ internal class InfoHolder {
     /**
      * List of all logs
      */
-    val logList : MutableList<LogDataHolder> = mutableListOf()
+    val logList: MutableList<LogDataHolder> = mutableListOf()
 
-    private var nrOfDebugs = 0
-    private var nrOfSuccesses = 0
-    private var nrOfWarnings = 0
-    private var nrOfErrors = 0
-    private var nrOfInfo = 0
+    private val logNumbers: HashMap<LogType, AtomicInteger> = hashMapOf(
+        LogType.Debug to AtomicInteger(0),
+        LogType.Success to AtomicInteger(0),
+        LogType.Warning to AtomicInteger(0),
+        LogType.Error to AtomicInteger(0),
+        LogType.Info to AtomicInteger(0)
+    )
+
+    private val logsN = LogsCounter()
 
     //------------------------ Controls ------------------------
 
@@ -34,13 +39,8 @@ internal class InfoHolder {
      */
     fun getLogListByType(type: LogType) = logList.filter { it.type == type }
 
-    fun getNrOfLogsByType(type: LogType) = when(type) {
-            LogType.Debug -> nrOfDebugs
-            LogType.Success -> nrOfSuccesses
-            LogType.Warning -> nrOfWarnings
-            LogType.Error -> nrOfErrors
-            LogType.Info -> nrOfInfo
-        }
+
+    fun getNrOfLogsByType(type: LogType) = logNumbers[type]!!.get()
 
     /**
      * Add [log] into the list
@@ -59,28 +59,14 @@ internal class InfoHolder {
      * @param type Log type that whose ID will be generated and whose count will be increased
      * @return Valid Log ID of the given [LogType]
      */
-    private fun getValidID(type: LogType) = when (type) {
-        LogType.Debug -> "D-${++nrOfDebugs}"
-        LogType.Success -> "S-${++nrOfSuccesses}"
-        LogType.Warning -> "W-${++nrOfWarnings}"
-        LogType.Error -> "E-${++nrOfErrors}"
-        LogType.Info -> "I-${++nrOfInfo}"
-    }
+    private fun getValidID(type: LogType) = "${type.commentPrefix}${logNumbers[type]!!.incrementAndGet()}"
 
-    private fun decreaseLogCountOfId(type: LogType) = when (type) {
-        LogType.Debug -> --nrOfDebugs
-        LogType.Success -> --nrOfSuccesses
-        LogType.Warning -> --nrOfWarnings
-        LogType.Error -> --nrOfErrors
-        LogType.Info -> --nrOfInfo
+    private fun decreaseLogCountOfId(type: LogType): Int {
+        return logNumbers[type]!!.decrementAndGet()
     }
 
     private fun resetAllLogCounters() {
-        nrOfDebugs = 0
-        nrOfSuccesses = 0
-        nrOfWarnings = 0
-        nrOfErrors = 0
-        nrOfInfo = 0
+        logNumbers.keys.forEach { key -> logNumbers[key]!!.set(0) }
     }
 
     /**
