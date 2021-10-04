@@ -30,11 +30,11 @@ private val headerContent
             "at ${SimpleDateFormat(HEADER_DATE_FORMAT, Locale.getDefault()).format(Date())}"
 
 private val logCountContent
-    get() = "Log count: Success:${infoHolder.getNrOfLogsByType(LogType.Success)} " +
-            "Info:${infoHolder.getNrOfLogsByType(LogType.Info)} " +
-            "Warning:${infoHolder.getNrOfLogsByType(LogType.Warning)} " +
-            "Error:${infoHolder.getNrOfLogsByType(LogType.Error)} " +
-            "Debug:${infoHolder.getNrOfLogsByType(LogType.Debug)}"
+    get() = "Log count: Success:${infoHolder.getNumberOfLogsByType(LogType.Success)} " +
+            "Info:${infoHolder.getNumberOfLogsByType(LogType.Info)} " +
+            "Warning:${infoHolder.getNumberOfLogsByType(LogType.Warning)} " +
+            "Error:${infoHolder.getNumberOfLogsByType(LogType.Error)} " +
+            "Debug:${infoHolder.getNumberOfLogsByType(LogType.Debug)}"
 
 private val infoHolder = Toaster.instance.infoHolder
 
