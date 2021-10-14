@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
     private val durationMessage by lazy { findViewById<TextView>(R.id.duration_message) }
     private val durationSeekBar by lazy { findViewById<SeekBar>(R.id.simpleSeekBar) }
 
-    private val passActivityCheckBox by lazy { findViewById<CheckBox>(R.id.pass_activity_cb) }
     private val durationRadioGroup by lazy { findViewById<RadioGroup>(R.id.duration_radio_group) }
     private val durationEditText by lazy { findViewById<EditText>(R.id.durationEditText) }
 
@@ -46,7 +45,6 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
     private val durationText get() = durationEditText.text.toString().toIntOrNull() ?: LongToastDuration
     private val messageText get() = messageEditText.text.toString()
     private val extraMessageText get() = extraInfoEditText.text.toString()
-    private val canPassActivity get() = passActivityCheckBox.isChecked
 
     private var fireLogDuration = 1000L
 
@@ -209,7 +207,7 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
             if (extraMessageText.isNotEmpty()) {
                 withExtraInfo(extraMessageText)
             }
-        }.addToQueue(if (canPassActivity) this else null)
+        }.addToQueue(this)
 
     }
 }
