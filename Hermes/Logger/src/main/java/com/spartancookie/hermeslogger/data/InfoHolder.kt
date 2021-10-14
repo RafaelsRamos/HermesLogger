@@ -18,13 +18,13 @@ internal class InfoHolder {
     /**
      * List of all logs
      */
-    val logList : MutableList<LogDataHolder> = mutableListOf()
+    val logList: MutableList<LogDataHolder> = mutableListOf()
 
-    private var nrOfDebugs = 0
-    private var nrOfSuccesses = 0
-    private var nrOfWarnings = 0
-    private var nrOfErrors = 0
-    private var nrOfInfo = 0
+    /**
+     * HashMap responsible for holding information regarding the number
+     * of logs for each type
+     */
+    private val logNumbers = LogsCounter()
 
     //------------------------ Controls ------------------------
 
@@ -34,13 +34,8 @@ internal class InfoHolder {
      */
     fun getLogListByType(type: LogType) = logList.filter { it.type == type }
 
-    fun getNrOfLogsByType(type: LogType) = when(type) {
-            LogType.Debug -> nrOfDebugs
-            LogType.Success -> nrOfSuccesses
-            LogType.Warning -> nrOfWarnings
-            LogType.Error -> nrOfErrors
-            LogType.Info -> nrOfInfo
-        }
+
+    fun getNumberOfLogsByType(type: LogType) = logNumbers[type]!!.get()
 
     /**
      * Add [log] into the list
@@ -49,6 +44,7 @@ internal class InfoHolder {
     fun addInfo(log: LogDataHolder) {
         log.id = getValidID(log.type)
         logList.add(log)
+        // Post value, to trigger update throughout the system
         infoLiveData.postValue(logList)
     }
 
@@ -59,29 +55,9 @@ internal class InfoHolder {
      * @param type Log type that whose ID will be generated and whose count will be increased
      * @return Valid Log ID of the given [LogType]
      */
-    private fun getValidID(type: LogType) = when (type) {
-        LogType.Debug -> "D-${++nrOfDebugs}"
-        LogType.Success -> "S-${++nrOfSuccesses}"
-        LogType.Warning -> "W-${++nrOfWarnings}"
-        LogType.Error -> "E-${++nrOfErrors}"
-        LogType.Info -> "I-${++nrOfInfo}"
-    }
+    private fun getValidID(type: LogType): String = "${type.commentPrefix}${logNumbers[type]!!.incrementAndGet()}"
 
-    private fun decreaseLogCountOfId(type: LogType) = when (type) {
-        LogType.Debug -> --nrOfDebugs
-        LogType.Success -> --nrOfSuccesses
-        LogType.Warning -> --nrOfWarnings
-        LogType.Error -> --nrOfErrors
-        LogType.Info -> --nrOfInfo
-    }
-
-    private fun resetAllLogCounters() {
-        nrOfDebugs = 0
-        nrOfSuccesses = 0
-        nrOfWarnings = 0
-        nrOfErrors = 0
-        nrOfInfo = 0
-    }
+    private fun decreaseLogCountOfType(type: LogType): Int = logNumbers[type]!!.decrementAndGet()
 
     /**
      * Remove log with the given [id] from the log list.
@@ -90,7 +66,7 @@ internal class InfoHolder {
     fun removeLogById(id: String) {
         val indexOfLog = logList.indexOfFirst { id == it.id }
         if (indexOfLog >= 0) {
-            decreaseLogCountOfId(logList[indexOfLog].type)
+            decreaseLogCountOfType(logList[indexOfLog].type)
             logList.removeAt(indexOfLog)
             infoLiveData.postValue(logList)
         }
@@ -98,7 +74,7 @@ internal class InfoHolder {
 
     fun clearAllLogs() {
         logList.clear()
-        resetAllLogCounters()
+        logNumbers.reset()
         infoLiveData.postValue(logList)
     }
 
