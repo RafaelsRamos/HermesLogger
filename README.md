@@ -5,7 +5,7 @@ By empowering not-so-technical team members, the time developers have to dedicat
 
 <h3 align="center">Usual issue analysis flowchart</h1>
 <p align="center">
-  <img src="readme_resources/issue-tracking.svg">
+  <img src="readme_resources/issue-tracking.drawio.svg">
 </p>
 
 Section A and C are inevitable, making it more likely to navigate from Section A to C, not having to pass by Section B, will result in an overall team productivity improvement.
