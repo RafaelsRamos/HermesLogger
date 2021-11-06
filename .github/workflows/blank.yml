@@ -17,4 +17,4 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x Hermes/gradlew
     - name: Build with Gradle
-      run: .Hermes/gradlew build
+      run: ./Hermes/gradlew build
