@@ -88,3 +88,4 @@ lint/tmp/
 # Android Profiling
 *.hprof
 /Hermes/.idea/shelf
+Hermes/.idea/misc.xml
