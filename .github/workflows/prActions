@@ -1,5 +1,8 @@
-name: Android CI
-on: [push]
+name: PR CI
+on:
+  pull_request:
+    branches:
+      - master
 jobs:
   build:
 
