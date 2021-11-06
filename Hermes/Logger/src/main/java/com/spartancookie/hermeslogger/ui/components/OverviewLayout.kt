@@ -37,7 +37,7 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
         ContextCompat.getDrawable(context, R.drawable.ic_hermes_logger_forbidden_sign)
 
     private var isRemoveModeEnabled = false
-    private var areToastsEnabled = true
+    private var areToastsEnabled = false
 
     private val collapsedBottomMargin = 80F.fromDPToPx()
     private val expandedBottomMargin = 20F.fromDPToPx()
@@ -158,6 +158,7 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
             context,
             R.drawable.hermes_logger_half_circle_pressed
         )
+        toastsImageView.setImageDrawable(getToastDrawable)
     }
 
     //--------------------------- Commands ---------------------------
