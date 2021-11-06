@@ -29,7 +29,7 @@ class Toaster private constructor() {
 
     internal var isDebugEnvironment: Boolean = false
 
-    internal var toastsEnabled = true
+    internal var toastsEnabled = false
 
     internal val infoHolder = InfoHolder()
 
