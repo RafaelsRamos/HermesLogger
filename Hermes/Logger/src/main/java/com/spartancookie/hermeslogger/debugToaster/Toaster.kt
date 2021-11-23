@@ -129,6 +129,8 @@ class Toaster private constructor() {
         refreshHasToastsLiveData()
     }
 
+    internal fun getSystemInfoBuildable() = systemInfoBuildable?.buildSystemSnapshotInfo()
+
     //--------------------------- Helper methods ------------------------
 
     /**
@@ -178,7 +180,7 @@ class Toaster private constructor() {
      */
     private fun buildGenericInfo(dataHolder: LogDataHolder) : LogDataHolder {
         return dataHolder.apply {
-            genericInfo = systemInfoBuildable?.buildGenericInfo()
+            genericInfo = systemInfoBuildable?.buildSystemSnapshotInfo()
         }
     }
 
@@ -191,7 +193,7 @@ class Toaster private constructor() {
      * Implement this to build the Generic information that the user can copy to clipboard
      * @constructor Create empty Copy to clipboard generic info builder
      */
-    interface SystemInfoBuildable { fun buildGenericInfo() : String }
+    interface SystemInfoBuildable { fun buildSystemSnapshotInfo() : String }
 
     // --------------------- Builder ---------------------
 
@@ -228,7 +230,7 @@ class Toaster private constructor() {
                 instance.actReference = WeakReference(this)
             }
 
-            instance.add(true, LogDataHolder(message, duration.toLong(), type, extraInfo, dataType = dataType))
+            addLog(true)
         }
 
         /**
@@ -240,7 +242,13 @@ class Toaster private constructor() {
                 return
             }
 
-            instance.add(false, LogDataHolder(message, duration.toLong(), type, extraInfo, dataType = dataType))
+            addLog(false)
+        }
+
+        private fun addLog(showToast: Boolean) {
+            val infoSnapshot = instance.getSystemInfoBuildable()
+            val log = LogDataHolder(message, duration.toLong(), type, extraInfo, genericInfo = infoSnapshot, dataType = dataType)
+            instance.add(showToast, log)
         }
     }
 

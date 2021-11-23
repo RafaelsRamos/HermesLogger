@@ -47,20 +47,14 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
 
     private val fragmentStateCallback = arguments?.run { getSerializable(FRAGMENT_STATE_CALLBACK) as? FragmentStateCallback }
 
-    private lateinit var tabNotificationsHandler: TabNotificationsHandler
-    private lateinit var adapter: InfoListTabAdapter
-    private lateinit var viewPager: ViewPager2
-
-    private lateinit var searchEditText: EditText
-    private lateinit var clearView: View
-    private lateinit var capsSearchImageView: ImageView
+    private val searchEditText: EditText get() = requireView().findViewById(R.id.search_edit_text)
+    private val clearView: View get() = requireView().findViewById(R.id.clear_image_view)
+    private val capsSearchImageView: ImageView get() = requireView().findViewById(R.id.caps_search_image_view)
 
     private var selectedTabPosition = 0
 
     private val searchContent get() = searchEditText.text.toString()
     private val infoHolder get() = Toaster.instance.infoHolder
-
-    private val customSearch by lazy { OverviewStateHolder.customSearch }
 
     override fun onDetach() {
         fragmentStateCallback?.onFragmentDismissed()
@@ -76,10 +70,11 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
             removeFromStack(parentFragmentManager, TAG)
         }
 
-        initViews(view)
         setSearchLogic()
 
-        adapter = InfoListTabAdapter(this, this)
+        val adapter = InfoListTabAdapter(this, this)
+        val viewPager: ViewPager2 = view.findViewById(R.id.pager)
+
         viewPager.adapter = adapter
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -97,21 +92,12 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
                 }
             }.attach()
 
-            tabNotificationsHandler = TabNotificationsHandler(this)
-
         }
 
         searchEditText.setText(OverviewStateHolder.currentContent)
         updateUI()
 
         setObservers()
-    }
-
-    private fun initViews(view: View) {
-        searchEditText = view.findViewById(R.id.search_edit_text)
-        clearView = view.findViewById(R.id.clear_image_view)
-        viewPager = view.findViewById(R.id.pager)
-        capsSearchImageView = view.findViewById(R.id.caps_search_image_view)
     }
 
     private fun setSearchLogic() {
@@ -138,9 +124,9 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
         }
 
         capsSearchImageView.setOnClickListener {
-            customSearch.matchCase = !customSearch.matchCase
+            OverviewStateHolder.customSearch.matchCase = !OverviewStateHolder.customSearch.matchCase
             updateUI()
-            updateFilters(customSearch.filterContent)
+            updateFilters(OverviewStateHolder.customSearch.filterContent)
         }
     }
 
@@ -161,6 +147,9 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
     //----------------------------- Observers -------------------------
 
     private fun setObservers() {
+        val tabLayout = requireView().findViewById<TabLayout>(R.id.tab_layout)
+        val tabNotificationsHandler = TabNotificationsHandler(tabLayout)
+
         infoHolder.infoLiveData.observe(viewLifecycleOwner, Observer {
             tabNotificationsHandler.updateBadges()
         })
@@ -172,13 +161,13 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
      * @param content Search content
      */
     private fun updateFilters(content: String?) {
-        OverviewStateHolder.updateSearchContent(customSearch)
-        customSearch.filterContent = content ?: EMPTY_STRING
-        customSearchLiveData.postValue(customSearch)
+        OverviewStateHolder.updateSearchContent(OverviewStateHolder.customSearch)
+        OverviewStateHolder.customSearch.filterContent = content ?: EMPTY_STRING
+        customSearchLiveData.postValue(OverviewStateHolder.customSearch)
     }
 
     private fun updateUI() {
-        val capsDrawableRes = if (customSearch.matchCase) R.drawable.ic_hermes_logger_match_case_enabled else R.drawable.ic_hermes_logger_match_case_disabled
+        val capsDrawableRes = if (OverviewStateHolder.customSearch.matchCase) R.drawable.ic_hermes_logger_match_case_enabled else R.drawable.ic_hermes_logger_match_case_disabled
         capsSearchImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), capsDrawableRes))
     }
 }

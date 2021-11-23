@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
         })
     }
 
-    override fun buildGenericInfo(): String {
+    override fun buildSystemSnapshotInfo(): String {
         return buildString {
             append("System info: ")
             append("AppVersion: PlaceHolder-0.1.5 ")
