@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
-import com.spartancookie.hermeslogger.debugToaster.Toaster
+import com.spartancookie.hermeslogger.debugToaster.HermesHandler
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
 import com.spartancookie.hermeslogger.utils.DateFormat
@@ -28,7 +28,7 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
 
     private val actReference = WeakReference(activity)
 
-    private val infoHolder get() = Toaster.instance.infoHolder
+    private val infoHolder get() = HermesHandler.infoHolder
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

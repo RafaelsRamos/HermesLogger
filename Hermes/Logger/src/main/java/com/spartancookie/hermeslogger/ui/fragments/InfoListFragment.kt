@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
+import com.spartancookie.hermeslogger.debugToaster.HermesHandler
 import com.spartancookie.hermeslogger.debugToaster.LogType
-import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.models.filterLogs
 import com.spartancookie.hermeslogger.ui.adapters.InfoRecyclerAdapter
@@ -32,7 +32,7 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     private var customSearch = CustomSearch()
     private var nrOfLogs = 0
 
-    private val infoHolder get() = Toaster.instance.infoHolder
+    private val infoHolder get() = HermesHandler.infoHolder
     private val logList: List<LogDataHolder>
         get() = type?.let { infoHolder.getLogListByType(it).reversed() }
             ?: infoHolder.logList.reversed()

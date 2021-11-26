@@ -1,10 +1,10 @@
 package com.spartancookie.hermeslogger.managers
 
 import android.widget.TextView
-import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.debugToaster.LogType
-import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.google.android.material.tabs.TabLayout
+import com.spartancookie.hermeslogger.R
+import com.spartancookie.hermeslogger.debugToaster.HermesHandler
+import com.spartancookie.hermeslogger.debugToaster.LogType
 
 private const val MAX_LOG_NR_FOR_DISPLAY = 999
 
@@ -14,7 +14,7 @@ private const val MAX_LOG_NR_FOR_DISPLAY = 999
  */
 internal class TabNotificationsHandler(private val tabLayout: TabLayout) {
 
-    private val infoHolder get() = Toaster.instance.infoHolder
+    private val infoHolder get() = HermesHandler.infoHolder
 
     fun updateBadges() {
         for (i in 0..5) {

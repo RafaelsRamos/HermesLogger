@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -16,10 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
-import com.spartancookie.hermeslogger.debugToaster.Toaster
+import com.spartancookie.hermeslogger.debugToaster.HermesConfigurations
+import com.spartancookie.hermeslogger.debugToaster.HermesHandler
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
 import com.spartancookie.hermeslogger.utils.*
 import com.spartancookie.hermeslogger.utils.fromDPToPx
@@ -43,8 +42,8 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
     private val fragmentActivity get() = context as? FragmentActivity
     private val fragmentManager get() = fragmentActivity?.supportFragmentManager
 
-    private val toaster get() = Toaster.instance
-    private val infoHolder get() = toaster.infoHolder
+    private val hermesHandler get() = HermesHandler
+    private val infoHolder get() = hermesHandler.infoHolder
 
     private val isOverviewVisible get() = insideLayout.visibility == View.VISIBLE
 
@@ -109,27 +108,27 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
             // Remove all logs
             infoHolder.clearAllLogs()
             // Clear toasts queue
-            toaster.clearQueue()
+            hermesHandler.clearToastQueue()
         }
 
         toastsImageView.setOnClickListener {
             areToastsEnabled = !areToastsEnabled
             toastsImageView.setImageDrawable(getToastDrawable())
 
-            toaster.toastsEnabled = areToastsEnabled
-            toaster.clearQueue()
+            HermesConfigurations.areToastsEnabled = areToastsEnabled
+            hermesHandler.clearToastQueue()
         }
     }
 
     override fun onAttachedToWindow() {
         // Set observer
-        Toaster.hasToastsInQueue.observeForever { hasActiveQueue -> updateLayoutParams(hasActiveQueue) }
+        HermesHandler.hasToastsInQueue.observeForever { hasActiveQueue -> updateLayoutParams(hasActiveQueue) }
         super.onAttachedToWindow()
     }
 
     override fun onDetachedFromWindow() {
         // Remove observer on detached
-        Toaster.hasToastsInQueue.removeObserver { hasActiveQueue -> updateLayoutParams(hasActiveQueue) }
+        HermesHandler.hasToastsInQueue.removeObserver { hasActiveQueue -> updateLayoutParams(hasActiveQueue) }
         super.onDetachedFromWindow()
     }
 

@@ -6,8 +6,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
+import com.spartancookie.hermeslogger.debugToaster.HermesHandler
 import com.spartancookie.hermeslogger.debugToaster.LogType
-import com.spartancookie.hermeslogger.debugToaster.Toaster
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import java.io.File
 import java.io.FileReader
@@ -36,7 +36,7 @@ private val logCountContent
             "Error:${infoHolder.getNumberOfLogsByType(LogType.Error)} " +
             "Debug:${infoHolder.getNumberOfLogsByType(LogType.Debug)}"
 
-private val infoHolder = Toaster.instance.infoHolder
+private val infoHolder = HermesHandler.infoHolder
 
 /**
  * Share entire log stack

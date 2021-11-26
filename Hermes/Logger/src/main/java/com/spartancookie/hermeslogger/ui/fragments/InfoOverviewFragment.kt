@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.debugToaster.LogType
-import com.spartancookie.hermeslogger.debugToaster.Toaster
+import com.spartancookie.hermeslogger.debugToaster.Hermes
 import com.spartancookie.hermeslogger.managers.OverviewStateHolder
 import com.spartancookie.hermeslogger.managers.TabNotificationsHandler
 import com.spartancookie.hermeslogger.models.LogDataHolder
@@ -25,6 +25,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
+import com.spartancookie.hermeslogger.debugToaster.HermesHandler
 import com.spartancookie.hermeslogger.utils.removeFromStack
 
 
@@ -54,7 +55,7 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
     private var selectedTabPosition = 0
 
     private val searchContent get() = searchEditText.text.toString()
-    private val infoHolder get() = Toaster.instance.infoHolder
+    private val infoHolder get() = HermesHandler.infoHolder
 
     override fun onDetach() {
         fragmentStateCallback?.onFragmentDismissed()

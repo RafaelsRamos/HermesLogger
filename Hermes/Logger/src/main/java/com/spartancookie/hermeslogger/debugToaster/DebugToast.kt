@@ -88,7 +88,7 @@ internal class DebugToast private constructor(activity: Activity, private val da
             postDelayed(
                 {
                     fade(view, false)
-                    Toaster.refreshHasToastsLiveData()
+                    HermesHandler.refreshHasToastsLiveData()
                 },
                 dataHolder.duration - AnimationDuration - CooldownDuration
             )
