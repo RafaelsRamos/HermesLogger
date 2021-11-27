@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
-import com.spartancookie.hermeslogger.debugToaster.HermesHandler
-import com.spartancookie.hermeslogger.debugToaster.LogType
+import com.spartancookie.hermeslogger.core.HermesHandler
+import com.spartancookie.hermeslogger.core.LogType
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.models.filterLogs
 import com.spartancookie.hermeslogger.ui.adapters.InfoRecyclerAdapter

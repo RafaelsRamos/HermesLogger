@@ -1,14 +1,6 @@
-package com.spartancookie.hermeslogger.debugToaster
-
-import android.app.Activity
-import java.lang.ref.WeakReference
+package com.spartancookie.hermeslogger.core
 
 object Hermes {
-
-    const val LONG_TOAST_DURATION = 3500
-    const val SHORT_TOAST_DURATION = 2000
-
-    internal var actReference: WeakReference<Activity>? = null
 
     @JvmStatic
     fun success() = HermesBuilder().apply { type = LogType.Success }
@@ -26,28 +18,13 @@ object Hermes {
     fun i() = HermesBuilder().apply { type = LogType.Info }
 
     /**
-     * Inform Toaster class that the current the current environment is a debug environment or not.
+     * Inform Hermes class that the current the current environment is a debug environment or not.
      * If the environment is not a debug environment, no logs will be stored or shown.
      * @param isDebugEnvironment True if the current environment is a debug environment, false otherwise
      */
     @JvmStatic
-    @JvmOverloads
-    fun initialize(isDebugEnvironment: Boolean, activity: Activity? = null) {
-
+    fun initialize(isDebugEnvironment: Boolean) {
         HermesConfigurations.isEnabled = isDebugEnvironment
-
-        if (isDebugEnvironment) {
-            activity?.run { updateActivityReference(this) }
-        }
-    }
-
-    /**
-     * Update activity reference.
-     * Having a reference to the activity is only required if the Toasts are to be shown.
-     */
-    @JvmStatic
-    fun updateActivityReference(activity: Activity) {
-        actReference = WeakReference(activity)
     }
 
     /**
@@ -60,10 +37,4 @@ object Hermes {
         HermesConfigurations.systemInfoBuildable = systemInfoBuildable
     }
 
-    /**
-     * Clear queue of toasts for display
-     */
-    fun clearQueue() {
-        HermesHandler.clearToastQueue()
-    }
 }

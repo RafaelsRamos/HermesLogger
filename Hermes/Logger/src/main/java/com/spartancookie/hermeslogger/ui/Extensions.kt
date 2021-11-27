@@ -3,7 +3,7 @@ package com.spartancookie.hermeslogger.ui
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.spartancookie.hermeslogger.debugToaster.LogType
+import com.spartancookie.hermeslogger.core.LogType
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.utils.DateFormat
 import com.spartancookie.hermeslogger.utils.NO_RES

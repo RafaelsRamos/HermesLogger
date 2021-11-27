@@ -1,4 +1,4 @@
-package com.spartancookie.hermeslogger.debugToaster
+package com.spartancookie.hermeslogger.core
 
 import androidx.annotation.DrawableRes
 import com.spartancookie.hermeslogger.R

@@ -6,9 +6,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
-import com.spartancookie.hermeslogger.debugToaster.HermesHandler
-import com.spartancookie.hermeslogger.debugToaster.LogType
+import com.spartancookie.hermeslogger.core.HermesHandler
+import com.spartancookie.hermeslogger.core.LogType
 import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.getLogTypeNumber
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
@@ -72,9 +73,18 @@ private fun dumpLogStack(file: File) {
     val fileContent = buildString {
         append("$headerContent\n")
         append("$logCountContent\n")
-        append("\n    Logs    \n")
         infoHolder.logList.forEach { log ->
-            append("\n\n|| ${creationDateFormat.format(log.creationDate)} || ${log.type}-${log.id}\nShort Message:${log.message}\nExtra Information:${log.extraInfo}\n")
+            append("\n==============\n")
+
+            append("${log.type.name.uppercase()}-${log.getLogTypeNumber()} ")
+            append("at ${creationDateFormat.format(log.creationDate)}")
+
+            append("\n\n")
+
+            append("\nShort Message:${log.message}")
+            append("\nExtra Information:${log.extraInfo}")
+
+            append("\n==============\n")
         }
         append(FOOTER)
     }

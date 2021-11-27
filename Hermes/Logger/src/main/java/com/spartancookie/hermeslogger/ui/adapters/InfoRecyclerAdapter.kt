@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
-import com.spartancookie.hermeslogger.debugToaster.HermesHandler
+import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
 import com.spartancookie.hermeslogger.utils.DateFormat

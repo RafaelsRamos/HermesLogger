@@ -3,7 +3,7 @@ package com.spartancookie.hermeslogger.ui.adapters
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
-import com.spartancookie.hermeslogger.debugToaster.LogType
+import com.spartancookie.hermeslogger.core.LogType
 import com.spartancookie.hermeslogger.ui.fragments.InfoListFragment
 
 internal class InfoListTabAdapter(fragment: Fragment, private val logSelectedCallback: LogSelectedCallback) : FragmentStateAdapter(fragment) {

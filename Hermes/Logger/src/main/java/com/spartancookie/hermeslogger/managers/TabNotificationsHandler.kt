@@ -3,8 +3,8 @@ package com.spartancookie.hermeslogger.managers
 import android.widget.TextView
 import com.google.android.material.tabs.TabLayout
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.debugToaster.HermesHandler
-import com.spartancookie.hermeslogger.debugToaster.LogType
+import com.spartancookie.hermeslogger.core.HermesHandler
+import com.spartancookie.hermeslogger.core.LogType
 
 private const val MAX_LOG_NR_FOR_DISPLAY = 999
 

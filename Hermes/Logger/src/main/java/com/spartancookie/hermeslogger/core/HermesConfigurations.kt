@@ -1,4 +1,4 @@
-package com.spartancookie.hermeslogger.debugToaster
+package com.spartancookie.hermeslogger.core
 
 object HermesConfigurations {
 
@@ -6,12 +6,6 @@ object HermesConfigurations {
      * State of the Hermes system
      */
     var isEnabled = false
-        internal set
-
-    /**
-     * True if the toasts are to be shown, False otherwise
-     */
-    var areToastsEnabled = false
         internal set
 
     /**

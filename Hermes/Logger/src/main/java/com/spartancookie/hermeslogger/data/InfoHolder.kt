@@ -1,7 +1,7 @@
 package com.spartancookie.hermeslogger.data
 
 import androidx.lifecycle.MutableLiveData
-import com.spartancookie.hermeslogger.debugToaster.LogType
+import com.spartancookie.hermeslogger.core.LogType
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.utils.default
 
