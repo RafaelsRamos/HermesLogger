@@ -39,15 +39,21 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
 
         /**
          * Create and add an instance of [OverviewLayout] onto the activity's base ViewGroup
-         * @param activity Activity reference
-         * @return  OverViewLayout that was inflated onto the activity's base ViewGroup
+         * @param activity Activity reference to inflate to view into
+         * @return OverViewLayout that was inflated onto the activity's base ViewGroup
          */
         @JvmStatic
-        fun create(activity: Activity): OverviewLayout {
+        fun create(activity: Activity) {
             val container = activity.findViewById<ViewGroup>(android.R.id.content)
+
+            // Try fetching the layout from the activity's root
             val existingOverviewLayout =
                 container.findViewById<View>(R.id.parent_overview_cl_homer_logger)?.parent as? OverviewLayout
-            return existingOverviewLayout ?: OverviewLayout(activity).also { container.addView(it) }
+
+            // If there is no OverviewLayout already inflated, inflate it
+            if (existingOverviewLayout == null) {
+                container.addView(OverviewLayout(activity))
+            }
         }
 
         /**

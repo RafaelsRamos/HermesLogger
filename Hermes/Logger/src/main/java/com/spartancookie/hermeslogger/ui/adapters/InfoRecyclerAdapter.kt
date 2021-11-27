@@ -62,7 +62,7 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
         holder.entireView.setOnClickListener { callback.onLogSelected(item) }
 
         // Observe changes on remove mode state change live data
-        OverviewLayout.removeModeLiveData.observe(lifecycleOwner, Observer { isEnabled ->
+        OverviewLayout.removeModeLiveData.observe(lifecycleOwner, { isEnabled ->
             holder.copyOrRemove.setImageDrawable(
                 ContextCompat.getDrawable(context, getResource(isEnabled))
             )
