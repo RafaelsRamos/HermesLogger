@@ -16,7 +16,6 @@ private const val ITEM_ARG = "selected_item"
 
 internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view) {
 
-    private lateinit var rootLayout: View
     private lateinit var item: LogDataHolder
 
     override fun onAttach(context: Context) {
@@ -32,21 +31,15 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
             removeFromStack(parentFragmentManager, TAG)
         }
 
-        rootLayout = view
-
-        // Set listeners
-        //findView<View>(R.id.back)
         back.setOnClickListener {
             removeFromStack(parentFragmentManager, TAG)
         }
 
-        //findView<View>(R.id.copy_to_clipboard)
         copy_to_clipboard.setOnClickListener { imageView ->
             animateCopyToClipboardColor(imageView)
             activity?.let { copyToClipboard(it, item) }
         }
 
-        //findView<View>(R.id.share_icon)
         share_icon.run {
             if (hasWriteStoragePermission(context)) {
                 setOnClickListener { context?.run { shareLog(this, item) } }
