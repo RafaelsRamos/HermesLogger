@@ -77,8 +77,7 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
 
         infoOverviewTab.setOnClickListener { openOverview() }
 
-        val shareImageView: View = findViewById(R.id.export_image_view)
-        shareImageView.run {
+        export_image_view.run {
             if (hasWriteStoragePermission(context)) {
                 setOnClickListener { shareLogDump(context) }
             } else {
@@ -86,15 +85,13 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
             }
         }
 
-        val removeAllTextView: View = findViewById(R.id.remove_all_text_view)
-        val removeImageView: View = findViewById(R.id.remove_image_view)
-        removeImageView.setOnClickListener {
+        remove_image_view.setOnClickListener {
             isRemoveModeEnabled = !isRemoveModeEnabled
-            removeAllTextView.visibility = if (isRemoveModeEnabled) View.VISIBLE else View.GONE
+            remove_all_text_view.visibility = if (isRemoveModeEnabled) View.VISIBLE else View.GONE
             removeModeLiveData.postValue(isRemoveModeEnabled)
         }
 
-        removeAllTextView.setOnClickListener {
+        remove_all_text_view.setOnClickListener {
             // Remove all logs
             infoHolder.clearAllLogs()
         }

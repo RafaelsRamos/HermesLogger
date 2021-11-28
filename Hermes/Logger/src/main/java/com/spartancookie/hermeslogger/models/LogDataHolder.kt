@@ -9,7 +9,14 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-internal data class LogDataHolder(val message: String, val type: LogType, var extraInfo: String? = null, var genericInfo: String? = null, val dataType: DataType? = null): Parcelable {
+internal data class LogDataHolder(
+    val type: LogType,
+    val message: String,
+    val extraInfo: String? = null,
+    val genericInfo: String? = null,
+    val dataType: DataType? = null,
+    val throwable: Throwable? = null
+): Parcelable {
 
     val creationDate: Date = Calendar.getInstance().time
     var id: String = ""

@@ -52,7 +52,7 @@ internal fun buildInfoContentOnly(dataHolder: LogDataHolder) = buildString {
 /**
  * Directly set a default type onto a [MutableLiveData] instance
  */
-fun <T : Any?> MutableLiveData<T>.default(initialValue: T) = apply { setValue(initialValue) }
+internal fun <T : Any?> MutableLiveData<T>.default(initialValue: T) = apply { setValue(initialValue) }
 
 internal fun removeFromStack(fragmentManager: FragmentManager, fragmentTag: String) {
     fragmentManager.run {

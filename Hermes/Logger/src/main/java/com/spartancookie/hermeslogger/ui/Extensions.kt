@@ -12,8 +12,7 @@ import java.text.SimpleDateFormat
 internal fun ImageView.setLogIcon(logType: LogType, tintColorRes: Int = NO_RES) {
     setImageDrawable(ContextCompat.getDrawable(context, logType.drawableResource))
 
-    if (tintColorRes == NO_RES)
-        return
+    if (tintColorRes == NO_RES) return
 
     setColorFilter(ContextCompat.getColor(context, tintColorRes))
 }

@@ -31,6 +31,12 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
             removeFromStack(parentFragmentManager, TAG)
         }
 
+        setOnClickListeners()
+
+        fillViews()
+    }
+
+    private fun setOnClickListeners() {
         back.setOnClickListener {
             removeFromStack(parentFragmentManager, TAG)
         }
@@ -47,26 +53,48 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
                 visibility = GONE
             }
         }
+    }
 
+    private fun fillViews() {
+        // Set icon according to item priority
         type_icon.setLogIcon(item.type)
-
         typeName.text = item.type.name
-
         date.setCreationDate(item)
-
         message.text = item.message
-        generic_info.text = item.genericInfo
 
-        item.extraInfo?.let { extraInfo ->
-            extra_info.text = item.dataType?.format(extraInfo) ?: extraInfo
-        }
+        setExtraInfo()
+        setThrowableInfo()
+        setSystemInfo()
+    }
+
+    private fun setSystemInfo() {
+        val systemInfo = item.genericInfo ?: return
+
+        generic_info.text = systemInfo
+        generic_info.visibility = View.VISIBLE
+    }
+
+    private fun setExtraInfo() {
+        val extraInfo = item.extraInfo ?: return
+
+        extra_info.text = item.dataType?.format(extraInfo) ?: extraInfo
+        extra_info.visibility = View.VISIBLE
+    }
+
+    private fun setThrowableInfo() {
+        val t = item.throwable ?: return
+
+        stacktrace.text = t.stackTraceToString()
+        stacktrace.visibility = View.VISIBLE
     }
 
     internal companion object {
+
         const val TAG = "InfoDetailedViewFragment"
 
         fun newInstance(item: LogDataHolder) = InfoDetailedViewFragment().apply {
             arguments = Bundle().apply { putParcelable(ITEM_ARG, item) }
         }
+
     }
 }

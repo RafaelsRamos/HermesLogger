@@ -79,10 +79,13 @@ private fun dumpLogStack(file: File) {
             append("${log.type.name.uppercase()}-${log.getLogTypeNumber()} ")
             append("at ${creationDateFormat.format(log.creationDate)}")
 
-            append("\n\n")
+            append("\n")
 
             append("\nShort Message:${log.message}")
-            append("\nExtra Information:${log.extraInfo}")
+
+            log.extraInfo?.let { append("\nExtra Information:$it") }
+
+            log.throwable?.let { append("\n\nThrowable:\n${it.stackTraceToString()}") }
 
             append("\n==============\n")
         }

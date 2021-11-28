@@ -18,6 +18,7 @@ import com.spartancookie.hermeslogger.core.SystemInfoBuildable
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
 import com.spartancookie.hermeslogger.utils.hasWriteStoragePermission
 import kotlinx.android.synthetic.main.test_activity.*
+import java.lang.Exception
 
 private const val BASE_DURATION_TEXT = "Duration between logs"
 
@@ -77,6 +78,13 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListe
             .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
             .setPermissions(WRITE_EXTERNAL_STORAGE)
             .check()
+
+        try {
+            val s: String? = null
+            s!!.length
+        } catch (ex: Exception) {
+            Hermes.e().throwable(ex).submit()
+        }
     }
 
     private fun setDurationSeekBar() {
@@ -154,7 +162,7 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListe
             .message(RandomMessages.getSample)
             .extraInfo(randomExtraInfo)
             .apply { dataType?.run { format(this) } }
-            .addToList()
+            .submit()
     }
 
     private fun scheduleAutomaticLogs() {
@@ -175,7 +183,7 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListe
             if (extraMessageText.isNotEmpty()) {
                 extraInfo(extraMessageText)
             }
-        }.addToList()
+        }.submit()
 
     }
 }

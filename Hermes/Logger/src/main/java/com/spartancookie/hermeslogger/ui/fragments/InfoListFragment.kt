@@ -15,6 +15,7 @@ import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.models.filterLogs
 import com.spartancookie.hermeslogger.ui.adapters.InfoRecyclerAdapter
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
+import com.spartancookie.hermeslogger.utils.EMPTY_STRING
 
 private const val LOG_TYPE_ARG = "LogTypeArg"
 private const val LOG_SELECTED_CALLBACK_ARG = "LogSelectedCallback"
@@ -114,10 +115,8 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     companion object {
 
         /**
-         * Create an instance of [InfoListFragment] with a bundle that contains the [LogType]
-         * selected and with an implementation of [LogSelectedCallback].
-         * @param type [LogType] from the tab selected.
-         * @param logSelectedCallback implementation from the parent fragment.
+         * Create an instance of [InfoListFragment] with a bundle that contains the [type]
+         * selected and with an implementation of [LogSelectedCallback], on [logSelectedCallback].
          */
         fun newInstance(type: LogType?, logSelectedCallback: LogSelectedCallback) =
             InfoListFragment().apply {
