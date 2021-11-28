@@ -35,8 +35,9 @@ internal fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
  */
 internal fun buildInfo(dataHolder: LogDataHolder) = buildString {
     append("${dataHolder.creationDate} - ${dataHolder.type} Message: ${dataHolder.message} ")
-    dataHolder.genericInfo?.let { append("System info: $it ") }
     dataHolder.extraInfo?.let { append("Extra information: $it.") }
+    dataHolder.throwable?.let { append("Throwable:\n${it.stackTraceToString()}\n") }
+    dataHolder.genericInfo?.let { append("System info: $it ") }
 }
 
 /**
@@ -45,8 +46,9 @@ internal fun buildInfo(dataHolder: LogDataHolder) = buildString {
  * @return  String that contains information from the log data holder received
  */
 internal fun buildInfoContentOnly(dataHolder: LogDataHolder) = buildString {
-    dataHolder.extraInfo?.let { append("Extra information: $it.") }
-    dataHolder.genericInfo?.let { append("System info: $it ") }
+    dataHolder.extraInfo?.let { append("Extra information: $it.\n") }
+    dataHolder.throwable?.let { append("Throwable:\n${it.stackTraceToString()}\n") }
+    dataHolder.genericInfo?.let { append("System info: $it\n") }
 }
 
 /**
