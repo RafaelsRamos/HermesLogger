@@ -1,6 +1,6 @@
 package com.spartancookie.hermeslogger.data
 
-import com.spartancookie.hermeslogger.debugToaster.LogType
+import com.spartancookie.hermeslogger.core.LogType
 import java.util.concurrent.atomic.AtomicInteger
 
 internal class LogsCounter: HashMap<LogType, AtomicInteger>() {

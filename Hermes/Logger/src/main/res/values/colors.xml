@@ -7,4 +7,6 @@
     <color name="tabsIndicatorColor">#7E7D7D</color>
 
     <color name="copyFinalColor">#BABABA</color>
+
+    <color name="throwable_red">#FF5D5D</color>
 </resources>

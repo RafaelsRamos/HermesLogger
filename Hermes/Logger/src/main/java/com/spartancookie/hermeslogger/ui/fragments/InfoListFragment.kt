@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
-import com.spartancookie.hermeslogger.debugToaster.LogType
-import com.spartancookie.hermeslogger.debugToaster.Toaster
+import com.spartancookie.hermeslogger.core.HermesHandler
+import com.spartancookie.hermeslogger.core.LogType
 import com.spartancookie.hermeslogger.models.LogDataHolder
 import com.spartancookie.hermeslogger.models.filterLogs
 import com.spartancookie.hermeslogger.ui.adapters.InfoRecyclerAdapter
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
+import com.spartancookie.hermeslogger.utils.EMPTY_STRING
 
 private const val LOG_TYPE_ARG = "LogTypeArg"
 private const val LOG_SELECTED_CALLBACK_ARG = "LogSelectedCallback"
@@ -32,7 +33,7 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     private var customSearch = CustomSearch()
     private var nrOfLogs = 0
 
-    private val infoHolder get() = Toaster.instance.infoHolder
+    private val infoHolder get() = HermesHandler.infoHolder
     private val logList: List<LogDataHolder>
         get() = type?.let { infoHolder.getLogListByType(it).reversed() }
             ?: infoHolder.logList.reversed()
@@ -114,10 +115,8 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     companion object {
 
         /**
-         * Create an instance of [InfoListFragment] with a bundle that contains the [LogType]
-         * selected and with an implementation of [LogSelectedCallback].
-         * @param type [LogType] from the tab selected.
-         * @param logSelectedCallback implementation from the parent fragment.
+         * Create an instance of [InfoListFragment] with a bundle that contains the [type]
+         * selected and with an implementation of [LogSelectedCallback], on [logSelectedCallback].
          */
         fun newInstance(type: LogType?, logSelectedCallback: LogSelectedCallback) =
             InfoListFragment().apply {

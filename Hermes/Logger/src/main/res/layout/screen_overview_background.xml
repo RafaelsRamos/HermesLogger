@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <View
-        android:id="@+id/background"
+        android:id="@+id/overviewBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,7 +20,7 @@
         tools:visibility="visible"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/inside_layout"
+        android:id="@+id/insideLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="12dp"
@@ -55,18 +55,6 @@
                 android:paddingHorizontal="5dp"
                 android:layout_marginStart="3dp"
                 android:src="@drawable/ic_hermes_logger_share"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/toasts_image_view"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:paddingHorizontal="5dp"
-                android:layout_marginStart="3dp"
-                android:src="@drawable/ic_hermes_logger_toasts"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +134,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
-        android:id="@+id/info_overview_tab"
+        android:id="@+id/infoOverviewTab"
         android:layout_width="@dimen/open_icon_size"
         android:layout_height="@dimen/open_icon_size"
         android:layout_marginTop="8dp"

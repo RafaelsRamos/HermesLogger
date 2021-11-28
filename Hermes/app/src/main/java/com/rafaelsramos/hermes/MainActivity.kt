@@ -12,11 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.spartancookie.formatter.DataType
-import com.spartancookie.hermeslogger.debugToaster.LongToastDuration
-import com.spartancookie.hermeslogger.debugToaster.ShortToastDuration
-import com.spartancookie.hermeslogger.debugToaster.Toaster
+import com.spartancookie.hermeslogger.core.Hermes
+import com.spartancookie.hermeslogger.core.HermesBuilder
+import com.spartancookie.hermeslogger.core.SystemInfoBuildable
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
 import com.spartancookie.hermeslogger.utils.hasWriteStoragePermission
+import kotlinx.android.synthetic.main.test_activity.*
+import java.lang.Exception
 
 private const val BASE_DURATION_TEXT = "Duration between logs"
 
@@ -25,42 +27,23 @@ private const val STOP_GENERATING_LOGS_TEXT = "Stop generating automatic logs"
 
 private const val MAX_DURATION = 5000L
 
-class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnClickListener {
-
-    private val durationMessage by lazy { findViewById<TextView>(R.id.duration_message) }
-    private val durationSeekBar by lazy { findViewById<SeekBar>(R.id.simpleSeekBar) }
-
-    private val durationRadioGroup by lazy { findViewById<RadioGroup>(R.id.duration_radio_group) }
-    private val durationEditText by lazy { findViewById<EditText>(R.id.durationEditText) }
-
-    private val dataTypeRadioGroup by lazy { findViewById<RadioGroup>(R.id.extra_info_type_radio_group) }
-
-    private val messageEditText by lazy { findViewById<EditText>(R.id.edit_text_message) }
-    private val extraInfoEditText by lazy { findViewById<EditText>(R.id.edit_text_extra_message) }
-    private val generateLogsButton by lazy { findViewById<Button>(R.id.generate_logs_button) }
+class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListener {
 
     private var handler = Handler(Looper.getMainLooper())
     private var canGenerateRandomLogs = false
 
-    private val durationText get() = durationEditText.text.toString().toIntOrNull() ?: LongToastDuration
-    private val messageText get() = messageEditText.text.toString()
-    private val extraMessageText get() = extraInfoEditText.text.toString()
+    private val messageText get() = edit_text_message.text.toString()
+    private val extraMessageText get() = edit_text_extra_message.text.toString()
 
     private var fireLogDuration = 1000L
 
-    private val duration get() = when (durationRadioGroup.checkedRadioButtonId) {
-        R.id.shortRB -> ShortToastDuration
-        R.id.customRB -> durationText
-        else -> LongToastDuration
-    }
-
-    private val randomExtraInfo get() = when (dataTypeRadioGroup.checkedRadioButtonId) {
+    private val randomExtraInfo get() = when (extra_info_type_radio_group.checkedRadioButtonId) {
         R.id.xml_rb -> RandomExtraInfo.getXMLSample
         R.id.json_rb -> RandomExtraInfo.getJSONSample
         else -> RandomExtraInfo.getSample
     }
 
-    private val dataType get() = when (dataTypeRadioGroup.checkedRadioButtonId) {
+    private val dataType get() = when (extra_info_type_radio_group.checkedRadioButtonId) {
         R.id.xml_rb -> DataType.XML
         R.id.json_rb -> DataType.JSON
         else -> null
@@ -77,15 +60,7 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
         findViewById<View>(R.id.button_debug).setOnClickListener(this)
         findViewById<View>(R.id.button_warning).setOnClickListener(this)
         findViewById<View>(R.id.button_error).setOnClickListener(this)
-        generateLogsButton.setOnClickListener(this)
-
-        durationRadioGroup.setOnCheckedChangeListener { _, i ->
-            when (i) {
-                R.id.longRB -> durationEditText.visibility = View.GONE
-                R.id.shortRB -> durationEditText.visibility = View.GONE
-                R.id.customRB -> durationEditText.visibility = View.VISIBLE
-            }
-        }
+        generate_logs_button.setOnClickListener(this)
 
         if (hasWriteStoragePermission(applicationContext)) {
             initializeOverlay()
@@ -103,25 +78,32 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
             .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
             .setPermissions(WRITE_EXTERNAL_STORAGE)
             .check()
+
+        try {
+            val s: String? = null
+            s!!.length
+        } catch (ex: Exception) {
+            Hermes.e().throwable(ex).submit()
+        }
     }
 
     private fun setDurationSeekBar() {
-        durationSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+        simpleSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar: SeekBar) { }
             override fun onStopTrackingTouch(seekBar: SeekBar) { }
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 fireLogDuration = progress.toLong()
-                durationMessage.text = "$BASE_DURATION_TEXT $progress ms"
+                duration_message.text = "$BASE_DURATION_TEXT $progress ms"
             }
         })
     }
 
     override fun buildSystemSnapshotInfo(): String {
         return buildString {
-            append("System info: ")
-            append("AppVersion: PlaceHolder-0.1.5 ")
-            append("Device: ${Build.BRAND}-${Build.MODEL}")
-            append("Device display metrics: ${Resources.getSystem().displayMetrics}")
+            append("System info: \n")
+            append("AppVersion: PlaceHolder-1.1.5 \n")
+            append("Device: ${Build.BRAND}-${Build.MODEL}\n")
+            append("Device display metrics: ${Resources.getSystem().displayMetrics}\n")
         }
     }
 
@@ -129,19 +111,19 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.button_success -> buildInfo(Toaster.success())
-            R.id.button_info -> buildInfo(Toaster.info())
-            R.id.button_debug -> buildInfo(Toaster.debug())
-            R.id.button_warning -> buildInfo(Toaster.warning())
-            R.id.button_error -> buildInfo(Toaster.error())
+            R.id.button_success -> buildInfo(Hermes.success())
+            R.id.button_info -> buildInfo(Hermes.i())
+            R.id.button_debug -> buildInfo(Hermes.d())
+            R.id.button_warning -> buildInfo(Hermes.w())
+            R.id.button_error -> buildInfo(Hermes.e())
             R.id.generate_logs_button -> {
                 canGenerateRandomLogs = !canGenerateRandomLogs
 
                 if (canGenerateRandomLogs) {
-                    generateLogsButton.text = STOP_GENERATING_LOGS_TEXT
+                    generate_logs_button.text = STOP_GENERATING_LOGS_TEXT
                     scheduleAutomaticLogs()
                 } else {
-                    generateLogsButton.text = GENERATE_LOGS_TEXT
+                    generate_logs_button.text = GENERATE_LOGS_TEXT
                     handler.removeCallbacksAndMessages(null)
                 }
             }
@@ -150,45 +132,39 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
 
     // -------------------------- Random samples --------------------------
 
-    private val successLogSample by lazy { Runnable { randomizeToaster(Toaster.success()) } }
+    private val successLogSample by lazy { Runnable { randomizeInfo(Hermes.success()) } }
 
-    private val errorLogSample by lazy { Runnable { randomizeToaster(Toaster.error()) } }
+    private val errorLogSample by lazy { Runnable { randomizeInfo(Hermes.e()) } }
 
-    private val warningLogSample by lazy { Runnable { randomizeToaster(Toaster.warning()) } }
+    private val warningLogSample by lazy { Runnable { randomizeInfo(Hermes.w()) } }
 
-    private val infoLogSample by lazy { Runnable { randomizeToaster(Toaster.info()) } }
+    private val infoLogSample by lazy { Runnable { randomizeInfo(Hermes.i()) } }
 
-    private val debugLogSample by lazy { Runnable { randomizeToaster(Toaster.debug()) } }
+    private val debugLogSample by lazy { Runnable { randomizeInfo(Hermes.d()) } }
 
     private val scheduleFireLogs by lazy { Runnable { scheduleAutomaticLogs() } }
 
     // -------------------------- Helper methods --------------------------
 
     private fun initializeOverlay() {
-        // If we are in a debug environment, inform the toaster we are in one and initialize the OverviewLayout
+        // If we are in a debug environment, inform the Hermes we are in one and initialize the OverviewLayout
         val isDebugEnvironment = true
         if (isDebugEnvironment) {
-            Toaster.initialize(true, this)
-            Toaster.updateSystemInfo(this)
+            Hermes.initialize(true)
+            Hermes.updateSystemInfo(this)
             OverviewLayout.create(this)
         }
+
     }
 
-    private fun randomizeToaster(toastBuilder: Toaster.Builder) {
-        toastBuilder
-            .withMessage(RandomMessages.getSample)
-            .withExtraInfo(randomExtraInfo)
-            .apply {
-                dataType?.run {
-                    withFormat(this)
-                }
-            }
-        .addToQueue()
-        //    .addToList()
+    private fun randomizeInfo(builder: HermesBuilder) {
+        builder
+            .message(RandomMessages.getSample)
+            .extraInfo(randomExtraInfo, dataType)
+            .submit()
     }
 
     private fun scheduleAutomaticLogs() {
-        Math.random()
         handler.postDelayed(successLogSample, (Math.random() * MAX_DURATION).toLong())
         handler.postDelayed(errorLogSample, (Math.random() * MAX_DURATION).toLong())
         handler.postDelayed(warningLogSample, (Math.random() * MAX_DURATION).toLong())
@@ -199,15 +175,14 @@ class MainActivity : AppCompatActivity(), Toaster.SystemInfoBuildable, View.OnCl
         handler.postDelayed(scheduleFireLogs, fireLogDuration)
     }
 
-    private fun buildInfo(toasterBuilder: Toaster.Builder) {
-        toasterBuilder.apply {
-            withMessage(messageText)
-            setDuration(duration)
+    private fun buildInfo(hermesBuilder: HermesBuilder) {
+        hermesBuilder.apply {
+            message(messageText)
 
             if (extraMessageText.isNotEmpty()) {
-                withExtraInfo(extraMessageText)
+                extraInfo(extraMessageText)
             }
-        }.addToQueue(this)
+        }.submit()
 
     }
 }

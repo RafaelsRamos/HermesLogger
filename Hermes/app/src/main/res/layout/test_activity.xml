@@ -66,70 +66,6 @@
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <TextView
-        android:id="@+id/toast_duration_info_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Toast duration"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/fire_automatic_logs_tv"
-        app:layout_constraintStart_toStartOf="@+id/fire_automatic_logs_tv"
-        app:layout_constraintTop_toBottomOf="@+id/fire_automatic_logs_tv" />
-
-    <RadioGroup
-        android:id="@+id/duration_radio_group"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/toast_duration_info_tv"
-        app:layout_constraintStart_toStartOf="@+id/toast_duration_info_tv"
-        app:layout_constraintTop_toBottomOf="@+id/toast_duration_info_tv">
-
-        <RadioButton
-            android:id="@+id/longRB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:checked="true"
-            android:text="Long"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/shortRB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:checked="false"
-            android:text="Short"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/customRB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:checked="false"
-            android:text="Custom"
-            android:textSize="12sp" />
-    </RadioGroup>
-
-    <EditText
-        android:id="@+id/durationEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:hint="Duration(ms)"
-        android:inputType="number"
-        android:textSize="12sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/duration_radio_group"
-        app:layout_constraintEnd_toEndOf="@+id/edit_text_extra_message"
-        app:layout_constraintStart_toEndOf="@id/duration_radio_group"
-        app:layout_constraintTop_toTopOf="@id/duration_radio_group" />
-
-    <TextView
         android:id="@+id/duration_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -138,7 +74,7 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="@+id/fire_automatic_logs_tv"
         app:layout_constraintStart_toStartOf="@+id/fire_automatic_logs_tv"
-        app:layout_constraintTop_toBottomOf="@+id/duration_radio_group" />
+        app:layout_constraintTop_toBottomOf="@+id/fire_automatic_logs_tv" />
 
     <SeekBar
         android:id="@+id/simpleSeekBar"

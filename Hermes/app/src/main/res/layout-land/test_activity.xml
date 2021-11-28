@@ -100,73 +100,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/toast_duration_info_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Toast duration"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <!-- Toast duration Duration -->
-    <RadioGroup
-        android:id="@+id/duration_radio_group"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/toast_duration_info_tv">
-
-        <RadioButton
-            android:id="@+id/longRB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:checked="true"
-            android:text="Long"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/shortRB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:checked="false"
-            android:text="Short"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/customRB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:checked="false"
-            android:text="Custom"
-            android:textSize="12sp" />
-    </RadioGroup>
-
-    <!-- Custom duration edit text -->
-    <EditText
-        android:id="@+id/durationEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:hint="Duration(ms)"
-        android:inputType="number"
-        android:textSize="12sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/duration_radio_group"
-        app:layout_constraintEnd_toEndOf="@+id/edit_text_extra_message"
-        app:layout_constraintStart_toEndOf="@id/duration_radio_group"
-        app:layout_constraintTop_toTopOf="@id/duration_radio_group"
-        tools:visibility="visible" />
-
-    <TextView
         android:id="@+id/duration_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -175,7 +108,7 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
         app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/duration_radio_group" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <SeekBar
         android:id="@+id/simpleSeekBar"

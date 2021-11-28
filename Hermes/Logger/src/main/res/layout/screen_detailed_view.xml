@@ -110,6 +110,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
+                tools:visibility="visible"
                 tools:text="message" />
 
             <TextView
@@ -119,7 +121,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
+                android:visibility="gone"
+                tools:visibility="visible"
                 tools:text="extra info" />
+
+            <TextView
+                style="@style/DetailsThrowableStyle"
+                android:id="@+id/stacktrace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:textColor="#F47676"
+                tools:text="Throwable info" />
 
             <TextView
                 android:id="@+id/generic_info"
@@ -128,6 +142,8 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                tools:visibility="visible"
                 tools:text="generic info"/>
 
         </LinearLayout>

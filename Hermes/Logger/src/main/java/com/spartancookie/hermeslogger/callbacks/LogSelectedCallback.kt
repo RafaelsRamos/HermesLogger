@@ -9,8 +9,7 @@ import java.io.Serializable
 internal interface LogSelectedCallback: Serializable {
 
     /**
-     * On log selected
-     * @param log Log that was selected
+     * Triggered on [log] selected
      */
     fun onLogSelected(log: LogDataHolder)
 

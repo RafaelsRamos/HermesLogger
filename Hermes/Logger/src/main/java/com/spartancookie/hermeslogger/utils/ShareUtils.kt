@@ -6,9 +6,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
-import com.spartancookie.hermeslogger.debugToaster.LogType
-import com.spartancookie.hermeslogger.debugToaster.Toaster
+import com.spartancookie.hermeslogger.core.HermesHandler
+import com.spartancookie.hermeslogger.core.LogType
 import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.getLogTypeNumber
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
@@ -36,7 +37,7 @@ private val logCountContent
             "Error:${infoHolder.getNumberOfLogsByType(LogType.Error)} " +
             "Debug:${infoHolder.getNumberOfLogsByType(LogType.Debug)}"
 
-private val infoHolder = Toaster.instance.infoHolder
+private val infoHolder = HermesHandler.infoHolder
 
 /**
  * Share entire log stack
@@ -72,10 +73,24 @@ private fun dumpLogStack(file: File) {
     val fileContent = buildString {
         append("$headerContent\n")
         append("$logCountContent\n")
-        append("\n    Logs    \n")
-        infoHolder.logList.forEach { log ->
-            append("\n\n|| ${creationDateFormat.format(log.creationDate)} || ${log.type}-${log.id}\nShort Message:${log.message}\nExtra Information:${log.extraInfo}\n")
+
+        for (log in infoHolder.logList) {
+            append("\n==============\n")
+
+            append("${log.type.name.uppercase()}-${log.getLogTypeNumber()} ")
+            append("at ${creationDateFormat.format(log.creationDate)}")
+
+            append("\n")
+
+            append("\nShort Message:${log.message}")
+
+            log.extraInfo?.let { append("\nExtra Information:$it") }
+
+            log.throwable?.let { append("\n\nThrowable:\n${it.stackTraceToString()}") }
+
+            append("\n==============\n")
         }
+
         append(FOOTER)
     }
     file.bufferedWriter().use { out -> out.write(fileContent) }

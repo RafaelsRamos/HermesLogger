@@ -37,12 +37,9 @@ internal fun animateCopyToClipboardColor(view: View) {
 }
 
 /**
- * Animate [view] color from [fromColorRes] to [toColorRes] throughout [COPY_TO_CLIPBOARD_ANIMATION_DURATION] milliseconds.
- * @param view          View that will be animated
- * @param fromColorRes  Initial color resource
- * @param toColorRes    Final color resource
- * @param duration      Animation duration
- * @param listener      Animation listener
+ * Animate [view] color from [fromColorRes] to [toColorRes] throughout [duration] milliseconds.
+ *
+ * Additionally, anchor [listener] onto the created animation.
  */
 internal fun animateColor(view: View, fromColorRes: Int, toColorRes: Int, duration: Long, listener: Animator.AnimatorListener? = null) {
     val context = view.context
@@ -53,26 +50,4 @@ internal fun animateColor(view: View, fromColorRes: Int, toColorRes: Int, durati
     colorAnimation.addUpdateListener { animator -> view.setBackgroundColor(animator.animatedValue as Int) }
     listener?.run { colorAnimation.addListener(this) }
     colorAnimation.start()
-}
-
-/**
- * From DP to pixels
- * @return Number of pixels in [this] DPs
- */
-internal fun Float.fromDPToPx(): Int {
-    val metrics: DisplayMetrics = Resources.getSystem().displayMetrics
-    val px = this * (metrics.densityDpi / 160f)
-    return px.roundToInt()
-}
-
-/**
- * Place [frontDrawable] in front of [this]
- * @param frontDrawable Drawable that will be placed in front of [this]
- * @return Drawable with the given drawable overlaying the one from [this]
- */
-internal fun Drawable.withOverlayOf(frontDrawable: Drawable): Drawable {
-    return LayerDrawable(arrayOf(this, frontDrawable)).apply {
-        setLayerInsetBottom(0, 0)
-        setLayerGravity(1, Gravity.CENTER or Gravity.CENTER_HORIZONTAL)
-    }
 }
