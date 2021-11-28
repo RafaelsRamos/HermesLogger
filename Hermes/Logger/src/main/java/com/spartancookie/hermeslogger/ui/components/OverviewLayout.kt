@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
+import com.spartancookie.hermeslogger.core.HermesConfigurations
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
 import com.spartancookie.hermeslogger.utils.*
@@ -44,6 +45,10 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
          */
         @JvmStatic
         fun create(activity: Activity) {
+
+            // If Hermes is disabled, do not attach Overview
+            if (!HermesConfigurations.isEnabled) return
+
             val container = activity.findViewById<ViewGroup>(android.R.id.content)
 
             // Try fetching the layout from the activity's root

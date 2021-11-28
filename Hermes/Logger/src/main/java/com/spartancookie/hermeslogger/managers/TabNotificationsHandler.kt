@@ -35,8 +35,8 @@ internal class TabNotificationsHandler(private val tabLayout: TabLayout) {
 
     private fun getNrOfLogs(position: Int): Int = when (position) {
             0 -> infoHolder.logList.size
-            1 -> infoHolder.getNumberOfLogsByType(LogType.Info)
-            2 -> infoHolder.getNumberOfLogsByType(LogType.Success)
+            1 -> infoHolder.getNumberOfLogsByType(LogType.Success)
+            2 -> infoHolder.getNumberOfLogsByType(LogType.Info)
             3 -> infoHolder.getNumberOfLogsByType(LogType.Debug)
             4 -> infoHolder.getNumberOfLogsByType(LogType.Warning)
             5 -> infoHolder.getNumberOfLogsByType(LogType.Error)
