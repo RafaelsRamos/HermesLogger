@@ -73,7 +73,8 @@ private fun dumpLogStack(file: File) {
     val fileContent = buildString {
         append("$headerContent\n")
         append("$logCountContent\n")
-        infoHolder.logList.forEach { log ->
+
+        for (log in infoHolder.logList) {
             append("\n==============\n")
 
             append("${log.type.name.uppercase()}-${log.getLogTypeNumber()} ")
@@ -89,6 +90,7 @@ private fun dumpLogStack(file: File) {
 
             append("\n==============\n")
         }
+
         append(FOOTER)
     }
     file.bufferedWriter().use { out -> out.write(fileContent) }
