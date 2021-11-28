@@ -47,7 +47,7 @@ OverviewLayout.create(activityReference)
 
 Debugging and testing an Android application can be hard. However, with some well placed hints, one's life can be substantially easier.
 
-Common Hermes use-cases are:
+Here are some **Common** use-cases:
 - Transitions between fragments:
     ```kotlin
     Hermes.i().message("Transitioning to: ${fragment.javaClass.simpleName}").submit()
@@ -58,6 +58,32 @@ Common Hermes use-cases are:
         .message("AllProducts API call")
         .extraInfo(result.data, format = DataType.JSON) // Formats the content as Json
         .submit()
+    ```
+- Exceptions
+    ```kotlin
+    try {
+        throw IllegalArgumentException("Invalid arguments")
+    } catch (ex: IllegalArgumentException) {
+        Hermes.e().throwable(ex).submit()
+    }
+    ```
+
+Specially for QAs and Testers, it is part of the job to share with devs bugs and strange behaviours. With that specific action in mind, it is possible to share a single or the whole stack of logs though Messenger, Whatsapp, mail, ect.
+
+To use such a feature, it is necessary to request `WRITE_EXTERNAL_STORAGE` permission from the user:
+
+For Android 11- devices, permissions can be 
+1. Declare the permission on **AndroidManifest.xml**
+   ```xml 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    ```
+2. Ask permission to the user at runtime (using [TedPermission](https://github.com/ParkSangGwon/TedPermission) in the example below)
+    ```kotlin
+    TedPermission
+        .with(this)
+        .setDeniedMessage("Necessary to use share feature\n\n")
+        .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        .check()
     ```
 
 # More examples
