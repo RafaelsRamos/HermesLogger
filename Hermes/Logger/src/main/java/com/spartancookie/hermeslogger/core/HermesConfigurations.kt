@@ -5,6 +5,7 @@ object HermesConfigurations {
     /**
      * State of the Hermes system
      */
+    @JvmStatic
     var isEnabled = false
         internal set
 

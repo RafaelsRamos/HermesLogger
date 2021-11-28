@@ -160,8 +160,7 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListe
     private fun randomizeInfo(builder: HermesBuilder) {
         builder
             .message(RandomMessages.getSample)
-            .extraInfo(randomExtraInfo)
-            .apply { dataType?.run { format(this) } }
+            .extraInfo(randomExtraInfo, dataType)
             .submit()
     }
 

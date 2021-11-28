@@ -20,7 +20,8 @@ internal class CustomSearch {
 
     /**
      * True if the logs are being filtered by regex, False otherwise
-     * TODO: Not implemented yet
+     *
+     * Currently not in use
      */
     var isRegexEnabled = false
 

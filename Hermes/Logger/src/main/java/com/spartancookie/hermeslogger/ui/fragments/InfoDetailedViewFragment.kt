@@ -60,18 +60,18 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
         type_icon.setLogIcon(item.type)
         typeName.text = item.type.name
         date.setCreationDate(item)
-        message.text = item.message
 
+        setMessage()
         setExtraInfo()
         setThrowableInfo()
         setSystemInfo()
     }
 
-    private fun setSystemInfo() {
-        val systemInfo = item.genericInfo ?: return
-
-        generic_info.text = systemInfo
-        generic_info.visibility = View.VISIBLE
+    private fun setMessage() {
+        if (item.message.isNotEmpty()) {
+            message.text = item.message
+            message.visibility = View.VISIBLE
+        }
     }
 
     private fun setExtraInfo() {
@@ -86,6 +86,13 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
 
         stacktrace.text = t.stackTraceToString()
         stacktrace.visibility = View.VISIBLE
+    }
+
+    private fun setSystemInfo() {
+        val systemInfo = item.genericInfo ?: return
+
+        generic_info.text = systemInfo
+        generic_info.visibility = View.VISIBLE
     }
 
     internal companion object {
