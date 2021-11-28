@@ -10,15 +10,58 @@ By empowering not-so-technical team members, the time developers have to dedicat
 
 Section A and C are inevitable, making it more likely to navigate from Section A to C, not having to pass by Section B, will result in an overall team productivity improvement.
 
-# How do I use Hermes?
+## Gradle Setup
 
-// Explaination on how to import
-// Explaination on how to initialize
-// Base usages
+```
+repositories {
+  google()
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'io.github.rafaelsramos:hermeslogger:0.1.0'
+}
+```
+
+## Setup in project
+
+With 3 simple lines, the HermesLogger is attached to the project.
+
+``` kotlin
+Hermes.initialize(isDebugEnvironment)
+// SystemInfoBuildable implementation
+Hermes.updateSystemInfo(systemInfoBuildable)
+OverviewLayout.create(activityReference)
+```
+`Hermes.initialize(isDebugEnvironment)` informs Hermes if current environment is or not a debug environment. If it's not, all interactions with the library will be aborted.
+
+`Hermes.updateSystemInfo(systemInfoBuildable)` provides Hermes with an implementation that will be used to build device/app information, such as device model, dimentions, or even App environment or variant.
+
+`OverviewLayout.create(activityReference)` generates an OverviewLayout, that will inflate itself on top the activity's views. This layout is where:
+- All the submitted logs can be seen;
+- Logs can be removed;
+- Individual logs can be shared;
+- Entire log stack can be shared;
+
+## Use cases
+
+Debugging and testing an Android application can be hard. However, with some well placed hints, one's life can be substantially easier.
+
+Common Hermes use-cases are:
+- Transitions between fragments:
+    ```kotlin
+    Hermes.i().message("Transitioning to: ${fragment.javaClass.simpleName}").submit()
+    ```
+- API call information:
+    ```kotlin
+    Hermes.i()
+        .message("AllProducts API call")
+        .extraInfo(result.data, format = DataType.JSON) // Formats the content as Json
+        .submit()
+    ```
 
 # More examples
 
-// Show toasts
 // Show data formatting, ect.
 
 # Beta
