@@ -22,4 +22,3 @@ fun canShareLogDumps(context: Context): Boolean {
         isGranted(context.checkCallingOrSelfPermission(requiredPermission))
     }
 }
-

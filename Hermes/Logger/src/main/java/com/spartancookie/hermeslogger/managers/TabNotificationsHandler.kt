@@ -6,8 +6,6 @@ import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.core.LogType
 
-private const val MAX_LOG_NR_FOR_DISPLAY = 999
-
 /**
  * Class responsible for handling the login of showing and hiding
  * notifications badges on the tabs
@@ -42,4 +40,10 @@ internal class TabNotificationsHandler(private val tabLayout: TabLayout) {
             5 -> infoHolder.getNumberOfLogsByType(LogType.Error)
             else -> 0
         }
+
+    companion object {
+
+        private const val MAX_LOG_NR_FOR_DISPLAY = 999
+
+    }
 }
