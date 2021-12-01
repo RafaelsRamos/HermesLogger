@@ -16,6 +16,8 @@ import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
 import com.spartancookie.hermeslogger.core.HermesConfigurations
 import com.spartancookie.hermeslogger.core.HermesHandler
+import com.spartancookie.hermeslogger.share.ShareHelperCommon
+import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareWholeLogStack
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
 import com.spartancookie.hermeslogger.utils.*
 import com.spartancookie.hermeslogger.utils.removeFromStack
@@ -83,8 +85,9 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
         infoOverviewTab.setOnClickListener { openOverview() }
 
         export_image_view.run {
-            if (hasWriteStoragePermission(context)) {
-                setOnClickListener { shareLogDump(context) }
+            if (canShareLogDumps(context)) {
+                ShareHelperCommon.enableShareFeature(context)
+                setOnClickListener { shareWholeLogStack(context) }
             } else {
                 visibility = GONE
             }
@@ -143,7 +146,7 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
         fragmentActivity?.let {
             it.supportFragmentManager.beginTransaction().run {
                 add(R.id.runtimeInfoContentContainer, fragment, InfoOverviewFragment.TAG)
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 commitNowAllowingStateLoss()
             }
         }
