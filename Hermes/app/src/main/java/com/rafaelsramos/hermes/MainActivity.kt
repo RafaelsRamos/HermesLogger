@@ -13,7 +13,7 @@ import com.spartancookie.hermeslogger.core.Hermes
 import com.spartancookie.hermeslogger.core.HermesBuilder
 import com.spartancookie.hermeslogger.core.SystemInfoBuildable
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
-import com.spartancookie.hermeslogger.utils.canShareLogDumps
+import com.spartancookie.hermeslogger.utils.canShareHermesLogDumps
 import kotlinx.android.synthetic.main.test_activity.*
 
 private const val BASE_DURATION_TEXT = "Duration between logs"
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListe
         findViewById<View>(R.id.button_error).setOnClickListener(this)
         generate_logs_button.setOnClickListener(this)
 
-        if (canShareLogDumps(applicationContext)) {
+        if (canShareHermesLogDumps(this)) {
             initializeOverlay()
         } else {
             TedPermission.with(this)
@@ -137,12 +137,9 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListe
 
     private fun initializeOverlay() {
         // If we are in a debug environment, inform the Hermes we are in one and initialize the OverviewLayout
-        val isDebugEnvironment = true
-        if (isDebugEnvironment) {
-            Hermes.initialize(true)
-            Hermes.updateSystemInfo(this)
-            OverviewLayout.create(this)
-        }
+        Hermes.initialize(true)
+        Hermes.updateSystemInfo(this)
+        OverviewLayout.create(this)
 
     }
 

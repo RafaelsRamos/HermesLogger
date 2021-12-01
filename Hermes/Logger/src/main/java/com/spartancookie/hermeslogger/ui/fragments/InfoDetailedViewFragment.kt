@@ -48,10 +48,8 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
         }
 
         share_icon.run {
-            if (canShareLogDumps(context)) {
-                setOnClickListener { context?.run { shareLog(this, item) } }
-            } else {
-                visibility = GONE
+            setOnClickListener {
+                context?.run { shareLog(this, item) }
             }
         }
     }
