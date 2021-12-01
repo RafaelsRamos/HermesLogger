@@ -24,13 +24,13 @@ class FormatterTest {
 
     @Test
     fun formatValidXML2() {
-        val result = Formatter.format(DataType.XML, validXMLUnformatted2)
+        val result = DataType.XML.format(validXMLUnformatted2)
         assertEquals(validXMLFormatted2, result)
     }
 
     @Test
     fun formatValidXML() {
-        val result = Formatter.format(DataType.XML, validXMLUnformatted)
+        val result = DataType.XML.format(validXMLUnformatted)
         // Assure content is formatted correctly
         assertEquals(validXMLFormatted, result)
     }
@@ -38,7 +38,7 @@ class FormatterTest {
     @Test
     fun formatInvalidXML() {
         val result = try {
-            Formatter.format(DataType.XML, invalidXML)
+            DataType.XML.format(invalidXML)
         } catch (e: Exception) {
             invalidXML
         }
@@ -48,7 +48,7 @@ class FormatterTest {
 
     @Test
     fun formatValidJSON() {
-        val result = Formatter.format(DataType.JSON, validJSONUnformatted)
+        val result = DataType.JSON.format(validJSONUnformatted)
         // Assure content is formatted correctly
         assertEquals(validJSONFormatted, result)
     }
@@ -56,7 +56,7 @@ class FormatterTest {
     @Test
     fun formatInvalidJSON() {
         val result = try {
-            Formatter.format(DataType.JSON, invalidJSON)
+            DataType.JSON.format(invalidJSON)
         } catch (e: Exception) {
             invalidJSON
         }
