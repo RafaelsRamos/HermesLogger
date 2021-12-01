@@ -14,7 +14,10 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
+import com.spartancookie.hermeslogger.core.HermesConfigurations
 import com.spartancookie.hermeslogger.core.HermesHandler
+import com.spartancookie.hermeslogger.share.ShareHelperCommon
+import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareWholeLogStack
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
 import com.spartancookie.hermeslogger.utils.*
 import com.spartancookie.hermeslogger.utils.removeFromStack
@@ -44,6 +47,10 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
          */
         @JvmStatic
         fun create(activity: Activity) {
+
+            // If Hermes is disabled, do not attach Overview
+            if (!HermesConfigurations.isEnabled) return
+
             val container = activity.findViewById<ViewGroup>(android.R.id.content)
 
             // Try fetching the layout from the activity's root
@@ -67,7 +74,12 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
 
     init {
         inflate(context, R.layout.screen_overview_background, this)
+
+        // Initialize Share
+        ShareHelperCommon.enableShareFeature(context)
+
         setListeners()
+
     }
 
     private fun setListeners() {
@@ -78,10 +90,10 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
         infoOverviewTab.setOnClickListener { openOverview() }
 
         export_image_view.run {
-            if (hasWriteStoragePermission(context)) {
-                setOnClickListener { shareLogDump(context) }
-            } else {
-                visibility = GONE
+            setOnClickListener {
+                if (canShareHermesLogDumps(context)) {
+                    shareWholeLogStack(context)
+                }
             }
         }
 
@@ -99,6 +111,8 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
 
     private fun loadOverview() {
         val overviewFragment = InfoOverviewFragment.newInstance(this)
+
+        export_image_view.visibility = if (canShareHermesLogDumps(context)) VISIBLE else GONE
 
         loadFragment(overviewFragment)
         insideLayout.visibility = View.VISIBLE
@@ -138,7 +152,7 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
         fragmentActivity?.let {
             it.supportFragmentManager.beginTransaction().run {
                 add(R.id.runtimeInfoContentContainer, fragment, InfoOverviewFragment.TAG)
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 commitNowAllowingStateLoss()
             }
         }

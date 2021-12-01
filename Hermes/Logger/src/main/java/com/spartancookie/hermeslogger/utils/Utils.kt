@@ -7,14 +7,16 @@ import android.content.Context
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
-import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.models.LogDataHolder
+import java.io.File
+import java.io.FileReader
+import java.io.FileWriter
 
 private const val CopyDefaultLabel = "Clipboard info"
 
-const val EMPTY_STRING = ""
-const val NO_RES = 0
-const val DateFormat = "dd/MM 'at' HH:mm:ss.SSS"
+internal const val EMPTY_STRING = ""
+internal const val NO_RES = 0
+internal const val DateFormat = "dd/MM 'at' HH:mm:ss.SSS"
 
 /**
  * Copy info from [dataHolder] to the clipboard
@@ -35,8 +37,9 @@ internal fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
  */
 internal fun buildInfo(dataHolder: LogDataHolder) = buildString {
     append("${dataHolder.creationDate} - ${dataHolder.type} Message: ${dataHolder.message} ")
-    dataHolder.genericInfo?.let { append("System info: $it ") }
     dataHolder.extraInfo?.let { append("Extra information: $it.") }
+    dataHolder.throwable?.let { append("Throwable:\n${it.stackTraceToString()}\n") }
+    dataHolder.genericInfo?.let { append("System info: $it ") }
 }
 
 /**
@@ -45,8 +48,9 @@ internal fun buildInfo(dataHolder: LogDataHolder) = buildString {
  * @return  String that contains information from the log data holder received
  */
 internal fun buildInfoContentOnly(dataHolder: LogDataHolder) = buildString {
-    dataHolder.extraInfo?.let { append("Extra information: $it.") }
-    dataHolder.genericInfo?.let { append("System info: $it ") }
+    dataHolder.extraInfo?.let { append("Extra information: $it.\n") }
+    dataHolder.throwable?.let { append("Throwable:\n${it.stackTraceToString()}\n") }
+    dataHolder.genericInfo?.let { append("System info: $it\n") }
 }
 
 /**
@@ -64,4 +68,29 @@ internal fun removeFromStack(fragmentManager: FragmentManager, fragmentTag: Stri
             transaction.commitAllowingStateLoss()
         }
     }
+}
+
+/**
+ * Create a temp file that is a copy from [referenceFile]
+ * @param context Context
+ * @param referenceFile File that will be copied
+ */
+internal fun createTempFileFromFile(context: Context, fileName: String, referenceFile: File): File {
+
+    val tempFile = File.createTempFile(fileName, ".txt", context.externalCacheDir)
+
+    val fw = FileWriter(tempFile)
+
+    val fr = FileReader(referenceFile)
+    var c: Int = fr.read()
+    while (c != -1) {
+        fw.write(c)
+        c = fr.read()
+    }
+    fr.close()
+
+    fw.flush()
+    fw.close()
+
+    return tempFile
 }

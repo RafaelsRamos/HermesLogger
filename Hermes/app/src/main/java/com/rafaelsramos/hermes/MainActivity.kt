@@ -2,10 +2,7 @@ package com.rafaelsramos.hermes
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.res.Resources
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -16,9 +13,8 @@ import com.spartancookie.hermeslogger.core.Hermes
 import com.spartancookie.hermeslogger.core.HermesBuilder
 import com.spartancookie.hermeslogger.core.SystemInfoBuildable
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
-import com.spartancookie.hermeslogger.utils.hasWriteStoragePermission
+import com.spartancookie.hermeslogger.utils.canShareHermesLogDumps
 import kotlinx.android.synthetic.main.test_activity.*
-import java.lang.Exception
 
 private const val BASE_DURATION_TEXT = "Duration between logs"
 
@@ -62,28 +58,21 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListe
         findViewById<View>(R.id.button_error).setOnClickListener(this)
         generate_logs_button.setOnClickListener(this)
 
-        if (hasWriteStoragePermission(applicationContext)) {
+        if (canShareHermesLogDumps(this)) {
             initializeOverlay()
-        }
-
-        TedPermission.with(this)
-            .setPermissionListener(object: PermissionListener {
-                override fun onPermissionGranted() {
-                    initializeOverlay()
-                }
-                override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-                    initializeOverlay()
-                }
-            })
-            .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-            .setPermissions(WRITE_EXTERNAL_STORAGE)
-            .check()
-
-        try {
-            val s: String? = null
-            s!!.length
-        } catch (ex: Exception) {
-            Hermes.e().throwable(ex).submit()
+        } else {
+            TedPermission.with(this)
+                .setPermissionListener(object: PermissionListener {
+                    override fun onPermissionGranted() {
+                        initializeOverlay()
+                    }
+                    override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+                        initializeOverlay()
+                    }
+                })
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(WRITE_EXTERNAL_STORAGE)
+                .check()
         }
     }
 
@@ -148,12 +137,9 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListe
 
     private fun initializeOverlay() {
         // If we are in a debug environment, inform the Hermes we are in one and initialize the OverviewLayout
-        val isDebugEnvironment = true
-        if (isDebugEnvironment) {
-            Hermes.initialize(true)
-            Hermes.updateSystemInfo(this)
-            OverviewLayout.create(this)
-        }
+        Hermes.initialize(true)
+        Hermes.updateSystemInfo(this)
+        OverviewLayout.create(this)
 
     }
 

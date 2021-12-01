@@ -133,6 +133,8 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:textColor="#F47676"
+                android:visibility="gone"
+                tools:visibility="visible"
                 tools:text="Throwable info" />
 
             <TextView

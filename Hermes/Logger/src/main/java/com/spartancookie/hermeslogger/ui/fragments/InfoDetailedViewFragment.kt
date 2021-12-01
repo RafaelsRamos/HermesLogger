@@ -7,6 +7,7 @@ import android.view.View.GONE
 import androidx.fragment.app.Fragment
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareLog
 import com.spartancookie.hermeslogger.ui.setCreationDate
 import com.spartancookie.hermeslogger.ui.setLogIcon
 import com.spartancookie.hermeslogger.utils.*
@@ -47,10 +48,8 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
         }
 
         share_icon.run {
-            if (hasWriteStoragePermission(context)) {
-                setOnClickListener { context?.run { shareLog(this, item) } }
-            } else {
-                visibility = GONE
+            setOnClickListener {
+                context?.run { shareLog(this, item) }
             }
         }
     }
