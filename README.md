@@ -10,14 +10,24 @@ By empowering not-so-technical team members, the time developers have to dedicat
 
 Section A and C are inevitable, making it more likely to navigate from Section A to C, not having to pass by Section B, will result in an overall team productivity improvement.
 
+<p align="center">
+<img src="https://user-images.githubusercontent.com/40279132/144303000-0b409f47-4f65-4dc7-940c-7232823bcb2b.gif" width="30%" height="30%">
+</p>
+
 ## Gradle Setup
+
+On your build.gradle (Project level) add mavenCentral() to your repositories.
 
 ```
 repositories {
   google()
   mavenCentral()
 }
+```
 
+On your build.gradle (App level) add the library dependency.
+
+```
 dependencies {
   implementation 'io.github.rafaelsramos:hermeslogger:0.1.0'
 }
@@ -68,28 +78,29 @@ Here are some **Common** use-cases:
     }
     ```
 
-Specially for QAs and Testers, it is part of the job to share with devs bugs and strange behaviours. With that specific action in mind, it is possible to share a single or the whole stack of logs though Messenger, Whatsapp, mail, ect.
+## Share events
 
-To use such a feature, it is necessary to request `WRITE_EXTERNAL_STORAGE` permission from the user:
+Specially for QAs and Testers, it is part of the job to share with devs bugs and strange behaviours. With that specific task in mind, it is possible to share a single or the whole stack of logs though Messenger, Whatsapp, mail, ect.
 
-For Android 11- devices, permissions can be 
-1. Declare the permission on **AndroidManifest.xml**
-   ```xml 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    ```
-2. Ask permission to the user at runtime (using [TedPermission](https://github.com/ParkSangGwon/TedPermission) in the example below)
-    ```kotlin
-    TedPermission
-        .with(this)
-        .setDeniedMessage("Necessary to use share feature\n\n")
-        .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        .check()
-    ```
+### Simple event share
 
-# More examples
+On each event's detailed view, on the top right corner, there is a share icon, that can be used to share the information of that particular event;
 
-// Show data formatting, ect.
+To use such a feature for Android 10- devices,it is necessary to request `WRITE_EXTERNAL_STORAGE` permission from the user:
 
-# Beta
-
-// Brief explaination on why shares are usefull / show shares
+To use the Share feature:
+- On Android 10- devices it is necessary to request `WRITE_EXTERNAL_STORAGE` permission from the user.
+  1. Declare the permission on **AndroidManifest.xml**
+     ```xml 
+     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+     ```
+  2. Ask permission to the user at runtime (using [TedPermission](https://github.com/ParkSangGwon/TedPermission) in the example below)
+     ```kotlin
+     TedPermission
+         .with(this)
+         .setDeniedMessage("Necessary to use share feature\n\n")
+         .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+         .check()
+     ```
+ - On Android 10+ devices, there is no necessity for requesting permissions.
