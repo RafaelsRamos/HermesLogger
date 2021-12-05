@@ -3,10 +3,9 @@ package com.spartancookie.hermeslogger.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.View.GONE
 import androidx.fragment.app.Fragment
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareLog
 import com.spartancookie.hermeslogger.ui.setCreationDate
 import com.spartancookie.hermeslogger.ui.setLogIcon
@@ -17,11 +16,11 @@ private const val ITEM_ARG = "selected_item"
 
 internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view) {
 
-    private lateinit var item: LogDataHolder
+    private lateinit var item: EventDataHolder
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        arguments?.getParcelable<LogDataHolder>(ITEM_ARG)?.let {
+        arguments?.getParcelable<EventDataHolder>(ITEM_ARG)?.let {
             item = it
         }
     }
@@ -98,7 +97,7 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
 
         const val TAG = "InfoDetailedViewFragment"
 
-        fun newInstance(item: LogDataHolder) = InfoDetailedViewFragment().apply {
+        fun newInstance(item: EventDataHolder) = InfoDetailedViewFragment().apply {
             arguments = Bundle().apply { putParcelable(ITEM_ARG, item) }
         }
 

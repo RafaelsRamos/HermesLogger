@@ -11,7 +11,7 @@ import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.core.LogType
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.models.filterLogs
 import com.spartancookie.hermeslogger.ui.adapters.InfoRecyclerAdapter
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
@@ -28,17 +28,17 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     private var filterString = EMPTY_STRING
     private var matchCase = false
 
-    private var storedLogList: List<LogDataHolder> = mutableListOf()
+    private var storedEventList: List<EventDataHolder> = mutableListOf()
 
     private var customSearch = CustomSearch()
     private var nrOfLogs = 0
 
     private val infoHolder get() = HermesHandler.infoHolder
-    private val logList: List<LogDataHolder>
+    private val eventList: List<EventDataHolder>
         get() = type?.let { infoHolder.getLogListByType(it).reversed() }
-            ?: infoHolder.logList.reversed()
+            ?: infoHolder.eventList.reversed()
 
-    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(logList.toMutableList(), requireActivity(), logSelectedCallback, this) }
+    private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(eventList.toMutableList(), requireActivity(), logSelectedCallback, this) }
     private val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(requireActivity()) }
     private val recyclerView: RecyclerView by lazy { requireView().findViewById<RecyclerView>(R.id.recycler) }
 
@@ -69,14 +69,14 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
         // Subscribe infoLiveData, to receive update when new logs are added or removed
         infoHolder.infoLiveData.observe(viewLifecycleOwner, Observer {
-            if (nrOfLogs != logList.size) {
+            if (nrOfLogs != eventList.size) {
                 // Get the list of logs filtered by the search content
-                storedLogList = logList.filterLogs(customSearch)
+                storedEventList = eventList.filterLogs(customSearch)
 
-                val wereItemsRemoved = nrOfLogs > logList.size
+                val wereItemsRemoved = nrOfLogs > eventList.size
                 updateList(wereItemsRemoved)
 
-                nrOfLogs = logList.size
+                nrOfLogs = eventList.size
             }
         })
 
@@ -91,9 +91,9 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
             filterString = customSearch.filterContent
             matchCase = customSearch.matchCase
 
-            storedLogList =
-                (if (canUsePreviousFilter) storedLogList else logList).filterLogs(customSearch)
-            mAdapter.updateList(storedLogList)
+            storedEventList =
+                (if (canUsePreviousFilter) storedEventList else eventList).filterLogs(customSearch)
+            mAdapter.updateList(storedEventList)
         })
 
     }
@@ -103,10 +103,10 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     private fun updateList(wereItemsRemoved: Boolean) {
         if (!recyclerView.canScrollVertically(-1) || wereItemsRemoved) {
             // If the user is all the way scrolled up, notify the adapter with notifyDataSetChanged()
-            mAdapter.updateList(storedLogList)
+            mAdapter.updateList(storedEventList)
         } else {
             // If the user is not scrolled all the way up, notify the adapter with notifyItemRangeInserted(...), to keep the scroll position
-            mAdapter.updateListOnTop(storedLogList, logList.size - nrOfLogs)
+            mAdapter.updateListOnTop(storedEventList, eventList.size - nrOfLogs)
         }
     }
 

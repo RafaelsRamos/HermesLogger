@@ -4,7 +4,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.spartancookie.hermeslogger.core.LogType
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.utils.DateFormat
 import com.spartancookie.hermeslogger.utils.NO_RES
 import java.text.SimpleDateFormat
@@ -17,7 +17,7 @@ internal fun ImageView.setLogIcon(logType: LogType, tintColorRes: Int = NO_RES) 
     setColorFilter(ContextCompat.getColor(context, tintColorRes))
 }
 
-internal fun TextView.setCreationDate(dataHolder: LogDataHolder) {
+internal fun TextView.setCreationDate(dataHolder: EventDataHolder) {
     val dateFormat = SimpleDateFormat(DateFormat)
     text = dateFormat.format(dataHolder.creationDate.time)
 }

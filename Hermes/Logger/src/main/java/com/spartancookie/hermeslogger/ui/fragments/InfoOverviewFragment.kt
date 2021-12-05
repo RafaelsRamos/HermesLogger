@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -16,7 +14,7 @@ import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.core.LogType
 import com.spartancookie.hermeslogger.managers.OverviewStateHolder
 import com.spartancookie.hermeslogger.managers.TabNotificationsHandler
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.ui.adapters.InfoListTabAdapter
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
 import com.spartancookie.hermeslogger.utils.default
@@ -114,8 +112,8 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
 
     //-------------------- LogSelectedCallback Implementation --------------------
 
-    override fun onLogSelected(log: LogDataHolder) {
-        val fragment = InfoDetailedViewFragment.newInstance(log)
+    override fun onLogSelected(event: EventDataHolder) {
+        val fragment = InfoDetailedViewFragment.newInstance(event)
         requireActivity().supportFragmentManager.beginTransaction().apply {
             add(R.id.runtimeInfoContentContainer, fragment, InfoDetailedViewFragment.TAG)
             commit()

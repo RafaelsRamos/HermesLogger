@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.core.LogType
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.models.getLogTypeNumber
 import com.spartancookie.hermeslogger.utils.buildInfoContentOnly
 import java.text.SimpleDateFormat
@@ -43,7 +43,7 @@ internal object ShareHelperCommon {
         append("$headerContent\n")
         append("$logCountContent\n")
 
-        for (log in infoHolder.logList) {
+        for (log in infoHolder.eventList) {
             append("\n==============\n")
 
             append("${log.type.name.uppercase()}-${log.getLogTypeNumber()} ")
@@ -64,12 +64,12 @@ internal object ShareHelperCommon {
     /**
      * Share a single log
      */
-    fun shareLog(context: Context, log: LogDataHolder) {
+    fun shareLog(context: Context, event: EventDataHolder) {
 
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = ShareConstants.PLAIN_TEXT_INTENT_TYPE
-            putExtra(Intent.EXTRA_SUBJECT, "${log.type} log captured at ${log.creationDate}- ${log.message}")
-            putExtra(Intent.EXTRA_TEXT, buildInfoContentOnly(log))
+            putExtra(Intent.EXTRA_SUBJECT, "${event.type} log captured at ${event.creationDate}- ${event.message}")
+            putExtra(Intent.EXTRA_TEXT, buildInfoContentOnly(event))
         }
         (context as? Activity)?.run { startActivity(Intent.createChooser(intent, "Share log")) }
     }

@@ -1,6 +1,6 @@
 package com.spartancookie.hermeslogger.ui.search
 
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.utils.EMPTY_STRING
 
 /**
@@ -28,10 +28,10 @@ internal class CustomSearch {
 }
 
 /**
- * Assess if a specific [LogDataHolder] can be displayed according to the rules on [CustomSearch]
+ * Assess if a specific [EventDataHolder] can be displayed according to the rules on [CustomSearch]
  * @param cs [CustomSearch] that will be used to assess if the log that be displayed
  */
-internal fun LogDataHolder.contains(cs: CustomSearch): Boolean {
+internal fun EventDataHolder.contains(cs: CustomSearch): Boolean {
 
     return if (cs.isRegexEnabled) {
         creationDate.toString().contains(cs.filterContent.toRegex())

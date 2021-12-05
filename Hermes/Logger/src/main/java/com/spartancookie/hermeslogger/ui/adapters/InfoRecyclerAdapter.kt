@@ -9,12 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
 import com.spartancookie.hermeslogger.core.HermesHandler
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
 import com.spartancookie.hermeslogger.utils.DateFormat
 import com.spartancookie.hermeslogger.utils.animateCopyToClipboardColor
@@ -24,7 +23,7 @@ import java.text.SimpleDateFormat
 
 private const val TAG = "InfoRecyclerAdapter"
 
-internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolder>, activity: Activity, private val callback: LogSelectedCallback, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
+internal class InfoRecyclerAdapter(private var eventList: MutableList<EventDataHolder>, activity: Activity, private val callback: LogSelectedCallback, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
 
     private val actReference = WeakReference(activity)
 
@@ -37,7 +36,7 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
     }
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
-        val item = logList[position]
+        val item = eventList[position]
         val format = SimpleDateFormat(DateFormat)
 
         val context = holder.entireView.context
@@ -70,7 +69,7 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
 
     }
 
-    override fun getItemCount() = logList.size
+    override fun getItemCount() = eventList.size
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val entireView = itemView
@@ -81,18 +80,18 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
         val id: TextView = itemView.findViewById(R.id.log_id_tv)
     }
 
-    fun updateList(logList: List<LogDataHolder>) {
-        updateAllItems(logList)
+    fun updateList(eventList: List<EventDataHolder>) {
+        updateAllItems(eventList)
         notifyDataSetChanged()
     }
 
-    fun updateListOnTop(logList: List<LogDataHolder>, nrOfItemsAdded: Int) {
-        updateAllItems(logList)
+    fun updateListOnTop(eventList: List<EventDataHolder>, nrOfItemsAdded: Int) {
+        updateAllItems(eventList)
         notifyItemRangeInserted(0, nrOfItemsAdded)
     }
 
     private fun removeItemInPosition(pos: Int) {
-        this.logList.removeAt(pos)
+        this.eventList.removeAt(pos)
         notifyDataSetChanged()
     }
 
@@ -100,9 +99,9 @@ internal class InfoRecyclerAdapter(private var logList: MutableList<LogDataHolde
 
     private fun getResource(isRemoveModeEnabled: Boolean) = if (isRemoveModeEnabled) R.drawable.ic_hermes_logger_remove else R.drawable.ic_hermes_logger_copy
 
-    private fun updateAllItems(logList: List<LogDataHolder>) {
-        this.logList.clear()
-        this.logList.addAll(logList)
+    private fun updateAllItems(eventList: List<EventDataHolder>) {
+        this.eventList.clear()
+        this.eventList.addAll(eventList)
     }
 
 }

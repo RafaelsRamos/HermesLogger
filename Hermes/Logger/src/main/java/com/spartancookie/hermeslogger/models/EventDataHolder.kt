@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-internal data class LogDataHolder(
+internal data class EventDataHolder(
     val type: LogType,
     val message: String,
     val extraInfo: String? = null,
@@ -26,10 +26,10 @@ internal data class LogDataHolder(
 /**
  * Filter the logs on [this] according to [CustomSearch]
  */
-internal fun List<LogDataHolder>.filterLogs(cs: CustomSearch) = filter { dataHolder -> dataHolder.contains(cs) }
+internal fun List<EventDataHolder>.filterLogs(cs: CustomSearch) = filter { dataHolder -> dataHolder.contains(cs) }
 
 /**
  * Get log number, in the type the log is in.
- * @return Instance of [LogDataHolder]
+ * @return Instance of [EventDataHolder]
  */
-internal fun LogDataHolder.getLogTypeNumber(): String = id.filter { it.isDigit() }
+internal fun EventDataHolder.getLogTypeNumber(): String = id.filter { it.isDigit() }

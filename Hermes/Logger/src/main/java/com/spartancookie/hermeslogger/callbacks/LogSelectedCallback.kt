@@ -1,6 +1,6 @@
 package com.spartancookie.hermeslogger.callbacks
 
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import java.io.Serializable
 
 /**
@@ -9,8 +9,8 @@ import java.io.Serializable
 internal interface LogSelectedCallback: Serializable {
 
     /**
-     * Triggered on [log] selected
+     * Triggered on [event] selected
      */
-    fun onLogSelected(log: LogDataHolder)
+    fun onLogSelected(event: EventDataHolder)
 
 }

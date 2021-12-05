@@ -1,7 +1,7 @@
 package com.spartancookie.hermeslogger.core
 
 import com.spartancookie.formatter.DataType
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 
 class HermesBuilder internal constructor(
     internal var type: LogType = LogType.Debug,
@@ -12,7 +12,7 @@ class HermesBuilder internal constructor(
 ) {
 
     /**
-     * Store the given [t] to be passed to [LogDataHolder] instance that will be created.
+     * Store the given [t] to be passed to [EventDataHolder] instance that will be created.
      * Additionally, if no [message] was set thus far, the type of exception thrown will be
      * set as the [message]
      */
@@ -26,7 +26,7 @@ class HermesBuilder internal constructor(
     }
 
     /**
-     * Store the given [message] and [dataType] to be passed to [LogDataHolder] instance that will be created.
+     * Store the given [message] and [dataType] to be passed to [EventDataHolder] instance that will be created.
      *
      * On the Overview layout, the [message] will be on display. It is advised to pass a very shot message
      * that allows the QA/Tester/Dev to identify where the log originated from and/or what is it about.
@@ -38,7 +38,7 @@ class HermesBuilder internal constructor(
     fun message(message: String) = apply { this@HermesBuilder.message = message }
 
     /**
-     * Store the given [extraInfo] to be passed to [LogDataHolder] instance that will be created.
+     * Store the given [extraInfo] to be passed to [EventDataHolder] instance that will be created.
      *
      * It is advised to pass in relevant information that can help either the QA/Tester/Dev identify
      * possible issues and/or confirm behaviour.
@@ -73,7 +73,7 @@ class HermesBuilder internal constructor(
         HermesHandler.add(createLogDataHolder())
     }
 
-    private fun createLogDataHolder() = LogDataHolder(
+    private fun createLogDataHolder() = EventDataHolder(
         type = type,
         message = message,
         extraInfo = extraInfo,

@@ -2,7 +2,7 @@ package com.spartancookie.hermeslogger.data
 
 import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.core.LogType
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.utils.default
 
 /**
@@ -13,12 +13,12 @@ internal class InfoHolder {
     /**
      * LiveData instance that contains all the logs added during a session
      */
-    val infoLiveData = MutableLiveData<MutableList<LogDataHolder>>().default(mutableListOf())
+    val infoLiveData = MutableLiveData<MutableList<EventDataHolder>>().default(mutableListOf())
 
     /**
      * List of all logs
      */
-    val logList: MutableList<LogDataHolder> = mutableListOf()
+    val eventList: MutableList<EventDataHolder> = mutableListOf()
 
     /**
      * HashMap responsible for holding information regarding the number
@@ -29,23 +29,23 @@ internal class InfoHolder {
     //------------------------ Controls ------------------------
 
     /**
-     * Get the list of logs (List<[LogDataHolder]>) for a specific [LogType]
+     * Get the list of logs (List<[EventDataHolder]>) for a specific [LogType]
      * @param type  Log type
      */
-    fun getLogListByType(type: LogType) = logList.filter { it.type == type }
+    fun getLogListByType(type: LogType) = eventList.filter { it.type == type }
 
 
     fun getNumberOfLogsByType(type: LogType) = logNumbers[type]!!.get()
 
     /**
-     * Add [log] into the list
-     * @param log log that will be added to the list
+     * Add [event] into the list
+     * @param event log that will be added to the list
      */
-    fun addInfo(log: LogDataHolder) {
-        log.id = getValidID(log.type)
-        logList.add(log)
+    fun addInfo(event: EventDataHolder) {
+        event.id = getValidID(event.type)
+        eventList.add(event)
         // Post value, to trigger update throughout the system
-        infoLiveData.postValue(logList)
+        infoLiveData.postValue(eventList)
     }
 
     //------------------------ Helper methods ------------------------
@@ -64,18 +64,18 @@ internal class InfoHolder {
      * @param id ID of the log that will be removed.
      */
     fun removeLogById(id: String) {
-        val indexOfLog = logList.indexOfFirst { id == it.id }
+        val indexOfLog = eventList.indexOfFirst { id == it.id }
         if (indexOfLog >= 0) {
-            decreaseLogCountOfType(logList[indexOfLog].type)
-            logList.removeAt(indexOfLog)
-            infoLiveData.postValue(logList)
+            decreaseLogCountOfType(eventList[indexOfLog].type)
+            eventList.removeAt(indexOfLog)
+            infoLiveData.postValue(eventList)
         }
     }
 
     fun clearAllLogs() {
-        logList.clear()
+        eventList.clear()
         logNumbers.reset()
-        infoLiveData.postValue(logList)
+        infoLiveData.postValue(eventList)
     }
 
 }
