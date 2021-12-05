@@ -1,0 +1,23 @@
+ext {
+    kotlin_version = "1.5.31"
+
+    // Internal libs versions
+    hermes_formatter =               '0.1.0'
+    hermes_fogger =                  '0.1.0'
+
+    // Android X libs versions
+    androidx_core =                  '1.6.0'
+    androidx_app_compat =            '1.3.0'
+    androidx_constraint_layout =     '2.1.2'
+    androidx_junit =                 '1.1.3'
+
+    // Google libs versions
+    google_material =                '1.4.0'
+    google_truth =                   '1.1.2'
+
+    // Jackson
+    jackson =                        '2.11.1'
+
+    // Ted permission
+    ted_permission =                 '2.3.0'
+}
