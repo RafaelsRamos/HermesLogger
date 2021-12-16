@@ -1,13 +1,13 @@
 package com.spartancookie.hermeslogger.data
 
-import com.spartancookie.hermeslogger.core.LogType
+import com.spartancookie.hermeslogger.core.EventType
 import java.util.concurrent.atomic.AtomicInteger
 
-internal class LogsCounter: HashMap<LogType, AtomicInteger>() {
+internal class LogsCounter: HashMap<EventType, AtomicInteger>() {
 
-    private val DefaultMap = hashMapOf<LogType, AtomicInteger>().apply {
+    private val DefaultMap = hashMapOf<EventType, AtomicInteger>().apply {
         // Loop through all types of logs, and add a connection in the HashMap with 0
-        LogType.values().forEach { type ->
+        EventType.values().forEach { type ->
             put(type, AtomicInteger(0))
         }
     }

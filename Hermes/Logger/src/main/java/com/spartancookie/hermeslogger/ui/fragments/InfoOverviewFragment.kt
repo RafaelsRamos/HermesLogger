@@ -11,7 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.core.LogType
+import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.managers.OverviewStateHolder
 import com.spartancookie.hermeslogger.managers.TabNotificationsHandler
 import com.spartancookie.hermeslogger.models.EventDataHolder
@@ -67,7 +67,7 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
             tab.setCustomView(R.layout.tab_custom_view)
             tab.customView?.let {
                 val tabName = it.findViewById(R.id.name) as TextView
-                tabName.text = if (position > 0) LogType.values()[position - 1].name else "ALL"
+                tabName.text = if (position > 0) EventType.values()[position - 1].name else "ALL"
             }
         }.attach()
 

@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.spartancookie.hermeslogger.core.HermesHandler
-import com.spartancookie.hermeslogger.core.LogType
+import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.models.getLogTypeNumber
 import com.spartancookie.hermeslogger.utils.buildInfoContentOnly
@@ -23,11 +23,11 @@ internal object ShareHelperCommon {
                 "at ${SimpleDateFormat(ShareConstants.HEADER_DATE_FORMAT, Locale.getDefault()).format(Date())}"
 
     private val logCountContent
-        get() = "Log count: Success:${infoHolder.getNumberOfLogsByType(LogType.Success)} " +
-                "Info:${infoHolder.getNumberOfLogsByType(LogType.Info)} " +
-                "Warning:${infoHolder.getNumberOfLogsByType(LogType.Warning)} " +
-                "Error:${infoHolder.getNumberOfLogsByType(LogType.Error)} " +
-                "Debug:${infoHolder.getNumberOfLogsByType(LogType.Debug)}"
+        get() = "Log count: Success:${infoHolder.getNumberOfLogsByType(EventType.Success)} " +
+                "Info:${infoHolder.getNumberOfLogsByType(EventType.Info)} " +
+                "Warning:${infoHolder.getNumberOfLogsByType(EventType.Warning)} " +
+                "Error:${infoHolder.getNumberOfLogsByType(EventType.Error)} " +
+                "Debug:${infoHolder.getNumberOfLogsByType(EventType.Debug)}"
 
     private val infoHolder = HermesHandler.infoHolder
 

@@ -4,7 +4,7 @@ import android.widget.TextView
 import com.google.android.material.tabs.TabLayout
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.core.HermesHandler
-import com.spartancookie.hermeslogger.core.LogType
+import com.spartancookie.hermeslogger.core.EventType
 
 /**
  * Class responsible for handling the login of showing and hiding
@@ -33,11 +33,11 @@ internal class TabNotificationsHandler(private val tabLayout: TabLayout) {
 
     private fun getNrOfLogs(position: Int): Int = when (position) {
             0 -> infoHolder.eventList.size
-            1 -> infoHolder.getNumberOfLogsByType(LogType.Success)
-            2 -> infoHolder.getNumberOfLogsByType(LogType.Info)
-            3 -> infoHolder.getNumberOfLogsByType(LogType.Debug)
-            4 -> infoHolder.getNumberOfLogsByType(LogType.Warning)
-            5 -> infoHolder.getNumberOfLogsByType(LogType.Error)
+            1 -> infoHolder.getNumberOfLogsByType(EventType.Success)
+            2 -> infoHolder.getNumberOfLogsByType(EventType.Info)
+            3 -> infoHolder.getNumberOfLogsByType(EventType.Debug)
+            4 -> infoHolder.getNumberOfLogsByType(EventType.Warning)
+            5 -> infoHolder.getNumberOfLogsByType(EventType.Error)
             else -> 0
         }
 

@@ -2,7 +2,7 @@ package com.spartancookie.hermeslogger.models
 
 import android.os.Parcelable
 import com.spartancookie.formatter.DataType
-import com.spartancookie.hermeslogger.core.LogType
+import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
 import com.spartancookie.hermeslogger.ui.search.contains
 import kotlinx.android.parcel.Parcelize
@@ -10,7 +10,7 @@ import java.util.*
 
 @Parcelize
 internal data class EventDataHolder(
-    val type: LogType,
+    val type: EventType,
     val message: String,
     val extraInfo: String? = null,
     val genericInfo: String? = null,

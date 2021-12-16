@@ -1,7 +1,7 @@
 package com.spartancookie.hermeslogger.data
 
 import androidx.lifecycle.MutableLiveData
-import com.spartancookie.hermeslogger.core.LogType
+import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.utils.default
 
@@ -29,13 +29,13 @@ internal class InfoHolder {
     //------------------------ Controls ------------------------
 
     /**
-     * Get the list of logs (List<[EventDataHolder]>) for a specific [LogType]
+     * Get the list of logs (List<[EventDataHolder]>) for a specific [EventType]
      * @param type  Log type
      */
-    fun getLogListByType(type: LogType) = eventList.filter { it.type == type }
+    fun getLogListByType(type: EventType) = eventList.filter { it.type == type }
 
 
-    fun getNumberOfLogsByType(type: LogType) = logNumbers[type]!!.get()
+    fun getNumberOfLogsByType(type: EventType) = logNumbers[type]!!.get()
 
     /**
      * Add [event] into the list
@@ -51,13 +51,13 @@ internal class InfoHolder {
     //------------------------ Helper methods ------------------------
 
     /**
-     * Get a valid ID and increase the counter of the number of logs of type [LogType]
+     * Get a valid ID and increase the counter of the number of logs of type [EventType]
      * @param type Log type that whose ID will be generated and whose count will be increased
-     * @return Valid Log ID of the given [LogType]
+     * @return Valid Log ID of the given [EventType]
      */
-    private fun getValidID(type: LogType): String = "${type.commentPrefix}${logNumbers[type]!!.incrementAndGet()}"
+    private fun getValidID(type: EventType): String = "${type.commentPrefix}${logNumbers[type]!!.incrementAndGet()}"
 
-    private fun decreaseLogCountOfType(type: LogType): Int = logNumbers[type]!!.decrementAndGet()
+    private fun decreaseLogCountOfType(type: EventType): Int = logNumbers[type]!!.decrementAndGet()
 
     /**
      * Remove log with the given [id] from the log list.

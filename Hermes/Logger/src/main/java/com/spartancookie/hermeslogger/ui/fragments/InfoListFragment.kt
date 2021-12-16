@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
 import com.spartancookie.hermeslogger.core.HermesHandler
-import com.spartancookie.hermeslogger.core.LogType
+import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.models.filterLogs
 import com.spartancookie.hermeslogger.ui.adapters.InfoRecyclerAdapter
@@ -23,7 +23,7 @@ private const val LOG_SELECTED_CALLBACK_ARG = "LogSelectedCallback"
 internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
     private lateinit var logSelectedCallback: LogSelectedCallback
-    private var type: LogType? = null
+    private var type: EventType? = null
 
     private var filterString = EMPTY_STRING
     private var matchCase = false
@@ -46,7 +46,7 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
         // Get type from bundle
         arguments?.run {
-            type = getSerializable(LOG_TYPE_ARG) as? LogType
+            type = getSerializable(LOG_TYPE_ARG) as? EventType
             logSelectedCallback = getSerializable(LOG_SELECTED_CALLBACK_ARG) as LogSelectedCallback
         }
 
@@ -118,7 +118,7 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
          * Create an instance of [InfoListFragment] with a bundle that contains the [type]
          * selected and with an implementation of [LogSelectedCallback], on [logSelectedCallback].
          */
-        fun newInstance(type: LogType?, logSelectedCallback: LogSelectedCallback) =
+        fun newInstance(type: EventType?, logSelectedCallback: LogSelectedCallback) =
             InfoListFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(LOG_TYPE_ARG, type)
