@@ -3,6 +3,10 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+
+        maven {
+            url "https://google.bintray.com/flexbox-layout"
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"
@@ -24,12 +28,4 @@ apply from: 'dependencies.gradle'
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-configurations.all {
-
-    resolutionStrategy {
-        force 'androidx.core:core:1.6.0'
-        force 'androidx.core:core-ktx:1.6.0'
-    }
 }

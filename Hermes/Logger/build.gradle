@@ -39,9 +39,14 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$androidx_core"
     implementation "androidx.appcompat:appcompat:$androidx_app_compat"
-    implementation "com.google.android.material:material:$google_material"
-    testImplementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test.ext:junit:$androidx_junit"
-
     implementation "androidx.constraintlayout:constraintlayout:$androidx_constraint_layout"
+
+    implementation "com.google.android.material:material:$google_material"
+    implementation "com.google.android.flexbox:flexbox:$google_flexbox"
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.0")
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "io.mockk:mockk:$mockk"
+    androidTestImplementation "androidx.test.ext:junit:$androidx_junit"
 }
