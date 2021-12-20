@@ -13,4 +13,9 @@ internal data class FilterByType(
         return unfilteredList.filter { it.type == type }
     }
 
+    override fun equals(other: Any?): Boolean {
+        return other is FilterByType && other.type == type && other.name == name
+    }
+
+    override fun hashCode(): Int = 31 * type.hashCode() + name.hashCode()
 }
