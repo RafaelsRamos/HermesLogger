@@ -23,6 +23,9 @@ ext {
     // Ted permission
     ted_permission =                 '2.3.0'
 
+    // Gson
+    gson =                           '2.8.9'
+
     // mockk
     mockk =                          '1.12.1'
 }
