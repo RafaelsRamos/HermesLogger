@@ -16,16 +16,24 @@ import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
 import com.spartancookie.hermeslogger.core.HermesConfigurations
 import com.spartancookie.hermeslogger.core.HermesHandler
+import com.spartancookie.hermeslogger.filters.FilterManager
 import com.spartancookie.hermeslogger.share.ShareHelperCommon
 import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareWholeLogStack
+import com.spartancookie.hermeslogger.ui.fragments.FiltersFragment
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
-import com.spartancookie.hermeslogger.utils.*
-import com.spartancookie.hermeslogger.utils.removeFromStack
+import com.spartancookie.hermeslogger.utils.canShareHermesLogDumps
+import com.spartancookie.hermeslogger.utils.clearAllFragments
+import com.spartancookie.hermeslogger.utils.default
+import kotlinx.android.synthetic.main.include_top_options.view.*
 import kotlinx.android.synthetic.main.screen_overview_background.view.*
+import kotlinx.android.synthetic.main.screen_overview_background.view.export_image_view
+import kotlinx.android.synthetic.main.screen_overview_background.view.remove_all_text_view
+import kotlinx.android.synthetic.main.screen_overview_background.view.remove_image_view
 
 
 class OverviewLayout private constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr), FragmentStateCallback {
 
+    private var filteringFragment = false
     private var isRemoveModeEnabled = false
 
     private val fragmentActivity get() = context as? FragmentActivity
@@ -61,6 +69,9 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
             if (existingOverviewLayout == null) {
                 container.addView(OverviewLayout(activity))
             }
+
+            // Initialize filters
+            FilterManager.initialize(activity)
         }
 
         /**
@@ -79,7 +90,6 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
         ShareHelperCommon.enableShareFeature(context)
 
         setListeners()
-
     }
 
     private fun setListeners() {
@@ -107,6 +117,16 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
             // Remove all logs
             infoHolder.clearAllLogs()
         }
+
+        filter_image_view.setOnClickListener {
+            filteringFragment = !filteringFragment
+            if (filteringFragment) {
+                loadFragment(FiltersFragment.newInstance())
+            } else {
+                clearFrameLayout()
+                loadOverview()
+            }
+        }
     }
 
     private fun loadOverview() {
@@ -127,6 +147,7 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
 
     private fun close() {
         clearFrameLayout()
+        filteringFragment = false
 
         overviewBackground.visibility = View.GONE
         insideLayout.visibility = View.GONE
@@ -145,16 +166,14 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
     //--------------------- Helper methods ---------------------
 
     private fun clearFrameLayout() {
-        fragmentManager?.run { removeFromStack(this, InfoOverviewFragment.TAG) }
+        fragmentManager?.clearAllFragments()
     }
 
     private fun loadFragment(fragment: Fragment) {
-        fragmentActivity?.let {
-            it.supportFragmentManager.beginTransaction().run {
-                add(R.id.runtimeInfoContentContainer, fragment, InfoOverviewFragment.TAG)
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                commitNowAllowingStateLoss()
-            }
+        fragmentManager?.beginTransaction()?.run {
+            add(R.id.runtimeInfoContentContainer, fragment, InfoOverviewFragment.TAG)
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            commitNowAllowingStateLoss()
         }
     }
 

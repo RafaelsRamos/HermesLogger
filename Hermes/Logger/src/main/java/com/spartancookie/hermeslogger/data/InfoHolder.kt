@@ -2,6 +2,7 @@ package com.spartancookie.hermeslogger.data
 
 import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.core.EventType
+import com.spartancookie.hermeslogger.filters.applyFilters
 import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.utils.default
 
@@ -13,12 +14,14 @@ internal class InfoHolder {
     /**
      * LiveData instance that contains all the logs added during a session
      */
-    val infoLiveData = MutableLiveData<MutableList<EventDataHolder>>().default(mutableListOf())
+    val infoLiveData = MutableLiveData<List<EventDataHolder>>().default(listOf())
+
+    private val _eventList: MutableList<EventDataHolder> = mutableListOf()
 
     /**
-     * List of all logs
+     * List of all logs, filtered
      */
-    val eventList: MutableList<EventDataHolder> = mutableListOf()
+    val eventList: List<EventDataHolder> get() = _eventList.applyFilters()
 
     /**
      * HashMap responsible for holding information regarding the number
@@ -28,13 +31,6 @@ internal class InfoHolder {
 
     //------------------------ Controls ------------------------
 
-    /**
-     * Get the list of logs (List<[EventDataHolder]>) for a specific [EventType]
-     * @param type  Log type
-     */
-    fun getLogListByType(type: EventType) = eventList.filter { it.type == type }
-
-
     fun getNumberOfLogsByType(type: EventType) = logNumbers[type]!!.get()
 
     /**
@@ -43,7 +39,7 @@ internal class InfoHolder {
      */
     fun addInfo(event: EventDataHolder) {
         event.id = getValidID(event.type)
-        eventList.add(event)
+        _eventList.add(event)
         // Post value, to trigger update throughout the system
         infoLiveData.postValue(eventList)
     }
@@ -67,13 +63,13 @@ internal class InfoHolder {
         val indexOfLog = eventList.indexOfFirst { id == it.id }
         if (indexOfLog >= 0) {
             decreaseLogCountOfType(eventList[indexOfLog].type)
-            eventList.removeAt(indexOfLog)
+            _eventList.removeAt(indexOfLog)
             infoLiveData.postValue(eventList)
         }
     }
 
     fun clearAllLogs() {
-        eventList.clear()
+        _eventList.clear()
         logNumbers.reset()
         infoLiveData.postValue(eventList)
     }

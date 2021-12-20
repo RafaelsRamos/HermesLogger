@@ -17,7 +17,6 @@ import com.spartancookie.hermeslogger.ui.adapters.InfoRecyclerAdapter
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
 import com.spartancookie.hermeslogger.utils.EMPTY_STRING
 
-private const val LOG_TYPE_ARG = "LogTypeArg"
 private const val LOG_SELECTED_CALLBACK_ARG = "LogSelectedCallback"
 
 internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
@@ -35,18 +34,16 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
     private val infoHolder get() = HermesHandler.infoHolder
     private val eventList: List<EventDataHolder>
-        get() = type?.let { infoHolder.getLogListByType(it).reversed() }
-            ?: infoHolder.eventList.reversed()
+        get() = infoHolder.eventList.sortedBy { it.creationDate }.reversed()
 
     private val mAdapter: InfoRecyclerAdapter by lazy { InfoRecyclerAdapter(eventList.toMutableList(), requireActivity(), logSelectedCallback, this) }
     private val mLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(requireActivity()) }
-    private val recyclerView: RecyclerView by lazy { requireView().findViewById<RecyclerView>(R.id.recycler) }
+    private val recyclerView: RecyclerView by lazy { requireView().findViewById(R.id.recycler) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         // Get type from bundle
         arguments?.run {
-            type = getSerializable(LOG_TYPE_ARG) as? EventType
             logSelectedCallback = getSerializable(LOG_SELECTED_CALLBACK_ARG) as LogSelectedCallback
         }
 
@@ -66,9 +63,8 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
     }
 
     private fun setObservers() {
-
         // Subscribe infoLiveData, to receive update when new logs are added or removed
-        infoHolder.infoLiveData.observe(viewLifecycleOwner, Observer {
+        HermesHandler.infoHolder.infoLiveData.observe(viewLifecycleOwner, {
             if (nrOfLogs != eventList.size) {
                 // Get the list of logs filtered by the search content
                 storedEventList = eventList.filterLogs(customSearch)
@@ -118,10 +114,9 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
          * Create an instance of [InfoListFragment] with a bundle that contains the [type]
          * selected and with an implementation of [LogSelectedCallback], on [logSelectedCallback].
          */
-        fun newInstance(type: EventType?, logSelectedCallback: LogSelectedCallback) =
+        fun newInstance(logSelectedCallback: LogSelectedCallback) =
             InfoListFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(LOG_TYPE_ARG, type)
                     putSerializable(LOG_SELECTED_CALLBACK_ARG, logSelectedCallback)
                 }
             }

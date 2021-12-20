@@ -94,3 +94,12 @@ internal fun createTempFileFromFile(context: Context, fileName: String, referenc
 
     return tempFile
 }
+
+/**
+ * Clear all fragments in the @receiver
+ */
+internal fun FragmentManager.clearAllFragments() {
+    for (fragment in fragments) {
+        beginTransaction().remove(fragment).commit()
+    }
+}

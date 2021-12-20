@@ -39,10 +39,11 @@ internal class FilterViewHolder(private val root: View): BaseFilterViewHolder<Fi
     private fun onFilterClicked(item: Filter): Boolean {
         // Add or remove filter
         if (FilterManager.contains(item)) {
-            FilterManager.removeFilters(root.context, item)
+            FilterManager.removeFilters(item)
         } else {
-            FilterManager.addFilters(root.context, item)
+            FilterManager.addFilters(item)
         }
+        FilterManager.saveFilters(root.context)
         // Return the current filter state
         return FilterManager.contains(item)
     }
