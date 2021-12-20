@@ -21,13 +21,10 @@
         tools:visibility="visible"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/OutterLayoutStyle"
         android:id="@+id/insideLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,19 +32,41 @@
         android:visibility="gone"
         tools:visibility="visible">
 
+        <RelativeLayout
+            android:id="@+id/close"
+            android:layout_width="@dimen/close_overview_icon_size"
+            android:layout_height="@dimen/close_overview_icon_size"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/containerCardView"
+            app:layout_constraintEnd_toEndOf="@+id/containerCardView">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_hermes_logger_background" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_hermes_logger_clear" />
+
+        </RelativeLayout>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.01"
+            app:layout_constraintEnd_toStartOf="@+id/close"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardElevation="5dp" >
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="5dp">
 
             <include layout="@layout/include_top_options" />
 
@@ -57,6 +76,9 @@
             android:id="@+id/containerCardView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -75,36 +97,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         </androidx.cardview.widget.CardView>
-
-        <Space
-            android:id="@+id/space_1"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginEnd="7dp"
-            app:layout_constraintBottom_toTopOf="@id/containerCardView"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <RelativeLayout
-            android:id="@+id/close"
-            android:layout_width="@dimen/close_overview_icon_size"
-            android:layout_height="@dimen/close_overview_icon_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/space_1">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_hermes_logger_background" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_hermes_logger_clear" />
-
-        </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
