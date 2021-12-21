@@ -14,7 +14,9 @@ class HermesTree: Timber.Tree() {
         Timber::class.java.name,
         Timber.Forest::class.java.name,
         Timber.Tree::class.java.name,
-        Timber.DebugTree::class.java.name
+        Timber.DebugTree::class.java.name,
+        HermesTree::class.java.name,
+        HermesForestWrapper::class.java.name,
     )
 
     private val extractTag: String
