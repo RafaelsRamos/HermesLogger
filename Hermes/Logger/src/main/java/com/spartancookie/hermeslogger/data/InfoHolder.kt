@@ -23,6 +23,10 @@ internal class InfoHolder {
      */
     val eventList: List<EventDataHolder> get() = _eventList.applyFilters()
 
+    val totalEventsCount get() = _eventList.count()
+
+    val totalEventsShownCount get() = eventList.count()
+
     /**
      * HashMap responsible for holding information regarding the number
      * of logs for each type

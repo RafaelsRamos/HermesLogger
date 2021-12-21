@@ -4,18 +4,21 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
+import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.managers.OverviewStateHolder
 import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
 import com.spartancookie.hermeslogger.utils.EMPTY_STRING
 import com.spartancookie.hermeslogger.utils.default
 import com.spartancookie.hermeslogger.utils.removeFromStack
+import kotlinx.android.synthetic.main.screen_info_overview.*
 import kotlinx.android.synthetic.main.search_bar.*
 
 internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), LogSelectedCallback {
@@ -48,6 +51,10 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
 
         search_edit_text.setText(OverviewStateHolder.currentContent)
         updateUI()
+
+        fabButton.setOnClickListener {
+            Toast.makeText(context, HermesHandler.buildStats(), Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun setSearchLogic() {
