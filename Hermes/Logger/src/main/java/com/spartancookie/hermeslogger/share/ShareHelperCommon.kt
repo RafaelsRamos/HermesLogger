@@ -43,17 +43,21 @@ internal object ShareHelperCommon {
         append("$headerContent\n")
         append("$logCountContent\n")
 
-        for (log in infoHolder.eventList) {
+        for (event in infoHolder.eventList) {
             append("\n==============\n")
 
-            append("${log.type.name.uppercase()}-${log.getLogTypeNumber()} ")
-            append("at ${creationDateFormat.format(log.creationDate)}")
+            append("${event.type.name.uppercase()}-${event.getLogTypeNumber()} ")
+            append("at ${creationDateFormat.format(event.creationDate)}")
 
-            append("\n\nShort Message:${log.message}")
+            if (event.tags.isNotEmpty()) {
+                append("\n\nTags: ${event.tags}")
+            }
 
-            log.extraInfo?.let { append("\nExtra Information:$it") }
+            append("\nShort Message:${event.message}")
 
-            log.throwable?.let { append("\n\nThrowable:\n${it.stackTraceToString()}") }
+            event.extraInfo?.let { append("\nExtra Information:$it") }
+
+            event.throwable?.let { append("\n\nThrowable:\n${it.stackTraceToString()}") }
 
             append("\n==============\n")
         }

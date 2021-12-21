@@ -37,6 +37,10 @@ internal fun copyToClipboard(activity: Activity, dataHolder: EventDataHolder) {
  */
 internal fun buildInfo(dataHolder: EventDataHolder) = buildString {
     append("${dataHolder.creationDate} - ${dataHolder.type} Message: ${dataHolder.message} ")
+
+    if (dataHolder.tags.isNotEmpty()) {
+        append("Tags: ${dataHolder.tags}\n")
+    }
     dataHolder.extraInfo?.let { append("Extra information: $it.") }
     dataHolder.throwable?.let { append("Throwable:\n${it.stackTraceToString()}\n") }
     dataHolder.genericInfo?.let { append("System info: $it ") }
@@ -48,6 +52,9 @@ internal fun buildInfo(dataHolder: EventDataHolder) = buildString {
  * @return  String that contains information from the log data holder received
  */
 internal fun buildInfoContentOnly(dataHolder: EventDataHolder) = buildString {
+    if (dataHolder.tags.isNotEmpty()) {
+        append("Tags: ${dataHolder.tags}\n")
+    }
     dataHolder.extraInfo?.let { append("Extra information: $it.\n") }
     dataHolder.throwable?.let { append("Throwable:\n${it.stackTraceToString()}\n") }
     dataHolder.genericInfo?.let { append("System info: $it\n") }
