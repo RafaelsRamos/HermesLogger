@@ -103,6 +103,15 @@
                 android:textSize="13sp"
                 tools:text="25/10/2000" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tags_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                tools:listitem="@layout/hermes_tags_title"
+                android:orientation="horizontal"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"/>
+
             <TextView
                 style="@style/DetailsMessageFont"
                 android:id="@+id/message"

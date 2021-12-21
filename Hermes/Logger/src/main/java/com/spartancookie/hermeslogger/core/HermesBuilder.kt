@@ -8,7 +8,8 @@ class HermesBuilder internal constructor(
     private var message: String = "",
     private var extraInfo: String? = null,
     private var dataType: DataType? = null,
-    private var throwable: Throwable? = null
+    private var throwable: Throwable? = null,
+    private var tags: MutableList<String> = mutableListOf()
 ) {
 
     /**
@@ -61,6 +62,24 @@ class HermesBuilder internal constructor(
     }
 
     /**
+     * Try adding [tag] into the list of tags for this event.
+     */
+    fun addTag(tag: String) = apply {
+        if (!tags.contains(tag)) {
+            tags.add(tag)
+        }
+    }
+
+    /**
+     * Try adding all the given [tags] into the list of tags for this event.
+     */
+    fun addTags(vararg tags: String) = apply {
+        tags.forEach {
+            addTag(it)
+        }
+    }
+
+    /**
      * Create a log with the parameters built and add it to the list of logs
      * can be seen through the [OverviewLayout]
      */
@@ -79,6 +98,7 @@ class HermesBuilder internal constructor(
         extraInfo = extraInfo,
         genericInfo = fetchSystemSnapshot(),
         dataType = dataType,
-        throwable = throwable
+        throwable = throwable,
+        tags = tags
     )
 }

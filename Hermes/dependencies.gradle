@@ -28,4 +28,7 @@ ext {
 
     // mockk
     mockk =                          '1.12.1'
+
+    // Timber
+    timber =                         '5.0.1'
 }

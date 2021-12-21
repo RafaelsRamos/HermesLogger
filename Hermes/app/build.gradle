@@ -40,11 +40,14 @@ android {
 dependencies {
     implementation project(':Logger')
     implementation project(':Formatter')
+    implementation project(':Tree')
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$androidx_core"
     implementation "androidx.appcompat:appcompat:$androidx_app_compat"
     implementation "androidx.constraintlayout:constraintlayout:$androidx_constraint_layout"
+    implementation "com.jakewharton.timber:timber:$timber"
 
     implementation "io.github.ParkSangGwon:tedpermission:$ted_permission"
 

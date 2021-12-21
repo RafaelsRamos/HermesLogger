@@ -4,9 +4,14 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareLog
+import com.spartancookie.hermeslogger.ui.adapters.TagsAdapter
+import com.spartancookie.hermeslogger.ui.decorators.MarginItemDecoration
 import com.spartancookie.hermeslogger.ui.setCreationDate
 import com.spartancookie.hermeslogger.ui.setLogIcon
 import com.spartancookie.hermeslogger.utils.*
@@ -63,6 +68,15 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
         setExtraInfo()
         setThrowableInfo()
         setSystemInfo()
+
+        with (tags_recycler) {
+            adapter = TagsAdapter(item.tags)
+            layoutManager = FlexboxLayoutManager(context).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+            }
+            addItemDecoration(MarginItemDecoration.withSameMargins(12))
+        }
     }
 
     private fun setMessage() {

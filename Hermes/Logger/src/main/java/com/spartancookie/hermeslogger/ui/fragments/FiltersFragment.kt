@@ -44,12 +44,12 @@ internal class FiltersFragment: Fragment(R.layout.hermes_screen_filters) {
 
     private fun fetchTypeFilters(): List<FilterByType> = listOf(
         FilterByType(EventType.Success),
-        //FilterByType(EventType.Verbose),
+        FilterByType(EventType.Verbose),
         FilterByType(EventType.Info),
         FilterByType(EventType.Debug),
         FilterByType(EventType.Warning),
         FilterByType(EventType.Error),
-        //FilterByType(EventType.Wtf),
+        FilterByType(EventType.Wtf),
     )
 
     // TODO("Fetch tags filters")

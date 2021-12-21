@@ -5,8 +5,10 @@ import com.spartancookie.hermeslogger.R
 
 internal enum class EventType(@JvmField @DrawableRes val drawableResource: Int, val commentPrefix: String) {
     Success(R.drawable.ic_hermes_logger_success, "S-"),
+    Verbose(R.drawable.ic_hermes_logger_verbose, "V-"),
     Info(R.drawable.ic_hermes_logger_info, "I-"),
     Debug(R.drawable.ic_hermes_logger_debug, "D-"),
     Warning(R.drawable.ic_hermes_logger_warning, "W-"),
     Error(R.drawable.ic_hermes_logger_error, "E-"),
+    Wtf(R.drawable.ic_hermes_logger_wtf, "Wtf-")
 }

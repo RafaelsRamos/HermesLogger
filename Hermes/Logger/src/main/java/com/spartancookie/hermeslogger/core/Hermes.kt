@@ -9,6 +9,12 @@ object Hermes {
     fun success(): HermesBuilder = HermesBuilder().apply { type = EventType.Success }
 
     /**
+     * Create an instance of [HermesBuilder] with a priority of [EventType.Verbose]
+     */
+    @JvmStatic
+    fun v(): HermesBuilder = HermesBuilder().apply { type = EventType.Verbose }
+
+    /**
      * Create an instance of [HermesBuilder] with a priority of [EventType.Debug]
      */
     @JvmStatic
@@ -32,6 +38,12 @@ object Hermes {
      */
     @JvmStatic
     fun e(): HermesBuilder = HermesBuilder().apply { type = EventType.Error }
+
+    /**
+     * Create an instance of [HermesBuilder] with a priority of [EventType.Wtf]
+     */
+    @JvmStatic
+    fun wtf(): HermesBuilder = HermesBuilder().apply { type = EventType.Wtf }
 
     /**
      * Inform Hermes class that the current the current environment is a debug environment or not.

@@ -15,7 +15,8 @@ internal data class EventDataHolder(
     val extraInfo: String? = null,
     val genericInfo: String? = null,
     val dataType: DataType? = null,
-    val throwable: Throwable? = null
+    val throwable: Throwable? = null,
+    val tags: MutableList<String> = mutableListOf()
 ): Parcelable {
 
     val creationDate: Date = Calendar.getInstance().time

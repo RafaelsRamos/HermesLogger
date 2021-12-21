@@ -8,6 +8,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.spartancookie.tree.HermesTree
+import com.spartancookie.tree.addHermesTag
+import com.spartancookie.tree.hermesTags
 import com.spartancookie.formatter.DataType
 import com.spartancookie.hermeslogger.core.Hermes
 import com.spartancookie.hermeslogger.core.HermesBuilder
@@ -15,6 +18,7 @@ import com.spartancookie.hermeslogger.core.SystemInfoBuildable
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
 import com.spartancookie.hermeslogger.utils.canShareHermesLogDumps
 import kotlinx.android.synthetic.main.test_activity.*
+import timber.log.Timber
 
 private const val BASE_DURATION_TEXT = "Duration between logs"
 
@@ -74,6 +78,26 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListe
                 .setPermissions(WRITE_EXTERNAL_STORAGE)
                 .check()
         }
+
+        Timber.plant(Timber.DebugTree())
+        Timber.plant(HermesTree())
+
+        Timber
+            .addHermesTag("private")
+            .addHermesTag("whatever")
+            .addHermesTag("logout")
+            .s("test...")
+
+        Timber.hermesTags("checkout", "bag", "final sale", "bag", "final sale 2", "bag 2", "final sale 2").w("my message")
+        Timber.hermesTags("a", "b", "c").e("My tagged error!")
+        Timber.i("My info message 1")
+        Timber.i("SUCCESS_My info message 2")
+        Timber.w("My info message 3")
+        Timber.e("My info message 4")
+        Timber.d("My info message 5")
+        Timber.i("My info message123123")
+        Timber.v("My info message123123")
+        Timber.wtf("My info message123123")
     }
 
     private fun setDurationSeekBar() {
@@ -145,6 +169,8 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, View.OnClickListe
 
     private fun randomizeInfo(builder: HermesBuilder) {
         builder
+            .addTags("My tag...")
+            .addTag("My tag2")
             .message(RandomMessages.getSample)
             .extraInfo(randomExtraInfo, dataType)
             .submit()
