@@ -7,8 +7,7 @@ import java.io.Serializable
 internal class FilterByTag(private val tag: String, override val name: String = tag) : Filter, Serializable {
 
     override fun filter(unfilteredList: List<EventDataHolder>): List<EventDataHolder> {
-        // TODO("Search for tags instead of this placeholder")
-        return unfilteredList.filter { it.message.contains(tag) || it.extraInfo?.contains(tag) == true }
+        return unfilteredList.filter { it.message.contains(tag) || it.extraInfo?.contains(tag) == true || it.tags.contains(tag) }
     }
 
     override fun equals(other: Any?): Boolean {

@@ -35,6 +35,17 @@ internal class InfoHolder {
 
     //------------------------ Controls ------------------------
 
+    /**
+     * Get List of [String] corresponding to all for all the items.
+     */
+    fun getTagsList(): List<String> {
+        return mutableListOf<String>().apply {
+            _eventList.forEach { event ->
+                addAll(event.tags)
+            }
+        }.distinct()
+    }
+
     fun getNumberOfLogsByType(type: EventType) = logNumbers[type]!!.get()
 
     /**

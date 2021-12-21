@@ -8,6 +8,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.core.EventType
+import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.filters.FilterManager
 import com.spartancookie.hermeslogger.filters.models.FilterByTag
 import com.spartancookie.hermeslogger.filters.models.FilterByType
@@ -23,14 +24,20 @@ internal class FiltersFragment: Fragment(R.layout.hermes_screen_filters) {
             add("Event types")
             addAll(fetchTypeFilters())
 
-            add("Tags")
-            addAll(FilterManager.tagFilters) // TODO("Fetch tags registered by the devs")
+            if (FilterManager.tagFilters.isNotEmpty()) {
+                add("Active tags")
+                addAll(FilterManager.tagFilters)
+            }
+
+            add("More...")
+            val availableTags = HermesHandler.infoHolder.getTagsList()
+            addAll(availableTags.map { FilterByTag(it) })
 
             buildTagFilters()?.let { tags ->
-                add("Tags 1")
+                add("Tag tests")
                 addAll(tags)
             }
-        }
+        }.distinct()
 
         with (filters_recycler) {
             adapter = FiltersAdapter(filters)
