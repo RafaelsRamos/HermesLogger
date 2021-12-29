@@ -22,10 +22,8 @@
     <dimen name="background_alpha">0.3</dimen>
 
     <dimen name="filter_height">45dp</dimen>
-    <dimen name="filter_padding_top">5dp</dimen>
-    <dimen name="filter_padding_bottom">5dp</dimen>
-    <dimen name="filter_padding_left">12dp</dimen>
-    <dimen name="filter_padding_right">12dp</dimen>
+    <dimen name="filter_padding_vertical">5dp</dimen>
+    <dimen name="filter_padding_horizontal">12dp</dimen>
 
 
     <dimen name="filter_title_height">10dp</dimen>
