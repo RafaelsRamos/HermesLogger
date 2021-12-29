@@ -42,7 +42,7 @@ internal object FilterManager {
     }
 
     /**
-     * Save [allFilters] into [SharedPreferences]
+     * Save [allFilters] into [android.content.SharedPreferences]
      */
     fun saveFilters(ctx: Context) {
         ctx.saveFilters(allFilters)
@@ -94,3 +94,5 @@ internal object FilterManager {
  * Apply event filters to the @receiver
  */
 internal fun List<EventDataHolder>.applyFilters() = FilterManager.applyFilters(this)
+
+internal fun EventDataHolder.applyFilters() = listOf(this).applyFilters()

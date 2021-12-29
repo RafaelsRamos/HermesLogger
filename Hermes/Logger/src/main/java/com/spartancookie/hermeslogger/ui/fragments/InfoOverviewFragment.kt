@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import com.spartancookie.hermeslogger.GhostFragment
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
 import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
@@ -21,6 +22,7 @@ import com.spartancookie.hermeslogger.utils.removeFromStack
 import kotlinx.android.synthetic.main.screen_info_overview.*
 import kotlinx.android.synthetic.main.search_bar.*
 
+@GhostFragment
 internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), LogSelectedCallback {
 
     private val fragmentStateCallback = arguments?.run { getSerializable(FRAGMENT_STATE_CALLBACK) as? FragmentStateCallback }

@@ -49,6 +49,8 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$androidx_constraint_layout"
     implementation "com.jakewharton.timber:timber:$timber"
 
+    implementation "com.google.android.material:material:$google_material"
+
     implementation "io.github.ParkSangGwon:tedpermission:$ted_permission"
 
     testImplementation "junit:junit:4.13.2"

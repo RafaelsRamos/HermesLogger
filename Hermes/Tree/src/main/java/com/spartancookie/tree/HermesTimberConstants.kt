@@ -2,15 +2,7 @@ package com.spartancookie.tree
 
 internal object HermesTimberConstants {
 
-    /**
-     * Delimiter between the tags and the message
-     */
-    const val TAG_SECTION_DELIMITER = "||HT||"
-
-    /**
-     * Tag delimited
-     */
-    const val TAG_DELIMITER = "|"
+    const val TIMBER_TAG = "Timber"
 
     /**
      * Tag name for Success

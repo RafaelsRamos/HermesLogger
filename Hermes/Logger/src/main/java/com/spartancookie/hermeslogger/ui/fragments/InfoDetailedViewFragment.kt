@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.spartancookie.hermeslogger.GhostFragment
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareLog
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.screen_detailed_view.*
 
 private const val ITEM_ARG = "selected_item"
 
+@GhostFragment
 internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view) {
 
     private lateinit var item: EventDataHolder

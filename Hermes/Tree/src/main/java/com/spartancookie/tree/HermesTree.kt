@@ -6,8 +6,12 @@ import com.spartancookie.tree.HermesTreeHelper.createStackElementTag
 import com.spartancookie.hermeslogger.core.Hermes
 import com.spartancookie.hermeslogger.core.HermesBuilder
 import com.spartancookie.hermeslogger.core.HermesConfigurations
+import com.spartancookie.tree.HermesTimberConstants.TIMBER_TAG
 import timber.log.Timber
 
+/**
+ * Hermes Timber tree, that can be used to map all the timber logs onto the Hermes event system.
+ */
 class HermesTree: Timber.Tree() {
 
     private val fqcnIgnore = listOf(
@@ -16,7 +20,7 @@ class HermesTree: Timber.Tree() {
         Timber.Tree::class.java.name,
         Timber.DebugTree::class.java.name,
         HermesTree::class.java.name,
-        HermesForestWrapper::class.java.name,
+        HermesTreeWrapper::class.java.name,
     )
 
     private val extractTag: String
@@ -24,21 +28,22 @@ class HermesTree: Timber.Tree() {
             .first { it.className !in fqcnIgnore }
             .let(::createStackElementTag)
 
-    override fun log(priority: Int, tag: String?, msg: String, t: Throwable?) {
+    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+        val hasDebugTree = Timber.forest().any { it is Timber.DebugTree }
 
-        if (!HermesConfigurations.isEnabled) {
+        if (!hasDebugTree || !HermesConfigurations.isEnabled) {
             return
         }
 
         // Process msg to split it into the real message + list of tags
-        val (message, tags) = HermesTreeHelper.getAssociatedTags(msg)
+        val (msg, tags) = HermesTreeHelper.getAssociatedTags(message)
 
         val hermesBuilder = if (tags.contains(SUCCESS)) {
             Hermes.success()
         } else {
             priority.toHermesBuilder()
         }
-        hermesBuilder?.addContent(tag, message, t, tags)
+        hermesBuilder?.addContent(tag, msg, t, tags)
     }
 
     private fun Int.toHermesBuilder() = when(this) {
@@ -52,13 +57,13 @@ class HermesTree: Timber.Tree() {
     }
 
     private fun HermesBuilder.addContent(tag: String?, content: String, throwable: Throwable?, tags: List<String>) {
-
         val wholeContent = buildString {
             append(content)
             throwable?.let { t -> append("\n${t.message}") }
         }
 
-        addTags(*tags.toTypedArray())
+        tag(TIMBER_TAG)
+        tags(*tags.toTypedArray())
         message(tag ?: extractTag)
         extraInfo(wholeContent)
         submit()

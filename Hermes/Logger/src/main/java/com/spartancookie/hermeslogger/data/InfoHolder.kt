@@ -14,7 +14,12 @@ internal class InfoHolder {
     /**
      * LiveData instance that contains all the logs added during a session
      */
-    val infoLiveData = MutableLiveData<List<EventDataHolder>>().default(listOf())
+    val eventsReplacedLiveData = MutableLiveData<List<EventDataHolder>>().default(listOf())
+
+    /**
+     * LiveData instance that contains all the logs added during a session
+     */
+    val eventAddedLiveData = MutableLiveData<EventDataHolder>()
 
     private val _eventList: MutableList<EventDataHolder> = mutableListOf()
 
@@ -56,7 +61,8 @@ internal class InfoHolder {
         event.id = getValidID(event.type)
         _eventList.add(event)
         // Post value, to trigger update throughout the system
-        infoLiveData.postValue(eventList)
+        //infoLiveData.postValue(eventList)
+        eventAddedLiveData.postValue(event)
     }
 
     //------------------------ Helper methods ------------------------
@@ -79,14 +85,13 @@ internal class InfoHolder {
         if (indexOfLog >= 0) {
             decreaseLogCountOfType(eventList[indexOfLog].type)
             _eventList.removeAt(indexOfLog)
-            infoLiveData.postValue(eventList)
         }
     }
 
     fun clearAllLogs() {
         _eventList.clear()
         logNumbers.reset()
-        infoLiveData.postValue(eventList)
+        eventsReplacedLiveData.postValue(eventList)
     }
 
 }

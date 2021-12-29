@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.spartancookie.hermeslogger.GhostFragment
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.core.HermesHandler
@@ -16,11 +17,12 @@ import com.spartancookie.hermeslogger.filters.ui.adapters.FiltersAdapter
 import com.spartancookie.hermeslogger.ui.decorators.MarginItemDecoration
 import kotlinx.android.synthetic.main.hermes_screen_filters.*
 
+@GhostFragment
 internal class FiltersFragment: Fragment(R.layout.hermes_screen_filters) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val filters = mutableListOf<Any>().apply {
+        var filters = mutableListOf<Any>().apply {
             add("Event types")
             addAll(fetchTypeFilters())
 
@@ -32,12 +34,11 @@ internal class FiltersFragment: Fragment(R.layout.hermes_screen_filters) {
             add("More...")
             val availableTags = HermesHandler.infoHolder.getTagsList()
             addAll(availableTags.map { FilterByTag(it) })
-
-            buildTagFilters()?.let { tags ->
-                add("Tag tests")
-                addAll(tags)
-            }
         }.distinct()
+
+        if (filters.last() is String) {
+            filters = filters.subList(0, filters.lastIndex)
+        }
 
         with (filters_recycler) {
             adapter = FiltersAdapter(filters)
@@ -59,22 +60,7 @@ internal class FiltersFragment: Fragment(R.layout.hermes_screen_filters) {
         FilterByType(EventType.Wtf),
     )
 
-    // TODO("Fetch tags filters")
-    private fun buildTagFilters(): List<FilterByTag>? {
-        return listOf(
-            FilterByTag("Tag1"),
-            FilterByTag("Tag2"),
-            FilterByTag("Large tag Tag3"),
-            FilterByTag("Large tag Tag4"),
-            FilterByTag("Large tag number6"),
-            FilterByTag("Large tag Tag5"),
-            FilterByTag("Tag4"),
-            FilterByTag("Tag5"),
-        )
-    }
-
     companion object {
-        const val TAG = "FiltersFragment"
         fun newInstance() = FiltersFragment()
     }
 

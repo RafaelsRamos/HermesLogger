@@ -1,10 +1,13 @@
 package com.spartancookie.tree
 
+import com.spartancookie.hermeslogger.core.HermesConfigurations
 import com.spartancookie.tree.HermesTimberConstants.SUCCESS
-import com.spartancookie.tree.HermesTimberConstants.TAG_SECTION_DELIMITER
 import timber.log.Timber
 
-class HermesForestWrapper(private val refTree: Timber.Tree, private val tags: MutableList<String>): Timber.Tree() {
+/**
+ * Timber tree wrapper, used to make it easier to add Hermes tags and other functionalities to the logs being fired.
+ */
+class HermesTreeWrapper internal constructor(private val refTree: Timber.Tree, private val tags: MutableList<String>): Timber.Tree() {
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         super.log(priority, tag, message.addTags(), t)
@@ -74,39 +77,38 @@ class HermesForestWrapper(private val refTree: Timber.Tree, private val tags: Mu
     override fun wtf(t: Throwable?, message: String?, vararg args: Any?) = refTree.wtf(t, message, *args)
 
     private fun String.addTags(): String {
-        val tagsSection = buildString {
+        val delimiter = HermesConfigurations.tagDelimiter
+        return buildString {
             tags.forEach {
-                append("|$it|")
+                append("$delimiter$it$delimiter")
             }
-            append(TAG_SECTION_DELIMITER)
+            append(this@addTags)
         }
-
-        return tagsSection + this
     }
 
     internal fun addTag(tag: String) = tags.add(tag)
 }
 
 /**
- * Create a Wrapper with the @receiver using the [HermesForestWrapper] class.
+ * Create a Wrapper with the @receiver using the [HermesTreeWrapper] class.
  * Additionally, the tags are stored in this wrapper.
  * @receiver instance of [Timber.Forest]
  */
-fun Timber.Forest.hermesTags(vararg tags: String): HermesForestWrapper {
-    return HermesForestWrapper(this, tags.toMutableList())
+fun Timber.Forest.hermesTags(vararg tags: String): HermesTreeWrapper {
+    return HermesTreeWrapper(this, tags.toMutableList())
 }
 
 /**
- * Create a Wrapper with the @receiver using the [HermesForestWrapper] class.
+ * Create a Wrapper with the @receiver using the [HermesTreeWrapper] class.
  * Stores a single tag in this wrapper
  * @receiver instance of [Timber.Forest]
  */
-fun Timber.Forest.addHermesTag(tag: String): HermesForestWrapper {
+fun Timber.Forest.hermesTag(tag: String): HermesTreeWrapper {
     return hermesTags(tag)
 }
 
 /**
- * Adds a tag into the already created [HermesForestWrapper] instance
- * @receiver instance of [HermesForestWrapper]
+ * Adds a tag into the already created [HermesTreeWrapper] instance
+ * @receiver instance of [HermesTreeWrapper]
  */
-fun HermesForestWrapper.addHermesTag(tag: String) = apply { addTag(tag) }
+fun HermesTreeWrapper.hermesTag(tag: String) = apply { addTag(tag) }

@@ -1,8 +1,7 @@
 package com.spartancookie.tree
 
 import android.os.Build
-import com.spartancookie.tree.HermesTimberConstants.TAG_DELIMITER
-import com.spartancookie.tree.HermesTimberConstants.TAG_SECTION_DELIMITER
+import com.spartancookie.hermeslogger.core.HermesConfigurations
 import java.util.regex.Pattern
 
 internal object HermesTreeHelper {
@@ -39,19 +38,23 @@ internal object HermesTreeHelper {
      * and the List of tags, retrieved from the given string
      */
     fun getAssociatedTags(message: String): HermesProcessedEvent {
-        // Split the message into TAGS section and message section
-        val splitMessage = message.split(TAG_SECTION_DELIMITER)
 
-        // If the splitMessage size is less than 2, the message has no tags.
-        // In this case return HermesProcessedLog only with the message
-        if (splitMessage.size < 2) {
+        val delimiter = HermesConfigurations.tagDelimiter
+
+        // If one or less tag delimiters are found, return the default message
+        if (message.count { it.toString() == delimiter } <= 1) {
             return HermesProcessedEvent(message)
         }
 
         // Split the content by the TAG_DELIMITER and sent them as a list
-        val tags = splitMessage.first().split(TAG_DELIMITER).filter { it.isNotEmpty() && it.isNotBlank() }
-        val realMessage = splitMessage[1]
+        val tags = message.split(delimiter).filter { it.isTag(message) }
+
+        val realMessage = message.split(delimiter).last()
         return HermesProcessedEvent(realMessage, tags)
     }
 
+    private fun String.isTag(wholeMessage: String): Boolean {
+        val delimiter = HermesConfigurations.tagDelimiter
+        return isNotBlank() && isNotEmpty() && wholeMessage.contains("$delimiter$this$delimiter")
+    }
 }

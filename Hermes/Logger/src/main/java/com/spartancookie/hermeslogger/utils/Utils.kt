@@ -7,6 +7,7 @@ import android.content.Context
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
+import com.spartancookie.hermeslogger.GhostFragment
 import com.spartancookie.hermeslogger.models.EventDataHolder
 import java.io.File
 import java.io.FileReader
@@ -107,6 +108,9 @@ internal fun createTempFileFromFile(context: Context, fileName: String, referenc
  */
 internal fun FragmentManager.clearAllFragments() {
     for (fragment in fragments) {
-        beginTransaction().remove(fragment).commit()
+        val implementsGhostFragment = fragment.javaClass.getAnnotation(GhostFragment::class.java)
+        if (implementsGhostFragment != null) {
+            beginTransaction().remove(fragment).commit()
+        }
     }
 }

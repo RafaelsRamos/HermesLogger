@@ -6,10 +6,10 @@
     android:layout_height="@dimen/filter_height"
     card_view:cardCornerRadius="20dp"
     card_view:cardElevation="5dp"
-    card_view:contentPaddingLeft="@dimen/filter_padding_left"
-    card_view:contentPaddingRight="@dimen/filter_padding_right"
-    card_view:contentPaddingTop="@dimen/filter_padding_top"
-    card_view:contentPaddingBottom="@dimen/filter_padding_bottom"
+    card_view:contentPaddingLeft="@dimen/filter_padding_horizontal"
+    card_view:contentPaddingRight="@dimen/filter_padding_horizontal"
+    card_view:contentPaddingTop="@dimen/filter_padding_vertical"
+    card_view:contentPaddingBottom="@dimen/filter_padding_vertical"
     card_view:cardPreventCornerOverlap="true"
     card_view:cardBackgroundColor="@color/white">
 

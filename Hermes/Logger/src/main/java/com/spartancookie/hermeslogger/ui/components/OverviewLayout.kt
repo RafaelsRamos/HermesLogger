@@ -1,6 +1,7 @@
 package com.spartancookie.hermeslogger.ui.components
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -11,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
 import com.spartancookie.hermeslogger.core.HermesConfigurations
@@ -23,18 +23,15 @@ import com.spartancookie.hermeslogger.ui.fragments.FiltersFragment
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
 import com.spartancookie.hermeslogger.utils.canShareHermesLogDumps
 import com.spartancookie.hermeslogger.utils.clearAllFragments
-import com.spartancookie.hermeslogger.utils.default
 import kotlinx.android.synthetic.main.include_top_options.view.*
 import kotlinx.android.synthetic.main.screen_overview_background.view.*
 import kotlinx.android.synthetic.main.screen_overview_background.view.export_image_view
-import kotlinx.android.synthetic.main.screen_overview_background.view.remove_all_text_view
 import kotlinx.android.synthetic.main.screen_overview_background.view.remove_image_view
 
 
 class OverviewLayout private constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr), FragmentStateCallback {
 
     private var filteringFragment = false
-    private var isRemoveModeEnabled = false
 
     private val fragmentActivity get() = context as? FragmentActivity
     private val fragmentManager get() = fragmentActivity?.supportFragmentManager
@@ -73,12 +70,6 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
             // Initialize filters
             FilterManager.initialize(activity)
         }
-
-        /**
-         * Used to inform the items that the remove-mode was enabled or disabled
-         */
-        internal val removeModeLiveData = MutableLiveData<Boolean>().default(false)
-
     }
 
     //------------------- Initialization -------------------
@@ -108,14 +99,12 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
         }
 
         remove_image_view.setOnClickListener {
-            isRemoveModeEnabled = !isRemoveModeEnabled
-            remove_all_text_view.visibility = if (isRemoveModeEnabled) View.VISIBLE else View.GONE
-            removeModeLiveData.postValue(isRemoveModeEnabled)
-        }
-
-        remove_all_text_view.setOnClickListener {
-            // Remove all logs
-            infoHolder.clearAllLogs()
+            AlertDialog.Builder(context)
+                .setTitle("Delete all events")
+                .setMessage("Are you sure you want to delete all events?")
+                .setPositiveButton("Yes") { _, _ -> infoHolder.clearAllLogs() }
+                .setNegativeButton("No", null)
+                .setIcon(android.R.drawable.ic_dialog_alert).show()
         }
 
         filter_image_view.setOnClickListener {

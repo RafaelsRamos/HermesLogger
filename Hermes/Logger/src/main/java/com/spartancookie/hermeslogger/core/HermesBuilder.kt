@@ -64,7 +64,7 @@ class HermesBuilder internal constructor(
     /**
      * Try adding [tag] into the list of tags for this event.
      */
-    fun addTag(tag: String) = apply {
+    fun tag(tag: String) = apply {
         if (!tags.contains(tag)) {
             tags.add(tag)
         }
@@ -73,18 +73,17 @@ class HermesBuilder internal constructor(
     /**
      * Try adding all the given [tags] into the list of tags for this event.
      */
-    fun addTags(vararg tags: String) = apply {
+    fun tags(vararg tags: String) = apply {
         tags.forEach {
-            addTag(it)
+            tag(it)
         }
     }
 
     /**
      * Create a log with the parameters built and add it to the list of logs
-     * can be seen through the [OverviewLayout]
+     * can be seen through the [com.spartancookie.hermeslogger.ui.components.OverviewLayout]
      */
     fun submit() {
-
         if (!HermesConfigurations.isEnabled) {
             return
         }
