@@ -1,4 +1,4 @@
-package com.spartancookie.hermeslogger.preferences
+package com.spartancookie.hermeslogger.utils
 
 import com.google.gson.Gson
 import com.spartancookie.hermeslogger.filters.Filter

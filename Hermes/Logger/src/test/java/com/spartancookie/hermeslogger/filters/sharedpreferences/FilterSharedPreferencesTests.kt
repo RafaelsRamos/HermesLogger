@@ -3,8 +3,8 @@ package com.spartancookie.hermeslogger.filters.sharedpreferences
 import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.filters.models.FilterByTag
 import com.spartancookie.hermeslogger.filters.models.FilterByType
-import com.spartancookie.hermeslogger.preferences.toFilters
-import com.spartancookie.hermeslogger.preferences.toStringSet
+import com.spartancookie.hermeslogger.utils.toFilters
+import com.spartancookie.hermeslogger.utils.toStringSet
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4

@@ -37,7 +37,7 @@ class SingleTriggerFragment: BaseFragment(R.layout.screen_single_trigger_fragmen
             message(messageText)
 
             if (extraMessageText.isNotEmpty()) {
-                extraInfo(extraMessageText)
+                description(extraMessageText)
             }
         }.submit()
     }

@@ -6,7 +6,7 @@ import com.spartancookie.hermeslogger.models.EventDataHolder
 class HermesBuilder internal constructor(
     internal var type: EventType = EventType.Debug,
     private var message: String = "",
-    private var extraInfo: String? = null,
+    private var description: String? = null,
     private var dataType: DataType? = null,
     private var throwable: Throwable? = null,
     private var tags: MutableList<String> = mutableListOf()
@@ -14,8 +14,9 @@ class HermesBuilder internal constructor(
 
     /**
      * Store the given [t] to be passed to [EventDataHolder] instance that will be created.
+     *
      * Additionally, if no [message] was set thus far, the type of exception thrown will be
-     * set as the [message]
+     * set as the [message].
      */
     fun throwable(t: Throwable) = apply {
         this@HermesBuilder.throwable = t
@@ -39,7 +40,7 @@ class HermesBuilder internal constructor(
     fun message(message: String) = apply { this@HermesBuilder.message = message }
 
     /**
-     * Store the given [extraInfo] to be passed to [EventDataHolder] instance that will be created.
+     * Store the given [description] to be passed to [EventDataHolder] instance that will be created.
      *
      * It is advised to pass in relevant information that can help either the QA/Tester/Dev identify
      * possible issues and/or confirm behaviour.
@@ -52,12 +53,12 @@ class HermesBuilder internal constructor(
      * [format] is used to format XML or Json data. Can be used to format API calls' responses, to make it
      * easier for QAs/Testers/Devs to read its content.
      *
-     * To have a correctly formatted message, assure that the [extraInfo] only has the Json or XML content
+     * To have a correctly formatted message, assure that the [description] only has the Json or XML content
      * and nothing else. Otherwise the formatter will fail to recognize the content as a valid Json or XML
      */
     @JvmOverloads
-    fun extraInfo(extraInfo: String, format: DataType? = null) = apply {
-        this@HermesBuilder.extraInfo = extraInfo
+    fun description(description: String, format: DataType? = null) = apply {
+        this@HermesBuilder.description = description
         this@HermesBuilder.dataType = format
     }
 
@@ -94,8 +95,8 @@ class HermesBuilder internal constructor(
     private fun createLogDataHolder() = EventDataHolder(
         type = type,
         message = message,
-        extraInfo = extraInfo,
-        genericInfo = fetchSystemSnapshot(),
+        description = description,
+        genericInfo = tryTakingSystemSnapshot(),
         dataType = dataType,
         throwable = throwable,
         tags = tags

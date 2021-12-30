@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.GhostFragment
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
+import com.spartancookie.hermeslogger.callbacks.EventSelectedCallback
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.filters.applyFilters
@@ -26,7 +26,7 @@ private const val LOG_SELECTED_CALLBACK_ARG = "LogSelectedCallback"
 @GhostFragment
 internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
-    private lateinit var logSelectedCallback: LogSelectedCallback
+    private lateinit var eventSelectedCallback: EventSelectedCallback
     private var type: EventType? = null
 
     private var filterString = EMPTY_STRING
@@ -51,11 +51,11 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
         // Get type from bundle
         arguments?.run {
-            logSelectedCallback = getSerializable(LOG_SELECTED_CALLBACK_ARG) as LogSelectedCallback
+            eventSelectedCallback = getSerializable(LOG_SELECTED_CALLBACK_ARG) as EventSelectedCallback
         }
 
         val dividerDecor = DividerItemDecoration(context, (mLayoutManager as LinearLayoutManager).orientation)
-        mAdapter = InfoRecyclerAdapter(eventList.toMutableList(), logSelectedCallback, this)
+        mAdapter = InfoRecyclerAdapter(eventList.toMutableList(), eventSelectedCallback, this)
 
 
         with(recyclerView) {
@@ -146,12 +146,12 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
         /**
          * Create an instance of [InfoListFragment] with a bundle that contains the [type]
-         * selected and with an implementation of [LogSelectedCallback], on [logSelectedCallback].
+         * selected and with an implementation of [EventSelectedCallback], on [eventSelectedCallback].
          */
-        fun newInstance(logSelectedCallback: LogSelectedCallback) =
+        fun newInstance(eventSelectedCallback: EventSelectedCallback) =
             InfoListFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(LOG_SELECTED_CALLBACK_ARG, logSelectedCallback)
+                    putSerializable(LOG_SELECTED_CALLBACK_ARG, eventSelectedCallback)
                 }
             }
     }

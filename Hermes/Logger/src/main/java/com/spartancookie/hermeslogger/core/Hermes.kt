@@ -46,7 +46,7 @@ object Hermes {
     fun wtf(): HermesBuilder = HermesBuilder().apply { type = EventType.Wtf }
 
     /**
-     * Inform Hermes class that the current the current environment is a debug environment or not.
+     * Inform Hermes that the current the current environment is a debug environment or not.
      * If the environment is not a debug environment, no logs will be stored or shown.
      * [isDebugEnvironment] is True if the current environment is a debug environment, false otherwise
      */

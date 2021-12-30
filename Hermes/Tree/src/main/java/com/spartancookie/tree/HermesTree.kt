@@ -65,7 +65,7 @@ class HermesTree: Timber.Tree() {
         tag(TIMBER_TAG)
         tags(*tags.toTypedArray())
         message(tag ?: extractTag)
-        extraInfo(wholeContent)
+        description(wholeContent)
         submit()
     }
 

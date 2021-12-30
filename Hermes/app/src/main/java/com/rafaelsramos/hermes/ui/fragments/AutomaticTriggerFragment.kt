@@ -93,7 +93,7 @@ class AutomaticTriggerFragment: BaseFragment(R.layout.screen_automatic_trigger_f
             .tag("Random")
             .tags(*RandomTags.getRandomTags.toTypedArray())
             .message(RandomMessages.getSample)
-            .extraInfo(randomExtraInfo, dataType)
+            .description(randomExtraInfo, dataType)
             .submit()
     }
 

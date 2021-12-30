@@ -18,7 +18,7 @@ object HermesConfigurations {
     var tagDelimiter: String = DEFAULT_TAG_DELIMITER
 
     /**
-     * Current instance of [SystemInfoBuildable]
+     * Implementation of [SystemInfoBuildable], that can be used to take "SnapShots" and the system.
      */
     internal var systemInfoBuildable : SystemInfoBuildable? = null
 

@@ -8,6 +8,8 @@ import com.spartancookie.hermeslogger.filters.models.FilterByType
 import com.spartancookie.hermeslogger.preferences.SharedPreferencesConstants.FiltersFileName
 import com.spartancookie.hermeslogger.preferences.SharedPreferencesConstants.StoredFiltersByTagKey
 import com.spartancookie.hermeslogger.preferences.SharedPreferencesConstants.StoredFiltersByTypeKey
+import com.spartancookie.hermeslogger.utils.toFilters
+import com.spartancookie.hermeslogger.utils.toStringSet
 
 /**
  * Load filters from SharedPreferences, on the file [FiltersFileName].

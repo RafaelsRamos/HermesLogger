@@ -11,7 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.GhostFragment
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
-import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
+import com.spartancookie.hermeslogger.callbacks.EventSelectedCallback
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.managers.OverviewStateHolder
 import com.spartancookie.hermeslogger.models.EventDataHolder
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.screen_info_overview.*
 import kotlinx.android.synthetic.main.search_bar.*
 
 @GhostFragment
-internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), LogSelectedCallback {
+internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), EventSelectedCallback {
 
     private val fragmentStateCallback = arguments?.run { getSerializable(FRAGMENT_STATE_CALLBACK) as? FragmentStateCallback }
     private val searchContent get() = search_edit_text.text.toString()

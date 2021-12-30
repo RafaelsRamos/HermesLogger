@@ -6,7 +6,7 @@ import android.content.Intent
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.models.EventDataHolder
-import com.spartancookie.hermeslogger.models.getLogTypeNumber
+import com.spartancookie.hermeslogger.models.getEventTypeNumber
 import com.spartancookie.hermeslogger.utils.buildInfoContentOnly
 import java.text.SimpleDateFormat
 import java.util.*
@@ -46,7 +46,7 @@ internal object ShareHelperCommon {
         for (event in infoHolder.eventList) {
             append("\n==============\n")
 
-            append("${event.type.name.uppercase()}-${event.getLogTypeNumber()} ")
+            append("${event.type.name.uppercase()}-${event.getEventTypeNumber()} ")
             append("at ${creationDateFormat.format(event.creationDate)}")
 
             if (event.tags.isNotEmpty()) {
@@ -55,7 +55,7 @@ internal object ShareHelperCommon {
 
             append("\nShort Message:${event.message}")
 
-            event.extraInfo?.let { append("\nExtra Information:$it") }
+            event.description?.let { append("\nExtra Information:$it") }
 
             event.throwable?.let { append("\n\nThrowable:\n${it.stackTraceToString()}") }
 

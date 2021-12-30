@@ -9,12 +9,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
+import com.spartancookie.hermeslogger.callbacks.EventSelectedCallback
 import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.utils.DateFormat
 import java.text.SimpleDateFormat
 
-internal class InfoRecyclerAdapter(private var eventList: MutableList<EventDataHolder>, private val callback: LogSelectedCallback, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
+internal class InfoRecyclerAdapter(private var eventList: MutableList<EventDataHolder>, private val callback: EventSelectedCallback, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<InfoRecyclerAdapter.InfoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -75,7 +75,7 @@ internal class InfoRecyclerAdapter(private var eventList: MutableList<EventDataH
             icon.setImageDrawable(ContextCompat.getDrawable(context, event.type.drawableResource))
 
             // Set expanded extra information
-            description.text = event.extraInfo
+            description.text = event.description
 
             expandOrCollapse.setOnClickListener {
                 val isExtraInfoVisible = extraInfoSection.visibility == View.VISIBLE

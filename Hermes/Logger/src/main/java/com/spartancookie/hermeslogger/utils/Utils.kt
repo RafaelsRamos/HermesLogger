@@ -42,7 +42,7 @@ internal fun buildInfo(dataHolder: EventDataHolder) = buildString {
     if (dataHolder.tags.isNotEmpty()) {
         append("Tags: ${dataHolder.tags}\n")
     }
-    dataHolder.extraInfo?.let { append("Extra information: $it.") }
+    dataHolder.description?.let { append("Extra information: $it.") }
     dataHolder.throwable?.let { append("Throwable:\n${it.stackTraceToString()}\n") }
     dataHolder.genericInfo?.let { append("System info: $it ") }
 }
@@ -56,7 +56,7 @@ internal fun buildInfoContentOnly(dataHolder: EventDataHolder) = buildString {
     if (dataHolder.tags.isNotEmpty()) {
         append("Tags: ${dataHolder.tags}\n")
     }
-    dataHolder.extraInfo?.let { append("Extra information: $it.\n") }
+    dataHolder.description?.let { append("Extra information: $it.\n") }
     dataHolder.throwable?.let { append("Throwable:\n${it.stackTraceToString()}\n") }
     dataHolder.genericInfo?.let { append("System info: $it\n") }
 }

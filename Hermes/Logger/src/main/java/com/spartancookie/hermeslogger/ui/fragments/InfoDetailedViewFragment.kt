@@ -89,7 +89,7 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
     }
 
     private fun setExtraInfo() {
-        val extraInfo = item.extraInfo ?: return
+        val extraInfo = item.description ?: return
 
         extra_info.text = item.dataType?.format(extraInfo) ?: extraInfo
         extra_info.visibility = View.VISIBLE

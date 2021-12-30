@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, ICommunicationCha
             Hermes.i()
                 .tag("Fragment-Backstack")
                 .message("Fragment Backstack changed")
-                .extraInfo("Fragments in stack: $fragmentsCount\nForeground fragment:$foregroundFragment")
+                .description("Fragments in stack: $fragmentsCount\nForeground fragment:$foregroundFragment")
                 .submit()
         }
 

@@ -7,24 +7,24 @@ import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.utils.default
 
 /**
- * Class responsible for storing the logs adding during the session
+ * ## Class responsible for storing the events adding during a session.
  */
 internal class InfoHolder {
 
     /**
-     * LiveData instance that contains all the logs added during a session
+     * LiveData instance where all events replacements (such as clearing events) are posted.
      */
     val eventsReplacedLiveData = MutableLiveData<List<EventDataHolder>>().default(listOf())
 
     /**
-     * LiveData instance that contains all the logs added during a session
+     * LiveData instance where all added events are posted.
      */
     val eventAddedLiveData = MutableLiveData<EventDataHolder>()
 
     private val _eventList: MutableList<EventDataHolder> = mutableListOf()
 
     /**
-     * List of all logs, filtered
+     * List of events, filtered by the different filters, stored at [com.spartancookie.hermeslogger.filters.FilterManager].
      */
     val eventList: List<EventDataHolder> get() = _eventList.applyFilters()
 

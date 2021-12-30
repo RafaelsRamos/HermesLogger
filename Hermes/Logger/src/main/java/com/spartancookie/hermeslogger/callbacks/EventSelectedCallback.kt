@@ -6,7 +6,7 @@ import java.io.Serializable
 /**
  * Interface to inform that a log was selected
  */
-internal interface LogSelectedCallback: Serializable {
+internal interface EventSelectedCallback: Serializable {
 
     /**
      * Triggered on [event] selected
