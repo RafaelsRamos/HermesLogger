@@ -3,11 +3,16 @@ package com.spartancookie.hermeslogger.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.View.GONE
 import androidx.fragment.app.Fragment
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
+import com.spartancookie.hermeslogger.GhostFragment
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareLog
+import com.spartancookie.hermeslogger.ui.adapters.TagsAdapter
+import com.spartancookie.hermeslogger.ui.decorators.MarginItemDecoration
 import com.spartancookie.hermeslogger.ui.setCreationDate
 import com.spartancookie.hermeslogger.ui.setLogIcon
 import com.spartancookie.hermeslogger.utils.*
@@ -15,13 +20,14 @@ import kotlinx.android.synthetic.main.screen_detailed_view.*
 
 private const val ITEM_ARG = "selected_item"
 
+@GhostFragment
 internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view) {
 
-    private lateinit var item: LogDataHolder
+    private lateinit var item: EventDataHolder
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        arguments?.getParcelable<LogDataHolder>(ITEM_ARG)?.let {
+        arguments?.getParcelable<EventDataHolder>(ITEM_ARG)?.let {
             item = it
         }
     }
@@ -64,6 +70,15 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
         setExtraInfo()
         setThrowableInfo()
         setSystemInfo()
+
+        with (tags_recycler) {
+            adapter = TagsAdapter(item.tags)
+            layoutManager = FlexboxLayoutManager(context).apply {
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+            }
+            addItemDecoration(MarginItemDecoration.withSameMargins(12))
+        }
     }
 
     private fun setMessage() {
@@ -74,7 +89,7 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
     }
 
     private fun setExtraInfo() {
-        val extraInfo = item.extraInfo ?: return
+        val extraInfo = item.description ?: return
 
         extra_info.text = item.dataType?.format(extraInfo) ?: extraInfo
         extra_info.visibility = View.VISIBLE
@@ -98,7 +113,7 @@ internal class InfoDetailedViewFragment : Fragment(R.layout.screen_detailed_view
 
         const val TAG = "InfoDetailedViewFragment"
 
-        fun newInstance(item: LogDataHolder) = InfoDetailedViewFragment().apply {
+        fun newInstance(item: EventDataHolder) = InfoDetailedViewFragment().apply {
             arguments = Bundle().apply { putParcelable(ITEM_ARG, item) }
         }
 

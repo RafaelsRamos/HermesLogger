@@ -22,7 +22,7 @@ private const val XML_DEFAULT_INDENT = 4
 private const val XML_EXPRESSION = "//text()[normalize-space()='']"
 
 /**
- * Enum class with DataTypes. All DataTypes implement [IFormattable].
+ * Enum class with DataTypes. All DataTypes implement [com.spartancookie.formatter.IFormattable].
  */
 enum class DataType : IFormattable {
 

@@ -4,40 +4,29 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.viewpager2.widget.ViewPager2
+import com.spartancookie.hermeslogger.GhostFragment
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.core.LogType
-import com.spartancookie.hermeslogger.managers.OverviewStateHolder
-import com.spartancookie.hermeslogger.managers.TabNotificationsHandler
-import com.spartancookie.hermeslogger.models.LogDataHolder
-import com.spartancookie.hermeslogger.ui.adapters.InfoListTabAdapter
-import com.spartancookie.hermeslogger.ui.search.CustomSearch
-import com.spartancookie.hermeslogger.utils.default
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
-import com.spartancookie.hermeslogger.callbacks.LogSelectedCallback
+import com.spartancookie.hermeslogger.callbacks.EventSelectedCallback
 import com.spartancookie.hermeslogger.core.HermesHandler
+import com.spartancookie.hermeslogger.managers.OverviewStateHolder
+import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.ui.search.CustomSearch
 import com.spartancookie.hermeslogger.utils.EMPTY_STRING
+import com.spartancookie.hermeslogger.utils.default
 import com.spartancookie.hermeslogger.utils.removeFromStack
 import kotlinx.android.synthetic.main.screen_info_overview.*
 import kotlinx.android.synthetic.main.search_bar.*
 
-internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), LogSelectedCallback {
+@GhostFragment
+internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), EventSelectedCallback {
 
     private val fragmentStateCallback = arguments?.run { getSerializable(FRAGMENT_STATE_CALLBACK) as? FragmentStateCallback }
-
-    private var selectedTabPosition = 0
-
     private val searchContent get() = search_edit_text.text.toString()
-    private val infoHolder get() = HermesHandler.infoHolder
 
     override fun onDetach() {
         fragmentStateCallback?.onFragmentDismissed()
@@ -55,28 +44,19 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
 
         setSearchLogic()
 
-        val adapter = InfoListTabAdapter(this, this)
-        val viewPager: ViewPager2 = view.findViewById(R.id.pager)
 
-        viewPager.adapter = adapter
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                selectedTabPosition = position
-            }
-        })
-
-        TabLayoutMediator(tab_layout, viewPager) { tab, position ->
-            tab.setCustomView(R.layout.tab_custom_view)
-            tab.customView?.let {
-                val tabName = it.findViewById(R.id.name) as TextView
-                tabName.text = if (position > 0) LogType.values()[position - 1].name else "ALL"
-            }
-        }.attach()
+        val fragment = InfoListFragment.newInstance(this)
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            add(R.id.runtimeOverviewFrameLayout, fragment, InfoDetailedViewFragment.TAG)
+            commit()
+        }
 
         search_edit_text.setText(OverviewStateHolder.currentContent)
         updateUI()
 
-        setObservers()
+        fabButton.setOnClickListener {
+            Toast.makeText(context, HermesHandler.buildStats(), Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun setSearchLogic() {
@@ -114,23 +94,12 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), L
 
     //-------------------- LogSelectedCallback Implementation --------------------
 
-    override fun onLogSelected(log: LogDataHolder) {
-        val fragment = InfoDetailedViewFragment.newInstance(log)
+    override fun onLogSelected(event: EventDataHolder) {
+        val fragment = InfoDetailedViewFragment.newInstance(event)
         requireActivity().supportFragmentManager.beginTransaction().apply {
             add(R.id.runtimeInfoContentContainer, fragment, InfoDetailedViewFragment.TAG)
             commit()
         }
-    }
-
-    //----------------------------- Observers -------------------------
-
-    private fun setObservers() {
-        val tabLayout = requireView().findViewById<TabLayout>(R.id.tab_layout)
-        val tabNotificationsHandler = TabNotificationsHandler(tabLayout)
-
-        infoHolder.infoLiveData.observe(viewLifecycleOwner, Observer {
-            tabNotificationsHandler.updateBadges()
-        })
     }
 
     //------------------------- Helper methods -------------------------

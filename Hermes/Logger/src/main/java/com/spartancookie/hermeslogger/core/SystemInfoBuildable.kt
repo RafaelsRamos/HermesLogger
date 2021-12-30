@@ -2,12 +2,14 @@ package com.spartancookie.hermeslogger.core
 
 /**
  * Implement this to build the Generic information that the user can copy to clipboard
- * @constructor Create empty Copy to clipboard generic info builder
  */
 interface SystemInfoBuildable {
 
     /**
-     * Get a snapshot of the system
+     * Called when a new event is triggered, to take a snapshot of the system.
+     *
+     * It is advised so pass relevant system information, such as **Device model**, **App version**, **Device
+     * display metrics**, **Language**, ect.
      */
     fun buildSystemSnapshotInfo() : String
 

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusable="true"
     android:clickable="true">
 
@@ -12,34 +13,31 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/tab_height"
-            android:background="@null"
-            app:tabIndicatorColor="@color/tabsIndicatorColor"
-            app:tabIndicatorHeight="4dp"
-            app:tabIndicatorFullWidth="false"
-            app:tabTextAppearance="@style/MineCustomTabText"
-            app:tabRippleColor="@null"
-            app:tabPaddingStart="5dp"
-            app:tabPaddingEnd="5dp"/>
-
         <include
             layout="@layout/search_bar"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"/>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager"
+        <FrameLayout
+            android:id="@+id/runtimeOverviewFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabButton"
+        android:layout_width="@dimen/overlay_floating_button_size"
+        android:layout_height="@dimen/overlay_floating_button_size"
+        app:srcCompat="@drawable/ic_hermes_logger_chart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:fabCustomSize="@dimen/overlay_floating_button_size"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

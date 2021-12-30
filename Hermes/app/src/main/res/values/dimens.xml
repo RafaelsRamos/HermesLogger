@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="fragments_back_button_size">30dp</dimen>
+
+    <dimen name="single_trigger_button_width">95dp</dimen>
+    <dimen name="single_trigger_button_height">45dp</dimen>
+
+</resources>

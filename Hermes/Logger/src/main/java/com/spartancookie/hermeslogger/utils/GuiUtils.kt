@@ -11,8 +11,6 @@ import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.spartancookie.hermeslogger.R
-import kotlin.math.roundToInt
-
 
 private const val COPY_TO_CLIPBOARD_ANIMATION_DURATION = 250L
 

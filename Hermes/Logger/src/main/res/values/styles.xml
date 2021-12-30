@@ -1,5 +1,12 @@
 <resources>
 
+    <style name="OutterLayoutStyle">
+        <item name="android:layout_marginBottom">7dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginStart">7dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+    </style>
+
     <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">9sp</item>
     </style>
@@ -40,6 +47,11 @@
 
     <style name="largeText">
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="largeTitle">
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 

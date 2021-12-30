@@ -4,9 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.spartancookie.hermeslogger.core.HermesHandler
-import com.spartancookie.hermeslogger.core.LogType
-import com.spartancookie.hermeslogger.models.LogDataHolder
-import com.spartancookie.hermeslogger.models.getLogTypeNumber
+import com.spartancookie.hermeslogger.core.EventType
+import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.models.getEventTypeNumber
 import com.spartancookie.hermeslogger.utils.buildInfoContentOnly
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,11 +23,11 @@ internal object ShareHelperCommon {
                 "at ${SimpleDateFormat(ShareConstants.HEADER_DATE_FORMAT, Locale.getDefault()).format(Date())}"
 
     private val logCountContent
-        get() = "Log count: Success:${infoHolder.getNumberOfLogsByType(LogType.Success)} " +
-                "Info:${infoHolder.getNumberOfLogsByType(LogType.Info)} " +
-                "Warning:${infoHolder.getNumberOfLogsByType(LogType.Warning)} " +
-                "Error:${infoHolder.getNumberOfLogsByType(LogType.Error)} " +
-                "Debug:${infoHolder.getNumberOfLogsByType(LogType.Debug)}"
+        get() = "Log count: Success:${infoHolder.getNumberOfLogsByType(EventType.Success)} " +
+                "Info:${infoHolder.getNumberOfLogsByType(EventType.Info)} " +
+                "Warning:${infoHolder.getNumberOfLogsByType(EventType.Warning)} " +
+                "Error:${infoHolder.getNumberOfLogsByType(EventType.Error)} " +
+                "Debug:${infoHolder.getNumberOfLogsByType(EventType.Debug)}"
 
     private val infoHolder = HermesHandler.infoHolder
 
@@ -43,17 +43,21 @@ internal object ShareHelperCommon {
         append("$headerContent\n")
         append("$logCountContent\n")
 
-        for (log in infoHolder.logList) {
+        for (event in infoHolder.eventList) {
             append("\n==============\n")
 
-            append("${log.type.name.uppercase()}-${log.getLogTypeNumber()} ")
-            append("at ${creationDateFormat.format(log.creationDate)}")
+            append("${event.type.name.uppercase()}-${event.getEventTypeNumber()} ")
+            append("at ${creationDateFormat.format(event.creationDate)}")
 
-            append("\n\nShort Message:${log.message}")
+            if (event.tags.isNotEmpty()) {
+                append("\n\nTags: ${event.tags}")
+            }
 
-            log.extraInfo?.let { append("\nExtra Information:$it") }
+            append("\nShort Message:${event.message}")
 
-            log.throwable?.let { append("\n\nThrowable:\n${it.stackTraceToString()}") }
+            event.description?.let { append("\nExtra Information:$it") }
+
+            event.throwable?.let { append("\n\nThrowable:\n${it.stackTraceToString()}") }
 
             append("\n==============\n")
         }
@@ -64,12 +68,12 @@ internal object ShareHelperCommon {
     /**
      * Share a single log
      */
-    fun shareLog(context: Context, log: LogDataHolder) {
+    fun shareLog(context: Context, event: EventDataHolder) {
 
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = ShareConstants.PLAIN_TEXT_INTENT_TYPE
-            putExtra(Intent.EXTRA_SUBJECT, "${log.type} log captured at ${log.creationDate}- ${log.message}")
-            putExtra(Intent.EXTRA_TEXT, buildInfoContentOnly(log))
+            putExtra(Intent.EXTRA_SUBJECT, "${event.type} log captured at ${event.creationDate}- ${event.message}")
+            putExtra(Intent.EXTRA_TEXT, buildInfoContentOnly(event))
         }
         (context as? Activity)?.run { startActivity(Intent.createChooser(intent, "Share log")) }
     }

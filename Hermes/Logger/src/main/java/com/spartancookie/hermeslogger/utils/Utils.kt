@@ -7,7 +7,8 @@ import android.content.Context
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
-import com.spartancookie.hermeslogger.models.LogDataHolder
+import com.spartancookie.hermeslogger.GhostFragment
+import com.spartancookie.hermeslogger.models.EventDataHolder
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
@@ -21,9 +22,9 @@ internal const val DateFormat = "dd/MM 'at' HH:mm:ss.SSS"
 /**
  * Copy info from [dataHolder] to the clipboard
  * @param activity      Activity reference
- * @param dataHolder    Instance of [LogDataHolder]
+ * @param dataHolder    Instance of [EventDataHolder]
  */
-internal fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
+internal fun copyToClipboard(activity: Activity, dataHolder: EventDataHolder) {
     val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
     val info = buildInfo(dataHolder)
     val clip = ClipData.newPlainText(CopyDefaultLabel, info)
@@ -35,9 +36,13 @@ internal fun copyToClipboard(activity: Activity, dataHolder: LogDataHolder) {
  * @param dataHolder Log data holder
  * @return  String that contains information from the log data holder received
  */
-internal fun buildInfo(dataHolder: LogDataHolder) = buildString {
+internal fun buildInfo(dataHolder: EventDataHolder) = buildString {
     append("${dataHolder.creationDate} - ${dataHolder.type} Message: ${dataHolder.message} ")
-    dataHolder.extraInfo?.let { append("Extra information: $it.") }
+
+    if (dataHolder.tags.isNotEmpty()) {
+        append("Tags: ${dataHolder.tags}\n")
+    }
+    dataHolder.description?.let { append("Extra information: $it.") }
     dataHolder.throwable?.let { append("Throwable:\n${it.stackTraceToString()}\n") }
     dataHolder.genericInfo?.let { append("System info: $it ") }
 }
@@ -47,8 +52,11 @@ internal fun buildInfo(dataHolder: LogDataHolder) = buildString {
  * @param dataHolder Log data holder
  * @return  String that contains information from the log data holder received
  */
-internal fun buildInfoContentOnly(dataHolder: LogDataHolder) = buildString {
-    dataHolder.extraInfo?.let { append("Extra information: $it.\n") }
+internal fun buildInfoContentOnly(dataHolder: EventDataHolder) = buildString {
+    if (dataHolder.tags.isNotEmpty()) {
+        append("Tags: ${dataHolder.tags}\n")
+    }
+    dataHolder.description?.let { append("Extra information: $it.\n") }
     dataHolder.throwable?.let { append("Throwable:\n${it.stackTraceToString()}\n") }
     dataHolder.genericInfo?.let { append("System info: $it\n") }
 }
@@ -93,4 +101,16 @@ internal fun createTempFileFromFile(context: Context, fileName: String, referenc
     fw.close()
 
     return tempFile
+}
+
+/**
+ * Clear all fragments in the @receiver
+ */
+internal fun FragmentManager.clearAllFragments() {
+    for (fragment in fragments) {
+        val implementsGhostFragment = fragment.javaClass.getAnnotation(GhostFragment::class.java)
+        if (implementsGhostFragment != null) {
+            beginTransaction().remove(fragment).commit()
+        }
+    }
 }

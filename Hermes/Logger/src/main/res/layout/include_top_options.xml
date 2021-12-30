@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/commands_section"
+    android:layout_width="wrap_content"
+    android:layout_height="32dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.01"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <ImageView
+        android:id="@+id/export_image_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="3dp"
+        android:paddingHorizontal="3dp"
+        android:src="@drawable/ic_hermes_logger_share"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/filter_image_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="3dp"
+        android:paddingHorizontal="2dp"
+        android:src="@drawable/ic_hermes_logger_filter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/remove_image_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:paddingHorizontal="5dp"
+        android:src="@drawable/ic_hermes_logger_remove"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</LinearLayout>
