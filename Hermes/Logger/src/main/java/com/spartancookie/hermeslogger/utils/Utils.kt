@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.GhostFragment
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter

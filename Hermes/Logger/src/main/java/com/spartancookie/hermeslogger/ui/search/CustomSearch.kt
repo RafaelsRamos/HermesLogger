@@ -1,6 +1,6 @@
 package com.spartancookie.hermeslogger.ui.search
 
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import com.spartancookie.hermeslogger.utils.EMPTY_STRING
 
 /**

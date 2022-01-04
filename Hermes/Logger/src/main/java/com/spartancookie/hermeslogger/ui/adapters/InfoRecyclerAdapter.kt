@@ -10,7 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.EventSelectedCallback
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import com.spartancookie.hermeslogger.utils.DateFormat
 import java.text.SimpleDateFormat
 

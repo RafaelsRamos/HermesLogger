@@ -1,6 +1,6 @@
 package com.spartancookie.hermeslogger.callbacks
 
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import java.io.Serializable
 
 /**

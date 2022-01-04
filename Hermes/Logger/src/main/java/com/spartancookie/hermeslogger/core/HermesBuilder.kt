@@ -1,7 +1,7 @@
 package com.spartancookie.hermeslogger.core
 
 import com.spartancookie.formatter.DataType
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 
 class HermesBuilder internal constructor(
     internal var type: EventType = EventType.Debug,

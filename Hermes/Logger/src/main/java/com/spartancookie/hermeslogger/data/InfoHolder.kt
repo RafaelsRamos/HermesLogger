@@ -3,7 +3,7 @@ package com.spartancookie.hermeslogger.data
 import androidx.lifecycle.MutableLiveData
 import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.filters.applyFilters
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import com.spartancookie.hermeslogger.utils.default
 
 /**

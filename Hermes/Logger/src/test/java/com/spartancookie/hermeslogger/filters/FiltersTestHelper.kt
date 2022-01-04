@@ -1,7 +1,7 @@
 package com.spartancookie.hermeslogger.filters
 
 import com.spartancookie.hermeslogger.core.EventType
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import io.mockk.every
 import io.mockk.mockk
 import java.util.*

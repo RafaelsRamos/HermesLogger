@@ -1,7 +1,7 @@
 package com.spartancookie.hermeslogger.filters.models
 
 import com.spartancookie.hermeslogger.filters.Filter
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import java.io.Serializable
 
 internal class FilterByTag(private val tag: String, override val name: String = tag) : Filter, Serializable {

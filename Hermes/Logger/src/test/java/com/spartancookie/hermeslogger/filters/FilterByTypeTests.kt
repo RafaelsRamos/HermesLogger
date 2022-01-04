@@ -2,7 +2,7 @@ package com.spartancookie.hermeslogger.filters
 
 import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.filters.models.FilterByType
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4

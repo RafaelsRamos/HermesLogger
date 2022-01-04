@@ -14,8 +14,8 @@ import com.spartancookie.hermeslogger.callbacks.EventSelectedCallback
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.core.EventType
 import com.spartancookie.hermeslogger.filters.applyFilters
-import com.spartancookie.hermeslogger.models.EventDataHolder
-import com.spartancookie.hermeslogger.models.filterLogs
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.filterLogs
 import com.spartancookie.hermeslogger.ui.adapters.InfoRecyclerAdapter
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
 import com.spartancookie.hermeslogger.ui.search.contains

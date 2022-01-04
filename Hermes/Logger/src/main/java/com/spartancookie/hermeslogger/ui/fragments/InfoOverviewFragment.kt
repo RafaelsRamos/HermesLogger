@@ -13,8 +13,8 @@ import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
 import com.spartancookie.hermeslogger.callbacks.EventSelectedCallback
 import com.spartancookie.hermeslogger.core.HermesHandler
-import com.spartancookie.hermeslogger.managers.OverviewStateHolder
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.OverviewStateHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
 import com.spartancookie.hermeslogger.utils.EMPTY_STRING
 import com.spartancookie.hermeslogger.utils.default

@@ -3,7 +3,7 @@ package com.spartancookie.hermeslogger.filters
 import android.content.Context
 import com.spartancookie.hermeslogger.filters.models.FilterByTag
 import com.spartancookie.hermeslogger.filters.models.FilterByType
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import com.spartancookie.hermeslogger.preferences.loadFilters
 import com.spartancookie.hermeslogger.preferences.saveFilters
 import java.lang.IllegalArgumentException

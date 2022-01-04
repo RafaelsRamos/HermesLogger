@@ -1,4 +1,4 @@
-package com.spartancookie.hermeslogger.ui.fragments
+package com.spartancookie.hermeslogger.filters.ui.fragments
 
 import android.os.Bundle
 import android.view.View

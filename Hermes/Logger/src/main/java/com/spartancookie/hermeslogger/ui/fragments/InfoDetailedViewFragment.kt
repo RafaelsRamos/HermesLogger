@@ -9,7 +9,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.spartancookie.hermeslogger.GhostFragment
 import com.spartancookie.hermeslogger.R
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareLog
 import com.spartancookie.hermeslogger.ui.adapters.TagsAdapter
 import com.spartancookie.hermeslogger.ui.decorators.MarginItemDecoration

@@ -1,6 +1,6 @@
 package com.spartancookie.hermeslogger.filters
 
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 
 internal class FilterSet<T: Filter> {
 

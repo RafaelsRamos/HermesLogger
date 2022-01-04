@@ -1,4 +1,4 @@
-package com.spartancookie.hermeslogger.models
+package com.spartancookie.hermeslogger.core.models
 
 import android.os.Parcelable
 import com.spartancookie.formatter.DataType

@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.core.EventType
-import com.spartancookie.hermeslogger.models.EventDataHolder
-import com.spartancookie.hermeslogger.models.getEventTypeNumber
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.getEventTypeNumber
 import com.spartancookie.hermeslogger.utils.buildInfoContentOnly
 import java.text.SimpleDateFormat
 import java.util.*

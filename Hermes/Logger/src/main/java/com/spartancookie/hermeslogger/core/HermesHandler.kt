@@ -1,7 +1,7 @@
 package com.spartancookie.hermeslogger.core
 
 import com.spartancookie.hermeslogger.data.InfoHolder
-import com.spartancookie.hermeslogger.models.EventDataHolder
+import com.spartancookie.hermeslogger.core.models.EventDataHolder
 
 internal object HermesHandler {
 
