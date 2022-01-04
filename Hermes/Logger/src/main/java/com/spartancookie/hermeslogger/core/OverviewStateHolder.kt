@@ -1,4 +1,4 @@
-package com.spartancookie.hermeslogger.managers
+package com.spartancookie.hermeslogger.core
 
 import com.spartancookie.hermeslogger.ui.search.CustomSearch
 
@@ -12,7 +12,7 @@ internal object OverviewStateHolder {
     var customSearch = CustomSearch()
 
     fun updateSearchContent(customSearch: CustomSearch) {
-        this.customSearch = customSearch
+        OverviewStateHolder.customSearch = customSearch
     }
 
 }

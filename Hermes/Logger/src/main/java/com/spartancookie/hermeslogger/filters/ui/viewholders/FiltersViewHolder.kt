@@ -9,9 +9,9 @@ import com.spartancookie.hermeslogger.filters.Filter
 import com.spartancookie.hermeslogger.filters.FilterManager
 
 /**
- * Subclass of [BaseFilterViewHolder], that acts as the ViewHolder for Filters.
+ * Subclass of [BaseViewHolder], that acts as the ViewHolder for Filters.
  */
-internal class FilterViewHolder(private val root: View): BaseFilterViewHolder<Filter>(root) {
+internal class FiltersViewHolder(private val root: View): BaseViewHolder<Filter>(root) {
 
     private val nameTV = root.findViewById<TextView>(R.id.name_tv)
     private val cardView = root as CardView
