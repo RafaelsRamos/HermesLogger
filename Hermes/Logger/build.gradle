@@ -40,6 +40,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$androidx_core"
     implementation "androidx.appcompat:appcompat:$androidx_app_compat"
     implementation "androidx.constraintlayout:constraintlayout:$androidx_constraint_layout"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     implementation "com.google.android.material:material:$google_material"
     implementation "com.google.android.flexbox:flexbox:$google_flexbox"

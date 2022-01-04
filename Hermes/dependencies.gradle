@@ -11,6 +11,7 @@ ext {
     androidx_constraint_layout =     '2.1.2'
     androidx_junit =                 '1.1.3'
     androidx_card_view =             '1.0.0'
+    lifecycle_version =              '2.4.0'
 
     // Google libs versions
     google_material =                '1.4.0'
