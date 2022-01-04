@@ -8,6 +8,7 @@
     <color name="tabBackgroundItemSelectedColor">#93E6A1</color>
     <color name="tabBackgroundItemUnSelectedColor">#ffffff</color>
 
+    <color name="pathControllerBackgroundColor">#EBEBEB</color>
 
     <color name="copyFinalColor">#BABABA</color>
 

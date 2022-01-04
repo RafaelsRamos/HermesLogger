@@ -27,5 +27,6 @@
 
 
     <dimen name="filter_title_height">10dp</dimen>
+    <dimen name="files_icon_size">22dp</dimen>
 
 </resources>
