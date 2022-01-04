@@ -14,12 +14,13 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import com.spartancookie.hermeslogger.R
 import com.spartancookie.hermeslogger.callbacks.FragmentStateCallback
+import com.spartancookie.hermeslogger.commands.ui.fragments.FilesFragment
 import com.spartancookie.hermeslogger.core.HermesConfigurations
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.filters.FilterManager
 import com.spartancookie.hermeslogger.share.ShareHelperCommon
 import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareWholeLogStack
-import com.spartancookie.hermeslogger.ui.fragments.FiltersFragment
+import com.spartancookie.hermeslogger.filters.ui.fragments.FiltersFragment
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
 import com.spartancookie.hermeslogger.utils.canShareHermesLogDumps
 import com.spartancookie.hermeslogger.utils.clearAllFragments
@@ -31,7 +32,8 @@ import kotlinx.android.synthetic.main.screen_overview_background.view.remove_ima
 
 class OverviewLayout private constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr), FragmentStateCallback {
 
-    private var filteringFragment = false
+    private var isOnFiltersFragment = false
+    private var isOnCommandsFragment = false
 
     private val fragmentActivity get() = context as? FragmentActivity
     private val fragmentManager get() = fragmentActivity?.supportFragmentManager
@@ -108,9 +110,19 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
         }
 
         filter_image_view.setOnClickListener {
-            filteringFragment = !filteringFragment
-            if (filteringFragment) {
+            isOnFiltersFragment = !isOnFiltersFragment
+            if (isOnFiltersFragment) {
                 loadFragment(FiltersFragment.newInstance())
+            } else {
+                clearFrameLayout()
+                loadOverview()
+            }
+        }
+
+        commands_image_view.setOnClickListener {
+            isOnCommandsFragment = !isOnCommandsFragment
+            if (isOnCommandsFragment) {
+                loadFragment(FilesFragment.newInstance())
             } else {
                 clearFrameLayout()
                 loadOverview()
@@ -136,7 +148,8 @@ class OverviewLayout private constructor(context: Context, attrs: AttributeSet? 
 
     private fun close() {
         clearFrameLayout()
-        filteringFragment = false
+        isOnFiltersFragment = false
+        isOnCommandsFragment = false
 
         overviewBackground.visibility = View.GONE
         insideLayout.visibility = View.GONE

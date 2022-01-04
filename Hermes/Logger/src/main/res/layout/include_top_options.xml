@@ -37,6 +37,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/commands_image_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:paddingHorizontal="4dp"
+        android:src="@drawable/ic_hermes_logger_remote_control"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
         android:id="@+id/remove_image_view"
         android:layout_width="30dp"
         android:layout_height="30dp"
