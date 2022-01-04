@@ -14,7 +14,9 @@ import com.rafaelsramos.hermes.R
 import com.rafaelsramos.hermes.ui.fragments.BaseFragment
 import com.rafaelsramos.hermes.ui.fragments.StartFragment
 import com.rafaelsramos.hermes.utils.loadHermesPreference
+import com.spartancookie.hermeslogger.commands.models.HermesCommand
 import com.spartancookie.hermeslogger.core.Hermes
+import com.spartancookie.hermeslogger.core.HermesCentral
 import com.spartancookie.hermeslogger.core.HermesConfigurations
 import com.spartancookie.hermeslogger.core.SystemInfoBuildable
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
@@ -46,6 +48,9 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, ICommunicationCha
         }
 
         setInitialFragment()
+
+        HermesCentral.setCommands(hermesCommands)
+
     }
 
     private fun setInitialFragment() {
@@ -114,5 +119,38 @@ class MainActivity : AppCompatActivity(), SystemInfoBuildable, ICommunicationCha
         i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         baseContext.startActivity(i)
+    }
+
+    // --------------- Set Commands -----------------------
+
+    val hermesCommands = mutableListOf(
+        HermesCommand(name = "Beauty General", description = "Enable/Disable beauty CodeGuard.", path = "Commands/Code Guards/Beauty", command = { toast("Beauty ON") }),
+        HermesCommand(name = "Beauty Layout", description = "Enable/Disable beauty layouts CodeGuard.", path = "Commands/Code Guards/Beauty", command = { toast("Beauty layouts ON") }),
+        HermesCommand(name = "Beauty Bag", description = "Enable/Disable beauty bag CodeGuard.", path = "Commands/Code Guards/Beauty", command = { toast("Beauty bag ON") }),
+        HermesCommand(name = "Final Sale", description = "Enable/Disable Final Sale CodeGuard.", path = "Commands/Code Guards/Final Sale", command = { toast("Final Sale ON") }),
+
+        HermesCommand(name = "Clear All", description = "Clear all shared preferences", path = "Commands/General/Shared Preferences", command = { toast("All prefs cleared") }),
+        HermesCommand(name = "Clear Product related", description = "Clear all shared preferences related to products.", path = "Commands/General/Shared Preferences/Product", command = { toast("Product related prefs cleared") }),
+        HermesCommand(name = "Clear Final sale products related", description = "Clear all shared preferences related to final sale products.", path = "Commands/General/Shared Preferences/Product", command = { toast("Final sale related prefs cleared") }),
+    ).apply {
+        val europe = mutableListOf("Portugal", "Spain", "France", "Ireland", "England", "Wales", "Netherlands", "Latvia", "Austria", "Czech Republic", "Belgium", "Luxembourg", "Germany", "Scotland", "Ukraine")
+        val asia = mutableListOf("Russia", "China", "India", "Pakistan", "Hong Kong", "Japan", "Iran", "Thailand", "Philippines")
+        val southAmerica = mutableListOf("Brazil", "Argentina", "Venezuela", "Peru", "Bolivia", "Colombia", "Paraguay", "Ecuador")
+        val northAmerica = mutableListOf("USA", "Canada", "Mexico", "Greenland", "Haiti", "Jamaica", "Cuba", "Panama", "The Bahamas")
+        val africa = mutableListOf("Egypt", "South Africa", "Morocco", "Nigeria", "Mozambique", "Angola", "Ethiopia", "Kenya", "Algeria", "Sudan", "Madagascar", "Cameroon")
+
+        europe.forEach { country -> add(fetchCountryCommand(country, "Europe")) }
+        asia.forEach { country -> add(fetchCountryCommand(country, "Asia")) }
+        southAmerica.forEach { country -> add(fetchCountryCommand(country, "South America")) }
+        northAmerica.forEach { country -> add(fetchCountryCommand(country, "North America")) }
+        africa.forEach { country -> add(fetchCountryCommand(country, "Africa")) }
+    }
+
+    private fun fetchCountryCommand(country: String, continent: String): HermesCommand {
+        return HermesCommand(name = country, description = "Change the app country to $country", path = "Commands/General/Change country/$continent", command = { toast("Changed to $country") })
+    }
+
+    private fun toast(msg: String) {
+        Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
     }
 }
