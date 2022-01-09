@@ -7,6 +7,10 @@ import com.spartancookie.hermeslogger.commands.models.HermesFolder
  * Interface that identifies a class as being able to be arranged in a Filing system.
  */
 internal interface IArrangeable {
+    /**
+     * ### Name of the File/Folder.
+     * Name that will be given to the File/Folder in Hermes Filing system.
+     */
     val name: String
 }
 

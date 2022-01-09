@@ -1,67 +1,173 @@
 package com.spartancookie.hermeslogger.core
 
+import com.spartancookie.formatter.DataType
+
+/**
+ * ## Object to be used to register Hermes events.
+ */
 object Hermes {
 
     /**
-     * Create an instance of [HermesBuilder] with a priority of [EventType.Success]
+     * ### Create an instance of [HermesBuilder] with a priority of [EventType.Success]
      */
     @JvmStatic
-    fun success(): HermesBuilder = HermesBuilder().apply { type = EventType.Success }
+    fun success(): HermesBuilder = HermesBuilder(type = EventType.Success)
 
     /**
-     * Create an instance of [HermesBuilder] with a priority of [EventType.Verbose]
+     * ### Submit a Hermes event of priority [EventType.Success], with:
+     * - **Event short message - [message]**
+     * - **Event short message - [message]**
+     * - **Event description - [description]**
+     * - **Event description's type of data - [dataType]**
+     * - **List of tags associated with the event - [tags]**
      */
     @JvmStatic
-    fun v(): HermesBuilder = HermesBuilder().apply { type = EventType.Verbose }
+    @JvmOverloads
+    fun success(
+        message: String,
+        description: String? = null,
+        dataType: DataType? = null,
+        tags: List<String> = listOf()
+    ) = success().submitData(message, description, dataType, tags)
 
     /**
-     * Create an instance of [HermesBuilder] with a priority of [EventType.Debug]
+     * ### Create an instance of [HermesBuilder] with a priority of [EventType.Verbose]
      */
     @JvmStatic
-    fun d(): HermesBuilder = HermesBuilder().apply { type = EventType.Debug }
+    fun v(): HermesBuilder = HermesBuilder(type = EventType.Verbose)
 
     /**
-     * Create an instance of [HermesBuilder] with a priority of [EventType.Info]
+     * ### Submit a Hermes event of priority [EventType.Verbose], with:
+     * - **Event short message - [message]**
+     * - **Event description - [description]**
+     * - **Event description's type of data - [dataType]**
+     * - **List of tags associated with the event - [tags]**
      */
     @JvmStatic
-    fun i(): HermesBuilder = HermesBuilder().apply { type = EventType.Info }
+    @JvmOverloads
+    fun v(
+        message: String,
+        description: String? = null,
+        dataType: DataType? = null,
+        tags: List<String> = listOf()
+    ) = v().submitData(message, description, dataType, tags)
 
     /**
-     * Create an instance of [HermesBuilder] with a priority of [EventType.Warning]
+     * ### Create an instance of [HermesBuilder] with a priority of [EventType.Debug]
      */
     @JvmStatic
-    fun w(): HermesBuilder = HermesBuilder().apply { type = EventType.Warning }
-
-
-    /**
-     * Create an instance of [HermesBuilder] with a priority of [EventType.Error]
-     */
-    @JvmStatic
-    fun e(): HermesBuilder = HermesBuilder().apply { type = EventType.Error }
+    fun d(): HermesBuilder = HermesBuilder(type = EventType.Debug)
 
     /**
-     * Create an instance of [HermesBuilder] with a priority of [EventType.Wtf]
+     * ### Submit a Hermes event of priority [EventType.Debug], with:
+     * - **Event short message - [message]**
+     * - **Event description - [description]**
+     * - **Event description's type of data - [dataType]**
+     * - **List of tags associated with the event - [tags]**
      */
     @JvmStatic
-    fun wtf(): HermesBuilder = HermesBuilder().apply { type = EventType.Wtf }
+    @JvmOverloads
+    fun d(
+        message: String,
+        description: String? = null,
+        dataType: DataType? = null,
+        tags: List<String> = listOf()
+    ) = d().submitData(message, description, dataType, tags)
 
     /**
-     * Inform Hermes that the current the current environment is a debug environment or not.
-     * If the environment is not a debug environment, no logs will be stored or shown.
-     * [isDebugEnvironment] is True if the current environment is a debug environment, false otherwise
+     * ### Create an instance of [HermesBuilder] with a priority of [EventType.Info]
      */
     @JvmStatic
-    fun initialize(isDebugEnvironment: Boolean) {
-        HermesConfigurations.isEnabled = isDebugEnvironment
+    fun i(): HermesBuilder = HermesBuilder(type = EventType.Info)
+
+    /**
+     * ### Submit a Hermes event of priority [EventType.Info], with:
+     * - **Event short message - [message]**
+     * - **Event description - [description]**
+     * - **Event description's type of data - [dataType]**
+     * - **List of tags associated with the event - [tags]**
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun i(
+        message: String,
+        description: String? = null,
+        dataType: DataType? = null,
+        tags: List<String> = listOf()
+    ) = i().submitData(message, description, dataType, tags)
+
+    /**
+     * ### Create an instance of [HermesBuilder] with a priority of [EventType.Warning]
+     */
+    @JvmStatic
+    fun w(): HermesBuilder = HermesBuilder(type = EventType.Warning)
+
+    /**
+     * ### Submit a Hermes event of priority [EventType.Warning], with:
+     * - **Event short message - [message]**
+     * - **Event description - [description]**
+     * - **Event description's type of data - [dataType]**
+     * - **List of tags associated with the event - [tags]**
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun w(
+        message: String,
+        description: String? = null,
+        dataType: DataType? = null,
+        tags: List<String> = listOf()
+    ) = w().submitData(message, description, dataType, tags)
+
+    /**
+     * ### Create an instance of [HermesBuilder] with a priority of [EventType.Error]
+     */
+    @JvmStatic
+    fun e(): HermesBuilder = HermesBuilder(type = EventType.Error)
+
+    /**
+     * ### Submit a Hermes event of priority [EventType.Error], with:
+     * - **Event short message - [message]**
+     * - **Event description - [description]**
+     * - **Event description's type of data - [dataType]**
+     * - **List of tags associated with the event - [tags]**
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun e(
+        message: String,
+        description: String? = null,
+        dataType: DataType? = null,
+        tags: List<String> = listOf()
+    ) = e().submitData(message, description, dataType, tags)
+
+    /**
+     * ### Create an instance of [HermesBuilder] with a priority of [EventType.Wtf]
+     */
+    @JvmStatic
+    fun wtf(): HermesBuilder = HermesBuilder(type = EventType.Wtf)
+
+    /**
+     * ### Submit a Hermes event of priority [EventType.Wtf], with:
+     * - **Event short message - [message]**
+     * - **Event description - [description]**
+     * - **Event description's type of data - [dataType]**
+     * - **List of tags associated with the event - [tags]**
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun wtf(
+        message: String,
+        description: String? = null,
+        dataType: DataType? = null,
+        tags: List<String> = listOf()
+    ) = wtf().submitData(message, description, dataType, tags)
+
+    private fun HermesBuilder.submitData(msg: String, description: String?, dataType: DataType?, tags: List<String>) {
+        this.tags(*tags.toTypedArray())
+        this.message(msg)
+        if (description != null) {
+            this.description(description, dataType)
+        }
+        submit()
     }
-
-    /**
-     * Add an implementation of [SystemInfoBuildable] so that the user can copy system info
-     * when copying log information
-     */
-    @JvmStatic
-    fun updateSystemInfo(systemInfoBuildable: SystemInfoBuildable) {
-        HermesConfigurations.systemInfoBuildable = systemInfoBuildable
-    }
-
 }

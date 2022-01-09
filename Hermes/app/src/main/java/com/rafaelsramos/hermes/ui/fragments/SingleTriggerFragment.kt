@@ -32,7 +32,7 @@ class SingleTriggerFragment: BaseFragment(R.layout.screen_single_trigger_fragmen
             HermesCommand(name = "SingleTriggerFragment cmd 4", description = "Fragment only stuff.", path = "", command = { toast("Command 4") })
         )
 
-        HermesCentral.addCommands(this, hermesCommands)
+        HermesCentral.addTemporaryCommands(this, hermesCommands)
     }
 
     private fun toast(s: String) {

@@ -7,11 +7,30 @@ import com.spartancookie.hermeslogger.commands.models.HermesFile
 import com.spartancookie.hermeslogger.commands.models.HermesFolder
 import com.spartancookie.hermeslogger.commands.models.fetchFolder
 import com.spartancookie.hermeslogger.commands.models.filterOut
+import com.spartancookie.hermeslogger.commands.models.HermesCommand
 
 internal object FileManager {
 
     private val allFiles = mutableListOf<HermesFile>()
 
+    /**
+     * ## Root Hermes folder, where instances of [IArrangeable] can be stored, such as [HermesFile] or other [HermesFolder].
+     * This folder, can contain a list of [HermesCommand] or other [IArrangeable]. Once built, it's structure would look something like:
+     *
+     * ```
+     * ||Root
+     * ||--Folder A
+     * ||----Folder AA
+     * ||------Command AA1
+     * ||------Command AA2
+     * ||----Command A1
+     * ||----Command A2
+     * ||--Folder B
+     * ||----Command B1
+     * ||--Command 1
+     * ||--Command 2
+     * ```
+     */
     val rootFolder = HermesFolder("Root")
 
     /**
@@ -65,6 +84,11 @@ internal object FileManager {
         rootFolder.files.clear()
     }
 
+    /**
+     * TODO("Very important, comment this method very, very well")
+     *
+     * Sets the files under [targetFolder].
+     */
     private fun buildFolder(targetFolder: HermesFolder, remainingFoldersNames: MutableList<String>): HermesFolder {
         val name = remainingFoldersNames.firstOrNull()
 

@@ -5,7 +5,7 @@ import com.spartancookie.hermeslogger.commands.FileManager
 import com.spartancookie.hermeslogger.commands.models.HermesCommand
 
 /**
- * Hermes class used to handle Commands and other info
+ * Hermes class used to handle Commands.
  */
 object HermesCentral {
 
@@ -48,7 +48,7 @@ object HermesCentral {
      * onStop is triggered.
      */
     @JvmStatic
-    fun addCommands(lifecycleOwner: LifecycleOwner, commands: List<HermesCommand>) {
+    fun addTemporaryCommands(lifecycleOwner: LifecycleOwner, commands: List<HermesCommand>) {
         FileManager.addFiles(lifecycleOwner, commands)
     }
 
