@@ -18,16 +18,14 @@ import com.spartancookie.hermeslogger.commands.ui.fragments.FilesFragment
 import com.spartancookie.hermeslogger.core.HermesConfigurations
 import com.spartancookie.hermeslogger.core.HermesHandler
 import com.spartancookie.hermeslogger.filters.FilterManager
+import com.spartancookie.hermeslogger.filters.ui.fragments.FiltersFragment
 import com.spartancookie.hermeslogger.share.ShareHelperCommon
 import com.spartancookie.hermeslogger.share.ShareHelperCommon.shareWholeLogStack
-import com.spartancookie.hermeslogger.filters.ui.fragments.FiltersFragment
 import com.spartancookie.hermeslogger.ui.fragments.InfoOverviewFragment
 import com.spartancookie.hermeslogger.utils.canShareHermesLogDumps
 import com.spartancookie.hermeslogger.utils.clearAllFragments
 import kotlinx.android.synthetic.main.include_top_options.view.*
 import kotlinx.android.synthetic.main.screen_overview_background.view.*
-import kotlinx.android.synthetic.main.screen_overview_background.view.export_image_view
-import kotlinx.android.synthetic.main.screen_overview_background.view.remove_image_view
 
 
 class OverviewLayout private constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr), FragmentStateCallback {

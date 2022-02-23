@@ -144,6 +144,8 @@ internal class InfoListFragment : Fragment(R.layout.screen_info_list) {
 
     companion object {
 
+        const val TAG = "InfoListFragment"
+
         /**
          * Create an instance of [InfoListFragment] with a bundle that contains the [type]
          * selected and with an implementation of [EventSelectedCallback], on [eventSelectedCallback].

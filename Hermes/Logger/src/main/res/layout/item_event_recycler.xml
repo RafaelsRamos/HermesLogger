@@ -13,7 +13,8 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/vertical_guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_hermes_logger_warning"/>
 
     <ImageView
         android:id="@+id/expand_collapse_iv"

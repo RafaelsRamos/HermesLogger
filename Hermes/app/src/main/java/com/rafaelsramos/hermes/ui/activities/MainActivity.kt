@@ -21,7 +21,6 @@ import com.spartancookie.hermeslogger.core.HermesConfigurations
 import com.spartancookie.hermeslogger.core.SystemInfoBuildable
 import com.spartancookie.hermeslogger.ui.components.OverviewLayout
 import com.spartancookie.hermeslogger.utils.canShareHermesLogDumps
-import kotlinx.android.synthetic.main.main_activity.*
 import timber.log.Timber
 
 

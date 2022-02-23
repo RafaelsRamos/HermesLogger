@@ -36,26 +36,29 @@ internal class InfoOverviewFragment : Fragment(R.layout.screen_info_overview), E
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        savedInstanceState?.run {
-            // if we're returning from a saved instance, remove this fragment and the details
+        if (savedInstanceState != null) {
             removeFromStack(parentFragmentManager, InfoDetailedViewFragment.TAG)
+            removeFromStack(parentFragmentManager, InfoListFragment.TAG)
             removeFromStack(parentFragmentManager, TAG)
+            return
         }
 
+        showEventList()
         setSearchLogic()
-
-
-        val fragment = InfoListFragment.newInstance(this)
-        requireActivity().supportFragmentManager.beginTransaction().apply {
-            add(R.id.runtimeOverviewFrameLayout, fragment, InfoDetailedViewFragment.TAG)
-            commit()
-        }
 
         search_edit_text.setText(OverviewStateHolder.currentContent)
         updateUI()
 
         fabButton.setOnClickListener {
             Toast.makeText(context, HermesHandler.buildStats(), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showEventList() {
+        val fragment = InfoListFragment.newInstance(this)
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            add(R.id.runtimeOverviewFrameLayout, fragment, InfoListFragment.TAG)
+            commit()
         }
     }
 
